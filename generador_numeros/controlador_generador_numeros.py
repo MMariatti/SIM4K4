@@ -5,7 +5,7 @@ class ControladorGeneradorNumeros:
         index = 0
         for i in range(0, cantidad):
             if index != 0:
-                semilla = (a * semilla + c) % m
+                semilla = (c* semilla + a) % m
             numeros_generados[i] = semilla / m
             index += 1
         return numeros_generados
@@ -15,7 +15,7 @@ class ControladorGeneradorNumeros:
         index = 0
         for i in range(0, cantidad):
             if index != 0:
-                semilla = (a * semilla) % m
+                semilla = (c * semilla) % m
             numeros_generados[i] = semilla / m
             index += 1
         return numeros_generados
