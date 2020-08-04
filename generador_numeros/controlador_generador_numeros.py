@@ -1,4 +1,3 @@
-
 class ControladorGeneradorNumeros:
 
     def generador_congruente_mixo(self, cantidad, semilla, a, c, m):
