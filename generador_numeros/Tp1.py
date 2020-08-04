@@ -27,7 +27,7 @@ while opc != 3:
 
                 print("Numero :", i + 1, " | Semilla:", semilla, " | número random : ", nRandom)
             else:
-                semilla = (a * semilla + constante) % m
+                semilla = ((constante * semilla )+ a) % m
                 nRandom = semilla / m
 
 
@@ -53,7 +53,7 @@ while opc != 3:
 
                 print("Numero :", i + 1, " | Semilla:", semilla, " | número random : ", nRandom)
             else:
-                semilla = (a * semilla) % m
+                semilla = (constante * semilla) % m
                 nRandom = semilla / m
                 print("Numero :", i + 1, " | X+1 :", semilla, " | Número random : ", nRandom)
 
