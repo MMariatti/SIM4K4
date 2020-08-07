@@ -10,7 +10,7 @@ class ControladorGeneradorNumeros:
             index += 1
         return numeros_generados
 
-    def generador_congruente_multiplicativo(self, cantidad, semilla, a, m):
+    def generador_congruente_multiplicativo(self, cantidad, semilla, c, m):
         numeros_generados = [None] * cantidad
         index = 0
         for i in range(0, cantidad):
