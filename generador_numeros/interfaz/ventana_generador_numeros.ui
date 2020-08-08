@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ventana_generador_numeros</class>
+ <widget class="QMainWindow" name="ventana_generador_numeros">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>840</width>
+    <height>472</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Generación de números aleatorios</string>
+  </property>
+  <widget class="QWidget" name="central_widget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="lyt_horizontal_0_0">
+      <item>
+       <layout class="QHBoxLayout" name="lyt_horizontal_1_0">
+        <item>
+         <layout class="QVBoxLayout" name="lyt_vertical_2_0">
+          <item>
+           <layout class="QHBoxLayout" name="lyt_horizontal_3_0">
+            <item>
+             <widget class="QLabel" name="lbl_metodo_generacion">
+              <property name="text">
+               <string>Método de generación</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="spacer_horizontal_0">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cmb_metodo_generacion">
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="lyt_horizontal_3_1">
+            <item>
+             <widget class="QLabel" name="lbl_semilla">
+              <property name="text">
+               <string>Semilla</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="spacer_horizontal_1">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="txt_semilla">
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="lyt_horizontal_3_2">
+            <item>
+             <widget class="QLabel" name="lbl_a">
+              <property name="text">
+               <string>Constante a</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="spacer_horizontal_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="txt_a">
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="lyt_horizontal_3_3">
+            <item>
+             <widget class="QLabel" name="lbl_c">
+              <property name="text">
+               <string>Contante c</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="spacer_horizontal_3">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="txt_c">
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="lyt_horizontal_3_4">
+            <item>
+             <widget class="QLabel" name="lbl_m">
+              <property name="text">
+               <string>Constante m</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="spacer_horizontal_4">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="txt_m">
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="lyt_horizontal_3_5">
+            <item>
+             <widget class="QLabel" name="lbl_cantidad_numeros">
+              <property name="text">
+               <string>Cantidad de números</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="spacer_horizontal_5">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="txt_cantidad_numeros">
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>0</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="lyt_horizontal_3_6">
+            <item>
+             <widget class="QPushButton" name="btn_generar_numeros">
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Generar números</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_prueba_frecuencia">
+              <property name="minimumSize">
+               <size>
+                <width>200</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Prueba de frecuencia</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="lyt_vertical_1_1">
+        <item>
+         <widget class="QTableWidget" name="grid_numeros_generados">
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>450</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication
-from ventana_generador_numeros import VentanaGeneradorNumeros
+from interfaz.ventana_generador_numeros import VentanaGeneradorNumeros
 
 
 if __name__ == "__main__":
