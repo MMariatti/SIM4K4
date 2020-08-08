@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
 from PyQt5 import uic
 from dominio.controlador_generador_numeros import ControladorGeneradorNumeros
 from soporte.validador_decimales import ValidadorDecimales
+from soporte.validador_enteros import ValidadorEnteros
 from soporte.ruta import Ruta
 
 
@@ -21,11 +22,13 @@ class VentanaGeneradorNumeros(QMainWindow):
 		self.controlador = ControladorGeneradorNumeros()
 
 		# Agrego validadores a los campos
-		validador_decimales = ValidadorDecimales(10, 4)
+		validador_decimales = ValidadorDecimales(8, 4)
+		validador_enteros = ValidadorEnteros(8)
 		self.txt_semilla.setValidator(validador_decimales)
 		self.txt_a.setValidator(validador_decimales)
 		self.txt_c.setValidator(validador_decimales)
 		self.txt_m.setValidator(validador_decimales)
+		self.txt_cantidad_numeros.setValidator(validador_enteros)
 
 		# Conecto los botones con los eventos
 		self.cmb_metodo_generacion.currentIndexChanged.connect(self.accion_seleccionar_metodo)
@@ -51,7 +54,51 @@ class VentanaGeneradorNumeros(QMainWindow):
 		self.limpiar_interfaz()
 
 	def accion_generar_numeros(self):
-		pass
+
+		# Obtengo metodo
+		id_metodo = self.cmb_metodo_generacion.itemData(self.cmb_metodo_generacion.currentIndex())
+
+		# Obtengo y valido parametros dependiendo del metodo
+		semilla = self.txt_semilla.text()
+		if float(semilla) < 0:
+			self.mostrar_mensaje_error("Error", "La semilla tiene que ser mayor o igual a cero")
+			return
+		a = self.txt_a.text()
+		if float(a) <= 0:
+			self.mostrar_mensaje_error("Error", "La constante \"a\" tiene que ser mayor a cero")
+			return
+		c = None
+		if id_metodo == 0:
+			c = self.txt_c.text()
+			if float(c) <= 0:
+				self.mostrar_mensaje_error("Error", "La constante \"c\" tiene que ser mayor a cero")
+				return
+		m = self.txt_m.text()
+		if float(m) <= 0:
+			self.mostrar_mensaje_error("Error", "La constante \"m\" tiene que ser mayor a cero")
+			return
+		if float(semilla) >= float(m):
+			self.mostrar_mensaje_error("Error", "La semilla tiene que ser menor a la constante \"m\"")
+			return
+		if float(a) >= float(m):
+			self.mostrar_mensaje_error("Error", "La constante \"a\" tiene que ser menor a la constante \"m\"")
+			return
+		if c is not None and float(c) >= float(m):
+			self.mostrar_mensaje_error("Error", "La constante \"c\" tiene que ser menor a la constante \"m\"")
+			return
+		cantidad_numeros = self.txt_cantidad_numeros.text()
+		if int(cantidad_numeros) <= 0:
+			self.mostrar_mensaje_error("Error", "La cantidad de números tiene que ser mayor a cero")
+			return
+
+		# Genero numeros aleatorios dependiendo del metodo seleccionado
+		if id_metodo == 0:
+			self.numeros_aleatorios = self.controlador.generador_congruente_mixo(cantidad_numeros, semilla, a, c, m)
+		else:
+			self.numeros_aleatorios = self.controlador.generador_congruente_multiplicativo(cantidad_numeros, semilla, a, m)
+
+		# Cargo tabla
+		self.cargar_tabla_numeros_aleatorios()
 
 	def accion_prueba_frecuencia(self):
 		pass
@@ -66,8 +113,8 @@ class VentanaGeneradorNumeros(QMainWindow):
 		self.cmb_metodo_generacion.addItem("Método congruente multiplicativo", 1)
 
 		# Preparo tabla de numeros generados
-		self.grid_numeros_generados.setColumnCount(3)
-		self.grid_numeros_generados.setHorizontalHeaderLabels(["N° de orden", "Semilla", "Número aleatorio"])
+		self.grid_numeros_generados.setColumnCount(4)
+		self.grid_numeros_generados.setHorizontalHeaderLabels(["N° de orden", "Semilla", "Aleatorio", "A. Decimal"])
 
 	def limpiar_interfaz(self):
 
@@ -86,8 +133,26 @@ class VentanaGeneradorNumeros(QMainWindow):
 		self.grid_numeros_generados.setCurrentCell(-1, -1)
 		self.grid_numeros_generados.setRowCount(0)
 
+	def mostrar_mensaje_error(self, titulo, mensaje):
+
+		# Muestro mensaje
+		box = QMessageBox()
+		box.setWindowTitle(titulo)
+		box.setText(mensaje)
+		box.setStandardButtons(QMessageBox.Ok)
+		box.exec_()
+
 	def cargar_tabla_numeros_aleatorios(self):
-		pass
+
+		self.grid_numeros_generados.setRowCount(len(self.numeros_aleatorios))
+		index = 0
+		for n in self.numeros_aleatorios:
+			self.grid_numeros_generados.setItem(index, 0, QTableWidgetItem(str(n.get("nro_orden"))))
+			self.grid_numeros_generados.setItem(index, 1, QTableWidgetItem(str(n.get("semilla")).replace(".", ",")))
+			self.grid_numeros_generados.setItem(index, 2, QTableWidgetItem(str(n.get("aleatorio")).replace(".", ",")))
+			self.grid_numeros_generados.setItem(index, 3, QTableWidgetItem(str(n.get("aleatorio_decimal"))
+																		   .replace(".", ",")))
+			index += 1
 
 	""" Eventos """
 
