@@ -1,5 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication
+from interfaz.recursos import sim
 from interfaz.ventana_generador_numeros import VentanaGeneradorNumeros
 
 
@@ -9,7 +10,8 @@ if __name__ == "__main__":
     window = VentanaGeneradorNumeros()
     window.show()
     app.exec_()
-    
+
+    """
     semilla = int(VentanaGeneradorNumeros.TxtSemillaValue)
     a = int(VentanaGeneradorNumeros.TxtConstanteAValue)
     c = int(VentanaGeneradorNumeros.TxtConstanteCValue)
@@ -17,5 +19,6 @@ if __name__ == "__main__":
     numeros = int(VentanaGeneradorNumeros.TxtConstanteMValue)
 
     lista = ControladorGeneradorNumeros.generador_congruente_mixto(numeros, semilla, a, c, m)
+    """
 
 
