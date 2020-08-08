@@ -60,21 +60,21 @@ class VentanaGeneradorNumeros(QMainWindow):
 
 		# Obtengo y valido parametros dependiendo del metodo
 		semilla = self.txt_semilla.text()
-		if float(semilla) < 0:
+		if semilla == "" or float(semilla) < 0:
 			self.mostrar_mensaje_error("Error", "La semilla tiene que ser mayor o igual a cero")
 			return
 		a = self.txt_a.text()
-		if float(a) <= 0:
+		if a == "" or float(a) <= 0:
 			self.mostrar_mensaje_error("Error", "La constante \"a\" tiene que ser mayor a cero")
 			return
 		c = None
 		if id_metodo == 0:
 			c = self.txt_c.text()
-			if float(c) <= 0:
+			if c == "" or float(c) <= 0:
 				self.mostrar_mensaje_error("Error", "La constante \"c\" tiene que ser mayor a cero")
 				return
 		m = self.txt_m.text()
-		if float(m) <= 0:
+		if m == "" or float(m) <= 0:
 			self.mostrar_mensaje_error("Error", "La constante \"m\" tiene que ser mayor a cero")
 			return
 		if float(semilla) >= float(m):
@@ -87,7 +87,7 @@ class VentanaGeneradorNumeros(QMainWindow):
 			self.mostrar_mensaje_error("Error", "La constante \"c\" tiene que ser menor a la constante \"m\"")
 			return
 		cantidad_numeros = self.txt_cantidad_numeros.text()
-		if int(cantidad_numeros) <= 0:
+		if cantidad_numeros == "" or int(cantidad_numeros) <= 0:
 			self.mostrar_mensaje_error("Error", "La cantidad de números tiene que ser mayor a cero")
 			return
 
