@@ -533,6 +533,12 @@
             </item>
             <item>
              <widget class="QComboBox" name="cmb_metodo_generacion">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>280</width>
@@ -582,6 +588,12 @@
             </item>
             <item>
              <widget class="QLineEdit" name="txt_semilla">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>200</width>
@@ -631,6 +643,12 @@
             </item>
             <item>
              <widget class="QLineEdit" name="txt_a">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>200</width>
@@ -680,6 +698,12 @@
             </item>
             <item>
              <widget class="QLineEdit" name="txt_c">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>200</width>
@@ -729,6 +753,12 @@
             </item>
             <item>
              <widget class="QLineEdit" name="txt_m">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>200</width>
@@ -778,6 +808,12 @@
             </item>
             <item>
              <widget class="QLineEdit" name="txt_cantidad_numeros">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>200</width>
@@ -879,7 +915,7 @@
            </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="lyt_horizontal_3_8">
+           <layout class="QHBoxLayout" name="lyt_horizontal_3_7">
             <property name="spacing">
              <number>5</number>
             </property>
@@ -903,7 +939,7 @@
              </widget>
             </item>
             <item>
-             <spacer name="spacer_horizontal_8">
+             <spacer name="spacer_horizontal_7">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -917,6 +953,12 @@
             </item>
             <item>
              <widget class="QLineEdit" name="txt_alfa">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="minimumSize">
                <size>
                 <width>200</width>
@@ -928,7 +970,7 @@
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="lyt_horizontal_3_9">
+           <layout class="QHBoxLayout" name="lyt_horizontal_3_8">
             <property name="spacing">
              <number>5</number>
             </property>
@@ -952,7 +994,7 @@
              </widget>
             </item>
             <item>
-             <spacer name="spacer_horizontal_9">
+             <spacer name="spacer_horizontal_8">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
@@ -993,9 +1035,9 @@
            </spacer>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="lyt_horizontal_3_10">
+           <layout class="QHBoxLayout" name="lyt_horizontal_3_9">
             <item>
-             <spacer name="spacer_horizontal_10">
+             <spacer name="spacer_horizontal_9">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
