@@ -59,3 +59,7 @@ class ControladorGeneradorNumeros:
             semilla = aleatorio
 
         return numeros_generados
+
+    def generador_provisto_por_lenguaje(self, cantidad):
+
+        return []

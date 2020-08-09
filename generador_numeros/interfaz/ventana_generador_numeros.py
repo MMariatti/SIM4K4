@@ -29,11 +29,13 @@ class VentanaGeneradorNumeros(QMainWindow):
 		self.txt_c.setValidator(validador_decimales)
 		self.txt_m.setValidator(validador_decimales)
 		self.txt_cantidad_numeros.setValidator(validador_enteros)
+		self.txt_cantidad_intervalos.setValidator(validador_enteros)
 
 		# Conecto los botones con los eventos
 		self.cmb_metodo_generacion.currentIndexChanged.connect(self.accion_seleccionar_metodo)
-		self.btn_limpiar_generar_numeros.clicked.connect(self.accion_limpiar_interfaz)
+		self.btn_limpiar_generar_numeros.clicked.connect(self.accion_limpiar_interfaz_generar_numeros)
 		self.btn_generar_numeros.clicked.connect(self.accion_generar_numeros)
+		self.btn_limpiar_prueba_frecuencia.clicked.connect(self.accion_limpiar_interfaz_prueba_frecuencia)
 		self.btn_prueba_frecuencia.clicked.connect(self.accion_prueba_frecuencia)
 
 	""" Acciones """
@@ -43,15 +45,30 @@ class VentanaGeneradorNumeros(QMainWindow):
 		# Activo o desactivo input de constante c dependiendo del metodo elegido
 		id_metodo = self.cmb_metodo_generacion.itemData(self.cmb_metodo_generacion.currentIndex())
 		if id_metodo == 0:
+			self.txt_semilla.setEnabled(True)
+			self.txt_a.setEnabled(True)
 			self.txt_c.setEnabled(True)
-		else:
+			self.txt_m.setEnabled(True)
+		elif id_metodo == 1:
+			self.txt_semilla.setEnabled(True)
+			self.txt_a.setEnabled(True)
 			self.txt_c.clear()
 			self.txt_c.setEnabled(False)
+			self.txt_m.setEnabled(True)
+		else:
+			self.txt_semilla.clear()
+			self.txt_semilla.setEnabled(False)
+			self.txt_a.clear()
+			self.txt_a.setEnabled(False)
+			self.txt_c.clear()
+			self.txt_c.setEnabled(False)
+			self.txt_m.clear()
+			self.txt_m.setEnabled(False)
 
-	def accion_limpiar_interfaz(self):
+	def accion_limpiar_interfaz_generar_numeros(self):
 
-		# Llamo a metodo limpiar interfaz
-		self.limpiar_interfaz()
+		# Llamo a metodo limpiar interfaz de generar numeros
+		self.limpiar_interfaz_generar_numeros()
 
 	def accion_generar_numeros(self):
 
@@ -59,33 +76,39 @@ class VentanaGeneradorNumeros(QMainWindow):
 		id_metodo = self.cmb_metodo_generacion.itemData(self.cmb_metodo_generacion.currentIndex())
 
 		# Obtengo y valido parametros dependiendo del metodo
-		semilla = self.txt_semilla.text()
-		if semilla == "" or float(semilla) < 0:
-			self.mostrar_mensaje_error("Error", "La semilla tiene que ser mayor o igual a cero")
-			return
-		a = self.txt_a.text()
-		if a == "" or float(a) <= 0:
-			self.mostrar_mensaje_error("Error", "La constante \"a\" tiene que ser mayor a cero")
-			return
+		semilla = None
+		a = None
 		c = None
+		m = None
+		if id_metodo == 0 or id_metodo == 1:
+			semilla = self.txt_semilla.text()
+			if semilla == "" or float(semilla) < 0:
+				self.mostrar_mensaje_error("Error", "La semilla tiene que ser mayor o igual a cero")
+				return
+			a = self.txt_a.text()
+			if a == "" or float(a) <= 0:
+				self.mostrar_mensaje_error("Error", "La constante \"a\" tiene que ser mayor a cero")
+				return
 		if id_metodo == 0:
 			c = self.txt_c.text()
 			if c == "" or float(c) <= 0:
 				self.mostrar_mensaje_error("Error", "La constante \"c\" tiene que ser mayor a cero")
 				return
-		m = self.txt_m.text()
-		if m == "" or float(m) <= 0:
-			self.mostrar_mensaje_error("Error", "La constante \"m\" tiene que ser mayor a cero")
-			return
-		if float(semilla) >= float(m):
-			self.mostrar_mensaje_error("Error", "La semilla tiene que ser menor a la constante \"m\"")
-			return
-		if float(a) >= float(m):
-			self.mostrar_mensaje_error("Error", "La constante \"a\" tiene que ser menor a la constante \"m\"")
-			return
-		if c is not None and float(c) >= float(m):
-			self.mostrar_mensaje_error("Error", "La constante \"c\" tiene que ser menor a la constante \"m\"")
-			return
+		if id_metodo == 0 or id_metodo == 1:
+			m = self.txt_m.text()
+			if m == "" or float(m) <= 0:
+				self.mostrar_mensaje_error("Error", "La constante \"m\" tiene que ser mayor a cero")
+				return
+			if float(semilla) >= float(m):
+				self.mostrar_mensaje_error("Error", "La semilla tiene que ser menor a la constante \"m\"")
+				return
+			if float(a) >= float(m):
+				self.mostrar_mensaje_error("Error", "La constante \"a\" tiene que ser menor a la constante \"m\"")
+				return
+			if id_metodo == 0:
+				if float(c) >= float(m):
+					self.mostrar_mensaje_error("Error", "La constante \"c\" tiene que ser menor a la constante \"m\"")
+					return
 		cantidad_numeros = self.txt_cantidad_numeros.text()
 		if cantidad_numeros == "" or int(cantidad_numeros) <= 0:
 			self.mostrar_mensaje_error("Error", "La cantidad de números tiene que ser mayor a cero")
@@ -94,11 +117,19 @@ class VentanaGeneradorNumeros(QMainWindow):
 		# Genero numeros aleatorios dependiendo del metodo seleccionado
 		if id_metodo == 0:
 			self.numeros_aleatorios = self.controlador.generador_congruente_mixo(cantidad_numeros, semilla, a, c, m)
-		else:
-			self.numeros_aleatorios = self.controlador.generador_congruente_multiplicativo(cantidad_numeros, semilla, a, m)
+		elif id_metodo == 1:
+			self.numeros_aleatorios = self.controlador.generador_congruente_multiplicativo(cantidad_numeros, semilla,
+																						   a, m)
+		elif id_metodo == 2:
+			self.numeros_aleatorios = self.controlador.generador_provisto_por_lenguaje(cantidad_numeros)
 
 		# Cargo tabla
 		self.cargar_tabla_numeros_aleatorios()
+
+	def accion_limpiar_interfaz_prueba_frecuencia(self):
+
+		# Llamo a metodo limpiar interfaz de prueba frecuencia
+		self.limpiar_interfaz_prueba_frecuencia()
 
 	def accion_prueba_frecuencia(self):
 		pass
@@ -111,12 +142,13 @@ class VentanaGeneradorNumeros(QMainWindow):
 		self.cmb_metodo_generacion.clear()
 		self.cmb_metodo_generacion.addItem("Método congruente mixto", 0)
 		self.cmb_metodo_generacion.addItem("Método congruente multiplicativo", 1)
+		self.cmb_metodo_generacion.addItem("Método provisto por el lenguaje", 2)
 
 		# Preparo tabla de numeros generados
 		self.grid_numeros_generados.setColumnCount(4)
 		self.grid_numeros_generados.setHorizontalHeaderLabels(["N° de orden", "Semilla", "Aleatorio", "A. Decimal"])
 
-	def limpiar_interfaz(self):
+	def limpiar_interfaz_generar_numeros(self):
 
 		# Limpio txts
 		self.txt_semilla.clear()
@@ -132,6 +164,12 @@ class VentanaGeneradorNumeros(QMainWindow):
 		self.grid_numeros_generados.clearSelection()
 		self.grid_numeros_generados.setCurrentCell(-1, -1)
 		self.grid_numeros_generados.setRowCount(0)
+
+	def limpiar_interfaz_prueba_frecuencia(self):
+
+		# Limpio txts
+		self.txt_alfa.clear()
+		self.txt_cantidad_intervalos.clear()
 
 	def mostrar_mensaje_error(self, titulo, mensaje):
 
@@ -159,4 +197,5 @@ class VentanaGeneradorNumeros(QMainWindow):
 	# Evento show
 	def showEvent(self, QShowEvent):
 		self.preparar_interfaz()
-		self.limpiar_interfaz()
+		self.limpiar_interfaz_generar_numeros()
+		self.limpiar_interfaz_prueba_frecuencia()
