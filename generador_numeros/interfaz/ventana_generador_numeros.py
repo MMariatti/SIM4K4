@@ -18,7 +18,7 @@ class VentanaGeneradorNumeros(QMainWindow):
 	def __init__(self):
 		# Genero ventana a partir de ui y creo controlador
 		QMainWindow.__init__(self)
-		uic.loadUi(Ruta.generar_ruta("ventana_generador_numeros.ui"), self)
+		uic.loadUi(Ruta.generar_ruta("interfaz/ventana_generador_numeros.ui"), self)
 		self.controlador = ControladorGeneradorNumeros()
 
 		# Agrego validadores a los campos
@@ -32,7 +32,7 @@ class VentanaGeneradorNumeros(QMainWindow):
 
 		# Conecto los botones con los eventos
 		self.cmb_metodo_generacion.currentIndexChanged.connect(self.accion_seleccionar_metodo)
-		self.btn_limpiar.clicked.connect(self.accion_limpiar_interfaz)
+		self.btn_limpiar_generar_numeros.clicked.connect(self.accion_limpiar_interfaz)
 		self.btn_generar_numeros.clicked.connect(self.accion_generar_numeros)
 		self.btn_prueba_frecuencia.clicked.connect(self.accion_prueba_frecuencia)
 
