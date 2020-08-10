@@ -116,12 +116,13 @@ class VentanaGeneradorNumeros(QMainWindow):
 
 		# Genero numeros aleatorios dependiendo del metodo seleccionado
 		if id_metodo == 0:
-			self.numeros_aleatorios = self.controlador.generador_congruente_mixo(cantidad_numeros, semilla, a, c, m)
+			self.numeros_aleatorios = self.controlador.generar_numeros_congruente_mixo(cantidad_numeros, semilla, a, c,
+																					   m)
 		elif id_metodo == 1:
-			self.numeros_aleatorios = self.controlador.generador_congruente_multiplicativo(cantidad_numeros, semilla,
-																						   a, m)
+			self.numeros_aleatorios = self.controlador.generar_numeros_congruente_multiplicativo(cantidad_numeros,
+																								 semilla, a, m)
 		elif id_metodo == 2:
-			self.numeros_aleatorios = self.controlador.generador_provisto_por_lenguaje(cantidad_numeros)
+			self.numeros_aleatorios = self.controlador.generar_numeros_provisto_por_lenguaje(cantidad_numeros)
 
 		# Cargo tabla
 		self.cargar_tabla_numeros_aleatorios()
@@ -185,11 +186,30 @@ class VentanaGeneradorNumeros(QMainWindow):
 		self.grid_numeros_generados.setRowCount(len(self.numeros_aleatorios))
 		index = 0
 		for n in self.numeros_aleatorios:
-			self.grid_numeros_generados.setItem(index, 0, QTableWidgetItem(str(n.get("nro_orden"))))
-			self.grid_numeros_generados.setItem(index, 1, QTableWidgetItem(str(n.get("semilla")).replace(".", ",")))
-			self.grid_numeros_generados.setItem(index, 2, QTableWidgetItem(str(n.get("aleatorio")).replace(".", ",")))
-			self.grid_numeros_generados.setItem(index, 3, QTableWidgetItem(str(n.get("aleatorio_decimal"))
-																		   .replace(".", ",")))
+
+			# Obtengo datos en formato conveniente
+			nro_orden = str(n.get("nro_orden"))
+			semilla = n.get("semilla")
+			if semilla is not None:
+				if int(semilla) == semilla:
+					semilla = int(semilla)
+				semilla = str(semilla).replace(".", ",")
+			else:
+				semilla = ""
+			aleatorio = n.get("aleatorio")
+			if aleatorio is not None:
+				if int(aleatorio) == aleatorio:
+					aleatorio = int(aleatorio)
+				aleatorio = str(aleatorio).replace(".", ",")
+			else:
+				aleatorio = ""
+			aleatorio_decimal = str(n.get("aleatorio_decimal")).replace(".", ",")
+
+			# Agrego fila a tabla
+			self.grid_numeros_generados.setItem(index, 0, QTableWidgetItem(nro_orden))
+			self.grid_numeros_generados.setItem(index, 1, QTableWidgetItem(semilla))
+			self.grid_numeros_generados.setItem(index, 2, QTableWidgetItem(aleatorio))
+			self.grid_numeros_generados.setItem(index, 3, QTableWidgetItem(aleatorio_decimal))
 			index += 1
 
 	""" Eventos """
