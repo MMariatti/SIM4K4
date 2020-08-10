@@ -19,7 +19,10 @@ class ControladorGeneradorNumeros:
 
         # Genero lista de numeros aleatorios
         for i in range(0, cantidad):
-            aleatorio = round((a * semilla + c) % m, 4)
+            if i == 0:
+                aleatorio = round(semilla % m, 4)
+            else:
+                aleatorio = round((a * semilla + c) % m, 4)
             aleatorio_decimal = round(aleatorio / m, 4)
             numeros_generados.append({
                 "nro_orden": i + 1,
@@ -44,7 +47,10 @@ class ControladorGeneradorNumeros:
 
         # Genero lista de numeros aleatorios
         for i in range(0, cantidad):
-            aleatorio = round((a * semilla) % m, 4)
+            if i == 0:
+                aleatorio = round(semilla % m, 4)
+            else:
+                aleatorio = round((a * semilla) % m, 4)
             aleatorio_decimal = round(aleatorio / m, 4)
             numeros_generados.append({
                 "nro_orden": i + 1,
