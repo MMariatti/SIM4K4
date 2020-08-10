@@ -1,9 +1,6 @@
 from random import uniform
-
-from bokeh.io import output_file, show
-from bokeh.models import ColumnDataSource, FactorRange
-from bokeh.plotting import figure
-from bokeh.transform import factor_cmap
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 class ControladorGeneradorNumeros:
@@ -108,29 +105,34 @@ class ControladorGeneradorNumeros:
                 if intervalo.get("minimo") <= numero_aleatorio.get("aleatorio_decimal") < intervalo.get("maximo"):
                     frecuencias_x_intervalo[intervalo["media"]] += 1
 
-        # Creo datasets para grafico
-        frecuencias = ["Observada", "Esperada"]
-        medias = [str(intervalo.get("media")).replace(".", ",") for intervalo in intervalos]
+        # Genero datasets para grafico
         frecuencia_esperada = round(len(numeros_aleatorios) / cantidad_intervalos, 4)
-        datos = {
-            "medias": medias,
-            "Observada": list(frecuencias_x_intervalo.values()),
-            "Esperada": [frecuencia_esperada] * len(intervalos)
-        }
+        if frecuencia_esperada == int(frecuencia_esperada):
+            frecuencia_esperada = int(frecuencia_esperada)
+        medias = [str(intervalo.get("media")).replace(".", ",") for intervalo in intervalos]
+        frecuencias_obsevadas = list(frecuencias_x_intervalo.values())
+        frecuencias_esperadas = [frecuencia_esperada] * len(intervalos)
 
-        # Genero grafico
-        palette = ["#c9d9d3", "#718dbf", "#e84d60"]
-        x = [(media, frecuencia) for media in medias for frecuencia in frecuencias]
-        counts = sum(zip(datos["Observada"], datos["Esperada"]), ())
-        source = ColumnDataSource(data=dict(x=x, counts=counts))
-        p = figure(x_range=FactorRange(*x), plot_height=350, title="Frecuencias observadas y esperadas",
-                   toolbar_location=None, tools="")
-        p.vbar(x="x", top="counts", width=0.9, source=source, line_color="white",
-               fill_color=factor_cmap("x", palette=palette, factors=frecuencias, start=1, end=2))
-        p.y_range.start = 0
-        p.x_range.range_padding = 0.1
-        p.xaxis.major_label_orientation = 1
-        p.xgrid.grid_line_color = None
-        show(p)
+        # Creo grafico
+        x = np.arange(len(medias))
+        width = 0.35
+        fig, ax = plt.subplots()
+        rects1 = ax.bar(x - width / 2, frecuencias_obsevadas, width, label="Observadas")
+        rects2 = ax.bar(x + width / 2, frecuencias_esperadas, width, label="Esperadas")
 
+        ax.set_ylabel("Cantidad")
+        ax.set_title("Frecuencias esperadas y observadas")
+        ax.set_xticks(x)
+        ax.set_xticklabels(medias)
+        ax.legend()
 
+        for rect in rects1:
+            height = rect.get_height()
+            ax.annotate("{}".format(height), xy=(rect.get_x() + rect.get_width() / 2, height), xytext=(0, 3),
+                        textcoords="offset points", ha="center", va="bottom")
+        for rect in rects2:
+            height = rect.get_height()
+            ax.annotate("{}".format(height), xy=(rect.get_x() + rect.get_width() / 2, height), xytext=(0, 3),
+                        textcoords="offset points", ha="center", va="bottom")
+        fig.tight_layout()
+        plt.show()
