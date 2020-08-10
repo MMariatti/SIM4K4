@@ -11,7 +11,7 @@ class VentanaGeneradorNumeros(QMainWindow):
 	""" Atributos """
 
 	controlador = None
-	numeros_aleatorios = None
+	numeros_aleatorios = []
 
 	""" Constructor """
 
@@ -66,6 +66,9 @@ class VentanaGeneradorNumeros(QMainWindow):
 			self.txt_m.setEnabled(False)
 
 	def accion_limpiar_interfaz_generar_numeros(self):
+
+		# Limpio lista de numeros aleatorioz
+		self.numeros_aleatorios = []
 
 		# Llamo a metodo limpiar interfaz de generar numeros
 		self.limpiar_interfaz_generar_numeros()
@@ -133,7 +136,19 @@ class VentanaGeneradorNumeros(QMainWindow):
 		self.limpiar_interfaz_prueba_frecuencia()
 
 	def accion_prueba_frecuencia(self):
-		pass
+
+		# Valido que se hayan generado numeros aleatorios con anterioridad
+		if len(self.numeros_aleatorios) == 0:
+			self.mostrar_mensaje_error("Error", "Primero debe generar los números aleatorios")
+			return
+
+		# Obtengo y valido parametros
+		cantidad_intervalos = self.txt_cantidad_intervalos.text()
+		if cantidad_intervalos == "" or int(cantidad_intervalos) <= 0:
+			self.mostrar_mensaje_error("Error", "La cantidad de intervalos tiene que ser mayor a cero")
+			return
+
+		print(self.controlador.calcular_intervalos(cantidad_intervalos))
 
 	""" Metodos """
 

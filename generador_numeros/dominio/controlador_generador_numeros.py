@@ -20,7 +20,7 @@ class ControladorGeneradorNumeros:
             aleatorio = round((a * semilla + c) % m, 4)
             aleatorio_decimal = round(aleatorio / m, 4)
             numeros_generados.append({
-                "nro_orden": i+1,
+                "nro_orden": i + 1,
                 "semilla": semilla,
                 "aleatorio": aleatorio,
                 "aleatorio_decimal": aleatorio_decimal
@@ -72,34 +72,28 @@ class ControladorGeneradorNumeros:
 
         return numeros_generados
 
-    """
     def calcular_intervalos(self, cantidad):
+
+        # Convierto tipos de datos
+        cantidad = int(cantidad)
 
         # Inicializo datos
         min = 0
         max = 1
-        paso = max - min / cantidad
+        paso = (max - min) / cantidad
         intervalos = []
-        media = []
 
         # Genero lista de intervalos
         for i in range(0, cantidad):
+            min_intervalo = round(min, 4)
+            max_intervalo = round(min_intervalo + paso, 4)
+            media_intervalo = round(((min_intervalo + max_intervalo) / 2), 4)
+            intervalos.append({
+                "nro_intervalo": i + 1,
+                "minimo": min_intervalo,
+                "maximo": max_intervalo,
+                "media": media_intervalo,
+            })
+            min = max_intervalo
 
-
-        # Genero lista con intervalos
-        while i < cantidad_Intervalos :
-        # el array de intervalos, termina siendo una matriz, ya que en la primer columna se guarda el valor de piso del 
-        intevalo y en la segunda se guarda el valor de techo del intervalo
-            if i == 0:
-                intervalos.append([round(minimo,4),round(minimo + paso, 4)] )
-            else:
-                ultimoMinimo = round(intervalos[i-1][1],4)
-                intervalos.append([ultimoMinimo,round(ultimoMinimo+paso,4)])
-
-            i=+1
-
-        for i in intervalos:
-            media.append(round((i[0] + i[1]) / 2, 4))
-
-        return intervalos, media
-    """
+        return intervalos
