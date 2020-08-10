@@ -22,8 +22,8 @@ class VentanaGeneradorNumeros(QMainWindow):
 		self.controlador = ControladorGeneradorNumeros()
 
 		# Agrego validadores a los campos
-		validador_decimales = ValidadorDecimales(8, 4)
-		validador_enteros = ValidadorEnteros(8)
+		validador_decimales = ValidadorDecimales(10, 4)
+		validador_enteros = ValidadorEnteros(10)
 		self.txt_semilla.setValidator(validador_decimales)
 		self.txt_a.setValidator(validador_decimales)
 		self.txt_c.setValidator(validador_decimales)
