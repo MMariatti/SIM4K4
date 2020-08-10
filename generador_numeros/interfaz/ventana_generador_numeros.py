@@ -86,35 +86,35 @@ class VentanaGeneradorNumeros(QMainWindow):
 		if id_metodo == 0 or id_metodo == 1:
 			semilla = self.txt_semilla.text()
 			if semilla == "" or float(semilla.replace(",", ".")) < 0:
-				self.mostrar_mensaje_error("Error", "La semilla tiene que ser mayor o igual a cero")
+				self.mostrar_mensaje("Error", "La semilla tiene que ser mayor o igual a cero")
 				return
 			a = self.txt_a.text()
 			if a == "" or float(a.replace(",", ".")) <= 0:
-				self.mostrar_mensaje_error("Error", "La constante \"a\" tiene que ser mayor a cero")
+				self.mostrar_mensaje("Error", "La constante \"a\" tiene que ser mayor a cero")
 				return
 		if id_metodo == 0:
 			c = self.txt_c.text()
 			if c == "" or float(c.replace(",", ".")) <= 0:
-				self.mostrar_mensaje_error("Error", "La constante \"c\" tiene que ser mayor a cero")
+				self.mostrar_mensaje("Error", "La constante \"c\" tiene que ser mayor a cero")
 				return
 		if id_metodo == 0 or id_metodo == 1:
 			m = self.txt_m.text()
 			if m == "" or float(m.replace(",", ".")) <= 0:
-				self.mostrar_mensaje_error("Error", "La constante \"m\" tiene que ser mayor a cero")
+				self.mostrar_mensaje("Error", "La constante \"m\" tiene que ser mayor a cero")
 				return
 			if float(semilla.replace(",", ".")) >= float(m.replace(",", ".")):
-				self.mostrar_mensaje_error("Error", "La semilla tiene que ser menor a la constante \"m\"")
+				self.mostrar_mensaje("Error", "La semilla tiene que ser menor a la constante \"m\"")
 				return
 			if float(a.replace(",", ".")) >= float(m.replace(",", ".")):
-				self.mostrar_mensaje_error("Error", "La constante \"a\" tiene que ser menor a la constante \"m\"")
+				self.mostrar_mensaje("Error", "La constante \"a\" tiene que ser menor a la constante \"m\"")
 				return
 			if id_metodo == 0:
 				if float(c.replace(",", ".")) >= float(m.replace(",", ".")):
-					self.mostrar_mensaje_error("Error", "La constante \"c\" tiene que ser menor a la constante \"m\"")
+					self.mostrar_mensaje("Error", "La constante \"c\" tiene que ser menor a la constante \"m\"")
 					return
 		cantidad_numeros = self.txt_cantidad_numeros.text()
 		if cantidad_numeros == "" or int(cantidad_numeros) <= 0:
-			self.mostrar_mensaje_error("Error", "La cantidad de números tiene que ser mayor a cero")
+			self.mostrar_mensaje("Error", "La cantidad de números tiene que ser mayor a cero")
 			return
 
 		# Genero numeros aleatorios dependiendo del metodo seleccionado
@@ -139,17 +139,26 @@ class VentanaGeneradorNumeros(QMainWindow):
 
 		# Valido que se hayan generado numeros aleatorios con anterioridad
 		if len(self.numeros_aleatorios) == 0:
-			self.mostrar_mensaje_error("Error", "Primero debe generar los números aleatorios")
+			self.mostrar_mensaje("Error", "Primero debe generar los números aleatorios")
 			return
 
 		# Obtengo y valido parametros
 		cantidad_intervalos = self.txt_cantidad_intervalos.text()
 		if cantidad_intervalos == "" or int(cantidad_intervalos) <= 0:
-			self.mostrar_mensaje_error("Error", "La cantidad de intervalos tiene que ser mayor a cero")
+			self.mostrar_mensaje("Error", "La cantidad de intervalos tiene que ser mayor a cero")
 			return
 
+		# Obtengo listas de medias, frecuencias observadas y frecuencias esperadas
+		medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.numeros_aleatorios,
+																							cantidad_intervalos)
+
+		# Realizo prueba de chi cuadrado y muestro resultados
+		chi_cuadrado = self.controlador.prueba_chicuadrado(observadas, esperadas, len(medias))
+		self.mostrar_mensaje("Valor obtenido", "El valor de Chi cuadredo obtenido es %s"
+							 % str(chi_cuadrado).replace(".", ","))
+
 		# Muestro grafico de frecuencias
-		self.controlador.generar_grafico_frecuencia(self.numeros_aleatorios, cantidad_intervalos)
+		self.controlador.generar_grafico_frecuencia(medias, observadas, esperadas)
 
 	""" Metodos """
 
@@ -188,7 +197,7 @@ class VentanaGeneradorNumeros(QMainWindow):
 		self.txt_alfa.clear()
 		self.txt_cantidad_intervalos.clear()
 
-	def mostrar_mensaje_error(self, titulo, mensaje):
+	def mostrar_mensaje(self, titulo, mensaje):
 
 		# Muestro mensaje
 		box = QMessageBox()

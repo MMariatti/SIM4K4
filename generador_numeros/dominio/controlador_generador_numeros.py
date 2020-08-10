@@ -1,4 +1,5 @@
 from random import uniform
+from scipy.stats.mstats import chisquare
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -74,7 +75,7 @@ class ControladorGeneradorNumeros:
 
         return numeros_generados
 
-    def generar_grafico_frecuencia(self, numeros_aleatorios, cantidad_intervalos):
+    def calcular_frecuencias_por_intervalo(self, numeros_aleatorios, cantidad_intervalos):
 
         # Convierto tipos de datos
         cantidad_intervalos = int(cantidad_intervalos)
@@ -105,7 +106,7 @@ class ControladorGeneradorNumeros:
                 if intervalo.get("minimo") <= numero_aleatorio.get("aleatorio_decimal") < intervalo.get("maximo"):
                     frecuencias_x_intervalo[intervalo["media"]] += 1
 
-        # Genero datasets para grafico
+        # Genero listas de medias, frecuencias observadas y esperadas a partir de datos anteriores
         frecuencia_esperada = round(len(numeros_aleatorios) / cantidad_intervalos, 4)
         if frecuencia_esperada == int(frecuencia_esperada):
             frecuencia_esperada = int(frecuencia_esperada)
@@ -113,11 +114,23 @@ class ControladorGeneradorNumeros:
         frecuencias_obsevadas = list(frecuencias_x_intervalo.values())
         frecuencias_esperadas = [frecuencia_esperada] * len(intervalos)
 
+        return medias, frecuencias_obsevadas, frecuencias_esperadas
+
+    def prueba_chicuadrado(self, frecuecias_observadas, frecuencias_esperadas, cantidad_intervalos):
+
+        # La funcion chisquare devuele en el primer campo el valor de chi cuadrado y en el segundo de p
+        grados_libertad = cantidad_intervalos - 1
+        chi_cuadrado = chisquare(f_obs=frecuecias_observadas, f_exp=frecuencias_esperadas, ddof=grados_libertad)[0]
+
+        return chi_cuadrado
+
+    def generar_grafico_frecuencia(self, medias, frecuencias_observadas, frecuencias_esperadas):
+
         # Creo grafico
         x = np.arange(len(medias))
         width = 0.35
         fig, ax = plt.subplots()
-        rects1 = ax.bar(x - width / 2, frecuencias_obsevadas, width, label="Observadas")
+        rects1 = ax.bar(x - width / 2, frecuencias_observadas, width, label="Observadas")
         rects2 = ax.bar(x + width / 2, frecuencias_esperadas, width, label="Esperadas")
 
         ax.set_ylabel("Cantidad")
