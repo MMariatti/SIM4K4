@@ -148,7 +148,8 @@ class VentanaGeneradorNumeros(QMainWindow):
 			self.mostrar_mensaje_error("Error", "La cantidad de intervalos tiene que ser mayor a cero")
 			return
 
-		print(self.controlador.calcular_intervalos(cantidad_intervalos))
+		# Muestro grafico de frecuencias
+		self.controlador.generar_grafico_frecuencia(self.numeros_aleatorios, cantidad_intervalos)
 
 	""" Metodos """
 
