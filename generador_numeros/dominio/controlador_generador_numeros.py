@@ -1,5 +1,4 @@
 from random import uniform
-from scipy.stats.mstats import chisquare
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -119,8 +118,9 @@ class ControladorGeneradorNumeros:
     def prueba_chicuadrado(self, frecuecias_observadas, frecuencias_esperadas, cantidad_intervalos):
 
         # La funcion chisquare devuele en el primer campo el valor de chi cuadrado y en el segundo de p
-        grados_libertad = cantidad_intervalos - 1
-        chi_cuadrado = chisquare(f_obs=frecuecias_observadas, f_exp=frecuencias_esperadas, ddof=grados_libertad)[0]
+        for i in len(frecuencias_esperadas):
+            chi_cuadrado = ((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i])
+            i += 1
 
         return chi_cuadrado
 
