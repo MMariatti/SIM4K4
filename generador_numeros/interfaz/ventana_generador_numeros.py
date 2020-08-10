@@ -153,7 +153,7 @@ class VentanaGeneradorNumeros(QMainWindow):
 																							cantidad_intervalos)
 
 		# Realizo prueba de chi cuadrado y muestro resultados
-		chi_cuadrado = self.controlador.prueba_chicuadrado(observadas, esperadas, len(medias))
+		chi_cuadrado = self.controlador.prueba_chicuadrado(observadas, esperadas)
 		self.mostrar_mensaje("Valor obtenido", "El valor de Chi cuadredo obtenido es %s"
 							 % str(chi_cuadrado).replace(".", ","))
 
@@ -194,7 +194,6 @@ class VentanaGeneradorNumeros(QMainWindow):
 	def limpiar_interfaz_prueba_frecuencia(self):
 
 		# Limpio txts
-		self.txt_alfa.clear()
 		self.txt_cantidad_intervalos.clear()
 
 	def mostrar_mensaje(self, titulo, mensaje):

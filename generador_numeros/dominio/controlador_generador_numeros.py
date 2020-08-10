@@ -118,15 +118,15 @@ class ControladorGeneradorNumeros:
     def prueba_chicuadrado(self, frecuencias_observadas, frecuencias_esperadas):
 
         # Inicializo datos
-        lista_aux = [] * len(frecuencias_observadas)
+        valores = [] * len(frecuencias_observadas)
         chi_cuadrado = 0
 
         # La funcion chisquare devuele en el primer campo el valor de chi cuadrado y en el segundo de p
         for i in range(len(frecuencias_esperadas)):
-            aux = ((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i]
-            lista_aux.append(aux)
-        for acumulando in lista_aux:
-            chi_cuadrado += acumulando
+            aux = round(((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i], 4)
+            valores.append(aux)
+        for valor in valores:
+            chi_cuadrado += valor
 
         return chi_cuadrado
 
