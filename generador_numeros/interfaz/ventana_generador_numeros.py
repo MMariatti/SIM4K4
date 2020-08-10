@@ -82,31 +82,31 @@ class VentanaGeneradorNumeros(QMainWindow):
 		m = None
 		if id_metodo == 0 or id_metodo == 1:
 			semilla = self.txt_semilla.text()
-			if semilla == "" or float(semilla) < 0:
+			if semilla == "" or float(semilla.replace(",", ".")) < 0:
 				self.mostrar_mensaje_error("Error", "La semilla tiene que ser mayor o igual a cero")
 				return
 			a = self.txt_a.text()
-			if a == "" or float(a) <= 0:
+			if a == "" or float(a.replace(",", ".")) <= 0:
 				self.mostrar_mensaje_error("Error", "La constante \"a\" tiene que ser mayor a cero")
 				return
 		if id_metodo == 0:
 			c = self.txt_c.text()
-			if c == "" or float(c) <= 0:
+			if c == "" or float(c.replace(",", ".")) <= 0:
 				self.mostrar_mensaje_error("Error", "La constante \"c\" tiene que ser mayor a cero")
 				return
 		if id_metodo == 0 or id_metodo == 1:
 			m = self.txt_m.text()
-			if m == "" or float(m) <= 0:
+			if m == "" or float(m.replace(",", ".")) <= 0:
 				self.mostrar_mensaje_error("Error", "La constante \"m\" tiene que ser mayor a cero")
 				return
-			if float(semilla) >= float(m):
+			if float(semilla.replace(",", ".")) >= float(m.replace(",", ".")):
 				self.mostrar_mensaje_error("Error", "La semilla tiene que ser menor a la constante \"m\"")
 				return
-			if float(a) >= float(m):
+			if float(a.replace(",", ".")) >= float(m.replace(",", ".")):
 				self.mostrar_mensaje_error("Error", "La constante \"a\" tiene que ser menor a la constante \"m\"")
 				return
 			if id_metodo == 0:
-				if float(c) >= float(m):
+				if float(c.replace(",", ".")) >= float(m.replace(",", ".")):
 					self.mostrar_mensaje_error("Error", "La constante \"c\" tiene que ser menor a la constante \"m\"")
 					return
 		cantidad_numeros = self.txt_cantidad_numeros.text()
@@ -116,11 +116,11 @@ class VentanaGeneradorNumeros(QMainWindow):
 
 		# Genero numeros aleatorios dependiendo del metodo seleccionado
 		if id_metodo == 0:
-			self.numeros_aleatorios = self.controlador.generar_numeros_congruente_mixo(cantidad_numeros, semilla, a, c,
-																					   m)
+			self.numeros_aleatorios = self.controlador.generar_numeros_congruente_mixo(
+				cantidad_numeros, semilla, a, c, m)
 		elif id_metodo == 1:
-			self.numeros_aleatorios = self.controlador.generar_numeros_congruente_multiplicativo(cantidad_numeros,
-																								 semilla, a, m)
+			self.numeros_aleatorios = self.controlador.generar_numeros_congruente_multiplicativo(
+				cantidad_numeros, semilla, a, m)
 		elif id_metodo == 2:
 			self.numeros_aleatorios = self.controlador.generar_numeros_provisto_por_lenguaje(cantidad_numeros)
 

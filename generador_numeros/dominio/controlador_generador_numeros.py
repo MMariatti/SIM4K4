@@ -1,4 +1,3 @@
-from decimal import Decimal
 from random import uniform
 
 
@@ -6,23 +5,20 @@ class ControladorGeneradorNumeros:
 
     def generar_numeros_congruente_mixo(self, cantidad, semilla, a, c, m):
 
-        # Establezco constante para manejo de presicion de decimales
-        FOURPLACES = Decimal(10) ** -4
-
-        # Convierto parametros a tipos convenientes
+        # Convierto tipos de datos
         cantidad = int(cantidad)
-        semilla = Decimal(semilla).quantize(FOURPLACES)
-        a = Decimal(a).quantize(FOURPLACES)
-        c = Decimal(c).quantize(FOURPLACES)
-        m = Decimal(m).quantize(FOURPLACES)
+        semilla = round(float(semilla.replace(",", ".")), 4)
+        a = round(float(a.replace(",", ".")), 4)
+        c = round(float(c.replace(",", ".")), 4)
+        m = round(float(m.replace(",", ".")), 4)
 
         # Inicializo datos
         numeros_generados = []
 
         # Genero lista de numeros aleatorios
         for i in range(0, cantidad):
-            aleatorio = Decimal((a * semilla + c) % m).quantize(FOURPLACES)
-            aleatorio_decimal = Decimal(aleatorio / m).quantize(FOURPLACES)
+            aleatorio = round((a * semilla + c) % m, 4)
+            aleatorio_decimal = round(aleatorio / m, 4)
             numeros_generados.append({
                 "nro_orden": i+1,
                 "semilla": semilla,
@@ -35,22 +31,19 @@ class ControladorGeneradorNumeros:
 
     def generar_numeros_congruente_multiplicativo(self, cantidad, semilla, a, m):
 
-        # Establezco constante para manejo de presicion de decimales
-        FOURPLACES = Decimal(10) ** -4
-
-        # Convierto parametros a tipos mas convenientes
+        # Convierto tipos de datos
         cantidad = int(cantidad)
-        semilla = Decimal(semilla).quantize(FOURPLACES)
-        a = Decimal(a).quantize(FOURPLACES)
-        m = Decimal(m).quantize(FOURPLACES)
+        semilla = round(float(semilla.replace(",", ".")), 4)
+        a = round(float(a.replace(",", ".")), 4)
+        m = round(float(m.replace(",", ".")), 4)
 
         # Inicializo datos
         numeros_generados = []
 
         # Genero lista de numeros aleatorios
         for i in range(0, cantidad):
-            aleatorio = Decimal((a * semilla) % m).quantize(FOURPLACES)
-            aleatorio_decimal = Decimal(aleatorio / m).quantize(FOURPLACES)
+            aleatorio = round((a * semilla) % m, 4)
+            aleatorio_decimal = round(aleatorio / m, 4)
             numeros_generados.append({
                 "nro_orden": i + 1,
                 "semilla": semilla,
@@ -63,10 +56,7 @@ class ControladorGeneradorNumeros:
 
     def generar_numeros_provisto_por_lenguaje(self, cantidad):
 
-        # Establezco constante para manejo de presicion de decimales
-        FOURPLACES = Decimal(10) ** -4
-
-        # Convierto parametros a tipos mas convenientes
+        # Convierto tipos de datos
         cantidad = int(cantidad)
 
         # Inicializo datos
@@ -74,7 +64,7 @@ class ControladorGeneradorNumeros:
 
         # Genero lista de numeros aleatorios
         for i in range(0, cantidad):
-            aleatorio_decimal = Decimal(uniform(0, 1)).quantize(FOURPLACES)
+            aleatorio_decimal = round(uniform(0, 1), 4)
             numeros_generados.append({
                 "nro_orden": i + 1,
                 "aleatorio_decimal": aleatorio_decimal
@@ -83,15 +73,18 @@ class ControladorGeneradorNumeros:
         return numeros_generados
 
     """
-    def calcular_intervalos(self, cantidad_intervalos):
+    def calcular_intervalos(self, cantidad):
 
         # Inicializo datos
         min = 0
         max = 1
-        paso = max - min / cantidad_intervalos
+        paso = max - min / cantidad
         intervalos = []
         media = []
-        i = 0
+
+        # Genero lista de intervalos
+        for i in range(0, cantidad):
+
 
         # Genero lista con intervalos
         while i < cantidad_Intervalos :
