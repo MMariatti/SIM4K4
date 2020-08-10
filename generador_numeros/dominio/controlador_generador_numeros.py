@@ -27,7 +27,6 @@ class ControladorGeneradorNumeros:
             numeros_generados.append({
                 "nro_orden": i + 1,
                 "semilla": semilla,
-                "aleatorio": aleatorio,
                 "aleatorio_decimal": aleatorio_decimal
             })
             semilla = aleatorio
@@ -55,7 +54,6 @@ class ControladorGeneradorNumeros:
             numeros_generados.append({
                 "nro_orden": i + 1,
                 "semilla": semilla,
-                "aleatorio": aleatorio,
                 "aleatorio_decimal": aleatorio_decimal
             })
             semilla = aleatorio
@@ -132,7 +130,7 @@ class ControladorGeneradorNumeros:
             aux = round(((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i], 4)
             valores.append(aux)
         for valor in valores:
-            chi_cuadrado += valor
+            chi_cuadrado += round(valor, 4)
 
         return chi_cuadrado
 

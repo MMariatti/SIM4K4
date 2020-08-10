@@ -172,7 +172,7 @@ class VentanaGeneradorNumeros(QMainWindow):
 
 		# Preparo tabla de numeros generados
 		self.grid_numeros_generados.setColumnCount(4)
-		self.grid_numeros_generados.setHorizontalHeaderLabels(["N° de orden", "Semilla", "Aleatorio", "A. Decimal"])
+		self.grid_numeros_generados.setHorizontalHeaderLabels(["N° de orden", "Semilla", "Número aleatorio"])
 
 	def limpiar_interfaz_generar_numeros(self):
 
@@ -220,20 +220,12 @@ class VentanaGeneradorNumeros(QMainWindow):
 				semilla = str(semilla).replace(".", ",")
 			else:
 				semilla = ""
-			aleatorio = n.get("aleatorio")
-			if aleatorio is not None:
-				if int(aleatorio) == aleatorio:
-					aleatorio = int(aleatorio)
-				aleatorio = str(aleatorio).replace(".", ",")
-			else:
-				aleatorio = ""
 			aleatorio_decimal = str(n.get("aleatorio_decimal")).replace(".", ",")
 
 			# Agrego fila a tabla
 			self.grid_numeros_generados.setItem(index, 0, QTableWidgetItem(nro_orden))
 			self.grid_numeros_generados.setItem(index, 1, QTableWidgetItem(semilla))
-			self.grid_numeros_generados.setItem(index, 2, QTableWidgetItem(aleatorio))
-			self.grid_numeros_generados.setItem(index, 3, QTableWidgetItem(aleatorio_decimal))
+			self.grid_numeros_generados.setItem(index, 2, QTableWidgetItem(aleatorio_decimal))
 			index += 1
 
 	""" Eventos """
