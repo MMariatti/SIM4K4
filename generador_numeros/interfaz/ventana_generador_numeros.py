@@ -154,7 +154,7 @@ class VentanaGeneradorNumeros(QMainWindow):
 
 		# Realizo prueba de chi cuadrado y muestro resultados
 		chi_cuadrado = self.controlador.prueba_chicuadrado(observadas, esperadas)
-		self.mostrar_mensaje("Valor obtenido", "El valor de Chi cuadredo obtenido es %s"
+		self.mostrar_mensaje("Valor obtenido", "El valor de Chi cuadrado obtenido es %s"
 							 % str(chi_cuadrado).replace(".", ","))
 
 		# Muestro grafico de frecuencias
