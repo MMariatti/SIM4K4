@@ -13,10 +13,7 @@ a = Analysis(['main.py'],
                             'reportlab.graphics.barcode.code93',
                             'reportlab.graphics.barcode.usps',
                             'reportlab.graphics.barcode.usps4s',
-                            'reportlab.graphics.barcode.ecc200datamatrix'
-                            'numpy.random.common',
-                            'numpy.random.bounded_integers'
-                            'numpy.random.entropy'],
+                            'reportlab.graphics.barcode.ecc200datamatrix'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
