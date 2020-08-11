@@ -1,0 +1,5 @@
+*) Se incluye el ejecutable "main.exe" para ejecutar directamente el proyecto
+
+*) En la carpeta "generador_numeros" se encuentra el código fuente del proyecto
+
+*) También incluimos el archivo "requirements.txt" de python con los paquetes necesarios para la creación del entorno virtual capaz de ejecutar el código fuente

@@ -1,4 +1,4 @@
-## Generación de números aleatorios ##
+﻿## SIM 4K4 ##
 
 
 ### Creación del entorno virtual con paquetes necesarios ###
@@ -9,14 +9,18 @@
 
 3. Active el entorno virtual `source venv/bin/activate`
 
-4. Instale los paquetes necesarios `pip install -r requirements.txt`
+4. Ubíquese en la carpeta del trabajo práctico, es decir en *tpx* `cd tpx`
+
+5. Instale los paquetes necesarios para el proyecto en particular `pip install -r requirements.txt`
 
 
 ### Ejecución del proyecto ###
 
 1. Active el entorno virtual `source venv/bin/activate`
 
-2. Ubíquese en la carpeta del proyecto, es decir, en *generador_numeros* `cd generador_numeros`
+2. Ubíquese en la carpeta del trabajo práctico, es decir en *tpx* `cd tpx`
+
+3. Ubíquese en la carpeta del proyecto, es decir, en *nombre_trabajo_practico* `cd *nombre_trabajo_practico* 
 
 4. Ejecute el archivo main.py `python main.py`
 
