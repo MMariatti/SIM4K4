@@ -40,7 +40,7 @@ class VentanaTomaDatos(QMainWindow):
 
     def accion_generar_histograma(self):
 
-        # TODO: Harcodear lista de variables aleatorias para probar
+        # TODO: Harcodeo lista de variables aleatorias para probar
         self.variables_aleatorias = [10, 20, 20, 30, 30, 30, 40, 40, 40, 40, 50, 50, 50, 50, 50, 60, 60, 60, 60, 70, 70,
                                      70, 80, 80, 90]
 
@@ -58,6 +58,7 @@ class VentanaTomaDatos(QMainWindow):
         """
 
         # Obtengo listas de medias y frecuencias
+        # TODO: Harcodeo cantidad de intervalos hasta que se agregue a interfaz
         medias, frecuencias = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias, 10)
 
         # Muestro histograma
