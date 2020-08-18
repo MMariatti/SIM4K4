@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
+from scipy import stats
 import xlrd
 
 
@@ -69,9 +71,10 @@ class ControladorTomaDatos:
         return medias, frecuencias_obsevadas, frecuencias_esperadas
 
     def generar_grafico_frecuencias(self, medias, frecuencias):
+
         sns.set_palette("deep",desat =.6)
-        sns_set_context=(rc={"figure.figsize":(8,4)})
-        plt.hist(frecuencias,medias)
+        sns.set_context(rc={"figure.figsize":(8,4)})
+        plt.hist(frecuencias, medias, edgecolor = 'black',  linewidth=1)
         plt.ylabel('frequencia')
         plt.title('Histograma')
         plt.show()
@@ -89,3 +92,7 @@ class ControladorTomaDatos:
             chi_cuadrado += round(valor, 4)
 
         return chi_cuadrado
+
+        #la distribucion debe ser un string como por ejemplo 'norm', para la normal 
+    def prueba_Ktest(frecuencias_observadas,distribucion)
+        stats.kstest(frecuencias_observadas,distrubicion)
