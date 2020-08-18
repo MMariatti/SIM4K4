@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>540</width>
-    <height>282</height>
+    <width>581</width>
+    <height>343</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>540</width>
-    <height>282</height>
+    <width>581</width>
+    <height>343</height>
    </size>
   </property>
   <property name="palette">
@@ -148,15 +148,6 @@
      <colorrole role="ToolTipText">
       <brush brushstyle="SolidPattern">
        <color alpha="255">
-        <red>0</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </brush>
-     </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="NoBrush">
-       <color alpha="128">
         <red>0</red>
         <green>0</green>
         <blue>0</blue>
@@ -300,15 +291,6 @@
        </color>
       </brush>
      </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="NoBrush">
-       <color alpha="128">
-        <red>0</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </brush>
-     </colorrole>
     </inactive>
     <disabled>
      <colorrole role="WindowText">
@@ -446,15 +428,6 @@
        </color>
       </brush>
      </colorrole>
-     <colorrole role="PlaceholderText">
-      <brush brushstyle="NoBrush">
-       <color alpha="128">
-        <red>0</red>
-        <green>0</green>
-        <blue>0</blue>
-       </color>
-      </brush>
-     </colorrole>
     </disabled>
    </palette>
   </property>
@@ -541,6 +514,12 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="minimumSize">
+           <size>
+            <width>180</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="text">
            <string>Seleccionar archivo</string>
           </property>
@@ -595,7 +574,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>180</width>
             <height>0</height>
            </size>
           </property>
@@ -650,7 +629,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>180</width>
             <height>0</height>
            </size>
           </property>
@@ -705,9 +684,54 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>100</width>
+            <width>180</width>
             <height>0</height>
            </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="lyt_horizontal_1_4">
+        <property name="spacing">
+         <number>5</number>
+        </property>
+        <property name="leftMargin">
+         <number>5</number>
+        </property>
+        <property name="topMargin">
+         <number>3</number>
+        </property>
+        <property name="rightMargin">
+         <number>5</number>
+        </property>
+        <property name="bottomMargin">
+         <number>3</number>
+        </property>
+        <item>
+         <spacer name="spacer_horizontal_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btn_obtener_datos">
+          <property name="minimumSize">
+           <size>
+            <width>180</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Obtener datos</string>
           </property>
          </widget>
         </item>
@@ -730,24 +754,24 @@
        </spacer>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="lyt_horizontal_1_4">
+       <layout class="QHBoxLayout" name="lyt_horizontal_1_5">
         <property name="spacing">
          <number>5</number>
         </property>
         <property name="leftMargin">
-         <number>0</number>
+         <number>5</number>
         </property>
         <property name="topMargin">
          <number>3</number>
         </property>
         <property name="rightMargin">
-         <number>0</number>
+         <number>5</number>
         </property>
         <property name="bottomMargin">
          <number>3</number>
         </property>
         <item>
-         <spacer name="spacer_horizontal_4">
+         <spacer name="spacer_horizontal_5">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
