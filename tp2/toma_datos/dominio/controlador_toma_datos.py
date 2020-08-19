@@ -123,7 +123,6 @@ class ControladorTomaDatos:
 
         pyplot.show()
 
-    """
          
     def prueba_Chi_Cuadrado(self, frecuencias_observadas, frecuencias_esperadas):
         # Inicializo datos
@@ -141,7 +140,7 @@ class ControladorTomaDatos:
 
         #la distribucion debe ser un string como por ejemplo 'norm', para la normal
          
-    def prueba_Ktest(frecuencias_observadas,distribucion)
+    def prueba_Ktest(frecuencias_observadas,distribucion):
         stats.kstest(frecuencias_observadas,distrubicion)
     
-    """
+    

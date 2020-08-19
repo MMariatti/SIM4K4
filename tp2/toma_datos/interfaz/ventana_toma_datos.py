@@ -99,9 +99,26 @@ class VentanaTomaDatos(QMainWindow):
         # Muestro histograma
         self.controlador.generar_histograma(medias, observadas)
 
-    # TODO: No definido
+    
     def accion_prueba_1(self):
-        pass
+
+         # Obtengo y valido parametros
+        cantidad_intervalos = self.txt_cantidad_intervalos.text()
+        if cantidad_intervalos == "" or int(cantidad_intervalos) <= 0:
+            self.mostrar_mensaje("Error", "La cantidad de intervalos tiene que ser mayor a cero")
+            return
+        tipo_distribucion = self.cmb_tipo_distribucion.itemData(self.cmb_tipo_distribucion.currentIndex())
+        if tipo_distribucion == -1:
+            self.mostrar_mensaje("Error", "Debe seleccionar un tipo de distribución")
+            return
+
+        # Obtengo listas de medias, frecuencias observadas y frecuencias esperadas
+        medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
+                                                                                            cantidad_intervalos,
+                                                                                            tipo_distribucion)
+        chi_cuadrado = self.controlador.prueba_Chi_Cuadrado(observadas,esperadas)
+        self.mostrar_mensaje("Valor obtenido", "El valor de Chi cuadrado obtenido es %s"
+                             % str(chi_cuadrado).replace(".", ","))
 
     # TODO: No definido
     def accion_prueba_2(self):
