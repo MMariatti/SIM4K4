@@ -3,6 +3,7 @@ from scipy import stats
 import numpy
 import statistics
 import xlrd
+import random
 
 
 class ControladorTomaDatos:
@@ -88,11 +89,20 @@ class ControladorTomaDatos:
 
         # Genero lista de frecuencias esperada a partir de datos anteriores para distribucion normal
         elif tipo_distribucion == 1:
-            media = round(statistics.mean(variables_aleatorias), 2)
-            desviacion_estandar = round(statistics.stdev(variables_aleatorias), 2)
+            media = statistics.mean(variables_aleatorias)
+            desviacion_estandar = statistics.stdev(variables_aleatorias)
             for intervalo in intervalos:
                 frecuencia_esperada = round((stats.norm(media, desviacion_estandar).cdf(intervalo.get("maximo")) -
                                              stats.norm(media, desviacion_estandar).cdf(intervalo.get("minimo"))) *
+                                            len(variables_aleatorias), 2)
+                frecuencias_esperadas.append(frecuencia_esperada)
+
+        # Genero lista de frecuencias esperada a partir de datos anteriores para distribucion exponencial negativa
+        elif tipo_distribucion == 2:
+            media = statistics.mean(variables_aleatorias)
+            for intervalo in intervalos:
+                frecuencia_esperada = round((stats.expon(media).cdf(intervalo.get("maximo")) -
+                                             stats.expon(media).cdf(intervalo.get("minimo"))) *
                                             len(variables_aleatorias), 2)
                 frecuencias_esperadas.append(frecuencia_esperada)
 
@@ -102,30 +112,15 @@ class ControladorTomaDatos:
 
         return medias, frecuencias_obsevadas, frecuencias_esperadas
 
-    def generar_grafico_frecuencias(self, medias, frecuencias_observadas, frecuencias_esperadas):
+    def generar_histograma(self, medias, frecuencias_observadas):
 
         # Creo grafico
-        x = numpy.arange(len(medias))
-        width = 0.35
-        fig, ax = pyplot.subplots()
-        rects1 = ax.bar(x - width / 2, frecuencias_observadas, width, label="Observadas")
-        rects2 = ax.bar(x + width / 2, frecuencias_esperadas, width, label="Esperadas")
+        y_pos = numpy.arange(len(medias))
+        pyplot.bar(y_pos, frecuencias_observadas, align="center")
+        pyplot.xticks(y_pos, medias)
+        pyplot.ylabel("Frecuencias observadas")
+        pyplot.title("Histograma")
 
-        ax.set_ylabel("Cantidad")
-        ax.set_title("Frecuencias esperadas y observadas")
-        ax.set_xticks(x)
-        ax.set_xticklabels(medias)
-        ax.legend()
-
-        for rect in rects1:
-            height = rect.get_height()
-            ax.annotate("{}".format(height), xy=(rect.get_x() + rect.get_width() / 2, height), xytext=(0, 3),
-                        textcoords="offset points", ha="center", va="bottom")
-        for rect in rects2:
-            height = rect.get_height()
-            ax.annotate("{}".format(height), xy=(rect.get_x() + rect.get_width() / 2, height), xytext=(0, 3),
-                        textcoords="offset points", ha="center", va="bottom")
-        fig.tight_layout()
         pyplot.show()
 
     """

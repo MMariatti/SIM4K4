@@ -91,13 +91,13 @@ class VentanaTomaDatos(QMainWindow):
             self.mostrar_mensaje("Error", "Debe seleccionar un tipo de distribución")
             return
 
-        # Obtengo listas de medias y frecuencias
+        # Obtengo listas de medias, frecuencias observadas y frecuencias esperadas
         medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
                                                                                             cantidad_intervalos,
                                                                                             tipo_distribucion)
 
         # Muestro histograma
-        self.controlador.generar_grafico_frecuencias(medias, observadas, esperadas)
+        self.controlador.generar_histograma(medias, observadas)
 
     # TODO: No definido
     def accion_prueba_1(self):
