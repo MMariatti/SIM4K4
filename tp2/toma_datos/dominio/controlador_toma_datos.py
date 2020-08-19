@@ -131,7 +131,8 @@ class ControladorTomaDatos:
 
         # Calculo valor chi cuadrado
         for i in range(len(frecuencias_esperadas)):
-            aux = ((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i]
+            aux = ((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i] \
+                if frecuencias_esperadas[i] != 0 else 0
             valores.append(aux)
         for valor in valores:
             chi_cuadrado = round(chi_cuadrado + valor, 2)
