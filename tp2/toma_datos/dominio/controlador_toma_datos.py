@@ -122,45 +122,42 @@ class ControladorTomaDatos:
         pyplot.title("Histograma")
 
         pyplot.show()
-
          
-    def prueba_Chi_Cuadrado(self, frecuencias_observadas, frecuencias_esperadas):
+    def prueba_chi_cuadrado(self, frecuencias_observadas, frecuencias_esperadas):
+
         # Inicializo datos
         valores = [] * len(frecuencias_observadas)
         chi_cuadrado = 0
 
+        # Calculo valor chi cuadrado
         for i in range(len(frecuencias_esperadas)):
-            aux = round(((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i], 4)
+            aux = ((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i]
             valores.append(aux)
         for valor in valores:
-            chi_cuadrado += round(valor, 4)
+            chi_cuadrado = round(chi_cuadrado + valor, 2)
 
         return chi_cuadrado
 
-        
-         
-    def prueba_Ktest(frecuencias_observadas):
+    """
+    def prueba_Ktest(self, frecuencias_observadas):
 
-        #Inicializo datos
+        # Inicializo datos
 
         valores_Ordenados = sort(frecuencias_observadas)
         cantidad = len(valores_Ordenados)
         lista_aux = []*cantidad
         
-        #Creo un array intermedio con el valor absoluto de el indice divido la cantidad menos el valor de dicho indice
+        # Creo un array intermedio con el valor absoluto de el indice divido la cantidad menos el valor de dicho indice
         for  i in range(len(valores_Ordenados)):
             aux = abs(float(valores_Ordenados.index(i)/cantidad)-valores_Ordenados[i])
             lista_aux.append(aux)
 
 
-        #Sumo todos los valores de la lista auxiliar en la variable ksTest para obtener el valor contra el que debo comparar en tabla 
+        # Sumo todos los valores de la lista auxiliar en la variable ksTest para obtener el valor contra el que debo comparar en tabla
         for auxiliar in lista_aux:
             ksTest += round(auxiliar,4)
 
         return auxiliar
-
-
-        """
 
         stats.kstest(frecuencias_observadas,distrubicion, alternative = "less")
     

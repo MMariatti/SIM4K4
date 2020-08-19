@@ -33,8 +33,8 @@ class VentanaTomaDatos(QMainWindow):
         self.btn_seleccionar_archivo.clicked.connect(self.accion_seleccionar_archivo)
         self.btn_obtener_datos.clicked.connect(self.accion_obtener_datos)
         self.btn_generar_histograma.clicked.connect(self.accion_generar_histograma)
-        self.btn_prueba_1.clicked.connect(self.accion_prueba_1)  # TODO: No definido
-        self.btn_prueba_1.clicked.connect(self.accion_prueba_2)  # TODO: No definido
+        self.btn_prueba_chi_cuadrado.clicked.connect(self.accion_prueba_chi_cuadrado)
+        self.btn_prueba_2.clicked.connect(self.accion_prueba_2)  # TODO: No definido
 
     """ Acciones """
 
@@ -99,10 +99,9 @@ class VentanaTomaDatos(QMainWindow):
         # Muestro histograma
         self.controlador.generar_histograma(medias, observadas)
 
-    
-    def accion_prueba_1(self):
+    def accion_prueba_chi_cuadrado(self):
 
-         # Obtengo y valido parametros
+        # Obtengo y valido parametros
         cantidad_intervalos = self.txt_cantidad_intervalos.text()
         if cantidad_intervalos == "" or int(cantidad_intervalos) <= 0:
             self.mostrar_mensaje("Error", "La cantidad de intervalos tiene que ser mayor a cero")
@@ -116,7 +115,7 @@ class VentanaTomaDatos(QMainWindow):
         medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
                                                                                             cantidad_intervalos,
                                                                                             tipo_distribucion)
-        chi_cuadrado = self.controlador.prueba_Chi_Cuadrado(observadas,esperadas)
+        chi_cuadrado = self.controlador.prueba_chi_cuadrado(observadas, esperadas)
         self.mostrar_mensaje("Valor obtenido", "El valor de Chi cuadrado obtenido es %s"
                              % str(chi_cuadrado).replace(".", ","))
 

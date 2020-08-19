@@ -966,7 +966,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_prueba_1">
+         <widget class="QPushButton" name="btn_prueba_chi_cuadrado">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -974,7 +974,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Prueba 1</string>
+           <string>Test Chi Cuadrado</string>
           </property>
           <property name="autoDefault">
            <bool>true</bool>
