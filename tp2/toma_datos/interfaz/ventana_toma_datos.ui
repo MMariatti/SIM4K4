@@ -776,6 +776,9 @@
           <property name="text">
            <string>Obtener datos</string>
           </property>
+          <property name="autoDefault">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
        </layout>
@@ -886,7 +889,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QComboBox" name="mb_tipo_distribucion">
+         <widget class="QComboBox" name="cmb_tipo_distribucion">
           <property name="minimumSize">
            <size>
             <width>180</width>
@@ -972,6 +975,9 @@
           </property>
           <property name="text">
            <string>Prueba 1</string>
+          </property>
+          <property name="autoDefault">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
