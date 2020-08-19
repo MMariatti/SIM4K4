@@ -46,20 +46,20 @@ class VentanaTomaDatos(QMainWindow):
 
     def accion_obtener_datos(self):
 
-        # Obtengo y valido datos
+        # Obtengo y valido parametros
         if self.ruta_archivo is None or self.ruta_archivo == "":
             self.mostrar_mensaje("Error", "Debe seleccionar un archivo")
             return
-        columna = int(self.txt_columna.text())
-        if columna == "" or int(columna <= 0):
+        columna = self.txt_columna.text()
+        if columna == "" or int(columna) <= 0:
             self.mostrar_mensaje("Error", "El número de columna de donde tomar los datos debe ser mayor a cero")
             return
-        fila_desde = int(self.txt_fila_desde.text())
-        if fila_desde == "" or int(fila_desde <= 0):
+        fila_desde = self.txt_fila_desde.text()
+        if fila_desde == "" or int(fila_desde) <= 0:
             self.mostrar_mensaje("Error", "El número de fila desde donde tomar los datos debe ser mayor a cero")
             return
-        fila_hasta = int(self.txt_fila_hasta.text())
-        if fila_hasta == ""or int(fila_hasta <= 0):
+        fila_hasta = self.txt_fila_hasta.text()
+        if fila_hasta == ""or int(fila_hasta) <= 0:
             self.mostrar_mensaje("Error", "El número de fila hasta donde tomar los datos debe ser mayor a cero")
             return
 
@@ -76,29 +76,28 @@ class VentanaTomaDatos(QMainWindow):
 
     def accion_generar_histograma(self):
 
-        # TODO: Harcodeo lista de variables aleatorias para probar
-        self.variables_aleatorias = [10, 20, 20, 30, 30, 30, 40, 40, 40, 40, 50, 50, 50, 50, 50, 60, 60, 60, 60, 70, 70,
-                                     70, 80, 80, 90]
-
         # Valido que se hayan obtenido las variables aleatorias con anterioridad
         if len(self.variables_aleatorias) == 0:
             self.mostrar_mensaje("Error", "Primero deben obtener las variables aleatorias")
             return
 
-        """
         # Obtengo y valido parametros
         cantidad_intervalos = self.txt_cantidad_intervalos.text()
         if cantidad_intervalos == "" or int(cantidad_intervalos) <= 0:
             self.mostrar_mensaje("Error", "La cantidad de intervalos tiene que ser mayor a cero")
             return
-        """
+        tipo_distribucion = self.cmb_tipo_distribucion.itemData(self.cmb_tipo_distribucion.currentIndex())
+        if tipo_distribucion == -1:
+            self.mostrar_mensaje("Error", "Debe seleccionar un tipo de distribución")
+            return
 
         # Obtengo listas de medias y frecuencias
-        # TODO: Harcodeo cantidad de intervalos hasta que se agregue a interfaz
-        medias, frecuencias = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias, 10)
+        medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
+                                                                                            cantidad_intervalos,
+                                                                                            tipo_distribucion)
 
         # Muestro histograma
-        self.controlador.generar_grafico_frecuencias(medias, frecuencias)
+        self.controlador.generar_grafico_frecuencias(medias, observadas, esperadas)
 
     # TODO: No definido
     def accion_prueba_1(self):
@@ -110,12 +109,24 @@ class VentanaTomaDatos(QMainWindow):
 
     """ Metodos """
 
+    def preparar_interfaz(self):
+
+        # Cargo combo box
+        self.cmb_tipo_distribucion.clear()
+        self.cmb_tipo_distribucion.addItem("Seleccione", -1)
+        self.cmb_tipo_distribucion.addItem("Uniforme", 0)
+        self.cmb_tipo_distribucion.addItem("Normal", 1)
+        self.cmb_tipo_distribucion.addItem("Exponencial negativa", 2)
+
     def limpiar_interfaz(self):
 
         # Limpio txts
         self.txt_columna.clear()
         self.txt_fila_desde.clear()
         self.txt_fila_hasta.clear()
+
+        # Selecciono opcion por defecto en combo boxs
+        self.cmb_tipo_distribucion.setCurrentIndex(0)
 
     def mostrar_mensaje(self, titulo, mensaje):
 
@@ -130,4 +141,5 @@ class VentanaTomaDatos(QMainWindow):
 
     # Evento show
     def showEvent(self, QShowEvent):
+        self.preparar_interfaz()
         self.limpiar_interfaz()

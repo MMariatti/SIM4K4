@@ -1,13 +1,18 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
+from matplotlib import pyplot
 from scipy import stats
+import numpy
+import statistics
 import xlrd
 
 
 class ControladorTomaDatos:
 
     def obtener_variables_aleatorias(self, ruta_archivo, columna, fila_desde, fila_hasta):
+
+        # Convierto tipos de datos
+        columna = int(columna)
+        fila_desde = int(fila_desde)
+        fila_hasta = int(fila_hasta)
 
         # Adapto parametros para usarlos con libreria
         columna = columna - 1
@@ -30,55 +35,101 @@ class ControladorTomaDatos:
 
         return variables_aleatorias
 
-    def calcular_frecuencias_por_intervalo(self, variables_aleatorias, cantidad_intervalos):
+    def calcular_frecuencias_por_intervalo(self, variables_aleatorias, cantidad_intervalos, tipo_distribucion):
+
         # Convierto tipos de datos
         cantidad_intervalos = int(cantidad_intervalos)
 
         # Inicializo datos
-        min = MIN(variables_aleatorias)
-        max = MAX(variables_aleatorias)
-        paso = (max - min) / cantidad_intervalos
+        minimo = min(variables_aleatorias)
+        maximo = max(variables_aleatorias)
+        paso = round(((maximo - minimo) / cantidad_intervalos), 2)
         intervalos = []
         frecuencias_x_intervalo = {}
 
         # Genero lista de intervalos e inicializo keys en diccionario de frecuencias por intervalo
         for i in range(0, cantidad_intervalos):
-            min_intervalo = round(min, 4)
-            max_intervalo = round(min_intervalo + paso, 4)
-            media_intervalo = round(((min_intervalo + max_intervalo) / 2), 4)
+            min_intervalo = round(minimo, 2)
+            if min_intervalo == int(min_intervalo):
+                min_intervalo = int(min_intervalo)
+            max_intervalo = round(min_intervalo + paso, 2)
+            if max_intervalo == int(max_intervalo):
+                max_intervalo = int(max_intervalo)
+            media_intervalo = round(((min_intervalo + max_intervalo) / 2), 2)
+            if media_intervalo == int(media_intervalo):
+                media_intervalo = int(media_intervalo)
             intervalos.append({
                 "minimo": min_intervalo,
                 "maximo": max_intervalo,
                 "media": media_intervalo
             })
             frecuencias_x_intervalo[media_intervalo] = 0
-            min = max_intervalo
+            minimo = max_intervalo
 
         # Genero diccionario de frecuencias por intervalo
-        for variables_aleatorias in variables_aleatorias:
+        for variable_aleatoria in variables_aleatorias:
             for intervalo in intervalos:
-                if intervalo.get("minimo") <= variables_aleatorias.get("aleatorio_decimal") < intervalo.get("maximo"):
+                if intervalo.get("minimo") <= variable_aleatoria < intervalo.get("maximo"):
                     frecuencias_x_intervalo[intervalo["media"]] += 1
 
-        # Genero listas de medias, frecuencias observadas y esperadas a partir de datos anteriores
-        frecuencia_esperada = round(len(numeros_aleatorios) / cantidad_intervalos, 4)
-        if frecuencia_esperada == int(frecuencia_esperada):
-            frecuencia_esperada = int(frecuencia_esperada)
+        # Genero listas de medias y frecuencias observadas a partir de datos anteriores
         medias = [str(intervalo.get("media")).replace(".", ",") for intervalo in intervalos]
         frecuencias_obsevadas = list(frecuencias_x_intervalo.values())
-        frecuencias_esperadas = [frecuencia_esperada] * len(intervalos)
+
+        # Inicializo lista de frecuencias esperadas
+        frecuencias_esperadas = []
+
+        # Genero lista de frecuencias esperada a partir de datos anteriores para distribucion unifome
+        if tipo_distribucion == 0:
+            frecuencia_esperada = round(len(variables_aleatorias) / cantidad_intervalos, 2)
+            if frecuencia_esperada == int(frecuencia_esperada):
+                frecuencia_esperada = int(frecuencia_esperada)
+            frecuencias_esperadas = [frecuencia_esperada] * len(intervalos)
+
+        # Genero lista de frecuencias esperada a partir de datos anteriores para distribucion normal
+        elif tipo_distribucion == 1:
+            media = round(statistics.mean(variables_aleatorias), 2)
+            desviacion_estandar = round(statistics.stdev(variables_aleatorias), 2)
+            for intervalo in intervalos:
+                frecuencia_esperada = round((stats.norm(media, desviacion_estandar).cdf(intervalo.get("maximo")) -
+                                             stats.norm(media, desviacion_estandar).cdf(intervalo.get("minimo"))) *
+                                            len(variables_aleatorias), 2)
+                frecuencias_esperadas.append(frecuencia_esperada)
+
+        # Genero lista de frecuencias esperada a partir de datos anteriores para distribucion exponencial negativa
+        elif tipo_distribucion == 2:
+            frecuencias_esperadas = []
 
         return medias, frecuencias_obsevadas, frecuencias_esperadas
 
-    def generar_grafico_frecuencias(self, medias, frecuencias):
+    def generar_grafico_frecuencias(self, medias, frecuencias_observadas, frecuencias_esperadas):
 
-        sns.set_palette("deep",desat =.6)
-        sns.set_context(rc={"figure.figsize":(8,4)})
-        plt.hist(frecuencias, medias, edgecolor = 'black',  linewidth=1)
-        plt.ylabel('frequencia')
-        plt.title('Histograma')
-        plt.show()
+        # Creo grafico
+        x = numpy.arange(len(medias))
+        width = 0.35
+        fig, ax = pyplot.subplots()
+        rects1 = ax.bar(x - width / 2, frecuencias_observadas, width, label="Observadas")
+        rects2 = ax.bar(x + width / 2, frecuencias_esperadas, width, label="Esperadas")
 
+        ax.set_ylabel("Cantidad")
+        ax.set_title("Frecuencias esperadas y observadas")
+        ax.set_xticks(x)
+        ax.set_xticklabels(medias)
+        ax.legend()
+
+        for rect in rects1:
+            height = rect.get_height()
+            ax.annotate("{}".format(height), xy=(rect.get_x() + rect.get_width() / 2, height), xytext=(0, 3),
+                        textcoords="offset points", ha="center", va="bottom")
+        for rect in rects2:
+            height = rect.get_height()
+            ax.annotate("{}".format(height), xy=(rect.get_x() + rect.get_width() / 2, height), xytext=(0, 3),
+                        textcoords="offset points", ha="center", va="bottom")
+        fig.tight_layout()
+        pyplot.show()
+
+    """
+         
     def prueba_Chi_Cuadrado(self, frecuencias_observadas, frecuencias_esperadas):
         # Inicializo datos
         valores = [] * len(frecuencias_observadas)
@@ -93,6 +144,9 @@ class ControladorTomaDatos:
 
         return chi_cuadrado
 
-        #la distribucion debe ser un string como por ejemplo 'norm', para la normal 
+        #la distribucion debe ser un string como por ejemplo 'norm', para la normal
+         
     def prueba_Ktest(frecuencias_observadas,distribucion)
         stats.kstest(frecuencias_observadas,distrubicion)
+    
+    """
