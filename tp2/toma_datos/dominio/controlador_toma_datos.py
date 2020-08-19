@@ -129,7 +129,6 @@ class ControladorTomaDatos:
         valores = [] * len(frecuencias_observadas)
         chi_cuadrado = 0
 
-        # La funcion chisquare devuele en el primer campo el valor de chi cuadrado y en el segundo de p
         for i in range(len(frecuencias_esperadas)):
             aux = round(((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i], 4)
             valores.append(aux)
@@ -138,9 +137,31 @@ class ControladorTomaDatos:
 
         return chi_cuadrado
 
-        #la distribucion debe ser un string como por ejemplo 'norm', para la normal
+        
          
-    def prueba_Ktest(frecuencias_observadas,distribucion):
-        stats.kstest(frecuencias_observadas,distrubicion)
+    def prueba_Ktest(frecuencias_observadas):
+
+        #Inicializo datos
+
+        valores_Ordenados = sort(frecuencias_observadas)
+        cantidad = len(valores_Ordenados)
+        lista_aux = []*cantidad
+        
+        #Creo un array intermedio con el valor absoluto de el indice divido la cantidad menos el valor de dicho indice
+        for  i in range(len(valores_Ordenados)):
+            aux = abs(float(valores_Ordenados.index(i)/cantidad)-valores_Ordenados[i])
+            lista_aux.append(aux)
+
+
+        #Sumo todos los valores de la lista auxiliar en la variable ksTest para obtener el valor contra el que debo comparar en tabla 
+        for auxiliar in lista_aux:
+            ksTest += round(auxiliar,4)
+
+        return auxiliar
+
+
+        """
+
+        stats.kstest(frecuencias_observadas,distrubicion, alternative = "less")
     
-    
+        """
