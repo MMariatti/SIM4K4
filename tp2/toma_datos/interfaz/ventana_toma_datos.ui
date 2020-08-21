@@ -2,17 +2,9 @@
 <ui version="4.0">
  <class>ventana_toma_datos</class>
  <widget class="QMainWindow" name="ventana_toma_datos">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>637</width>
-    <height>483</height>
-   </rect>
-  </property>
   <property name="minimumSize">
    <size>
-    <width>637</width>
+    <width>667</width>
     <height>483</height>
    </size>
   </property>
@@ -522,9 +514,6 @@
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>0</width>
@@ -543,7 +532,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>180</width>
+            <width>190</width>
             <height>0</height>
            </size>
           </property>
@@ -601,7 +590,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>180</width>
+            <width>190</width>
             <height>0</height>
            </size>
           </property>
@@ -656,7 +645,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>180</width>
+            <width>190</width>
             <height>0</height>
            </size>
           </property>
@@ -711,7 +700,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>180</width>
+            <width>190</width>
             <height>0</height>
            </size>
           </property>
@@ -769,7 +758,7 @@
          <widget class="QPushButton" name="btn_obtener_datos">
           <property name="minimumSize">
            <size>
-            <width>180</width>
+            <width>190</width>
             <height>40</height>
            </size>
           </property>
@@ -843,7 +832,7 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>180</width>
+            <width>190</width>
             <height>0</height>
            </size>
           </property>
@@ -892,7 +881,7 @@
          <widget class="QComboBox" name="cmb_tipo_distribucion">
           <property name="minimumSize">
            <size>
-            <width>180</width>
+            <width>190</width>
             <height>0</height>
            </size>
           </property>
@@ -953,7 +942,7 @@
          <widget class="QPushButton" name="btn_generar_histograma">
           <property name="minimumSize">
            <size>
-            <width>180</width>
+            <width>190</width>
             <height>40</height>
            </size>
           </property>
@@ -966,10 +955,10 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_prueba_chi_cuadrado">
+         <widget class="QPushButton" name="btn_test_chi_cuadrado">
           <property name="minimumSize">
            <size>
-            <width>180</width>
+            <width>190</width>
             <height>40</height>
            </size>
           </property>
@@ -982,15 +971,15 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="btn_prueba_2">
+         <widget class="QPushButton" name="btn_test_kolmogorov_smirnov">
           <property name="minimumSize">
            <size>
-            <width>180</width>
+            <width>190</width>
             <height>40</height>
            </size>
           </property>
           <property name="text">
-           <string>Prueba 2</string>
+           <string>Test Kolmogorov-Smirnov</string>
           </property>
           <property name="autoDefault">
            <bool>true</bool>

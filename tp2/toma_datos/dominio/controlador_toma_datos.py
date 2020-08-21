@@ -123,7 +123,7 @@ class ControladorTomaDatos:
 
         pyplot.show()
          
-    def prueba_chi_cuadrado(self, frecuencias_observadas, frecuencias_esperadas):
+    def test_chi_cuadrado(self, frecuencias_observadas, frecuencias_esperadas):
 
         # Inicializo datos
         valores = [] * len(frecuencias_observadas)
@@ -131,25 +131,23 @@ class ControladorTomaDatos:
 
         # Calculo valor chi cuadrado
         for i in range(len(frecuencias_esperadas)):
-            aux = ((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i] \
+            valor = ((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i] \
                 if frecuencias_esperadas[i] != 0 else 0
-            valores.append(aux)
-        for valor in valores:
             chi_cuadrado = round(chi_cuadrado + valor, 2)
 
         return chi_cuadrado
 
-    """
-    def prueba_Ktest(self, frecuencias_observadas):
+    def test_kolmogorov_smirnov(self, frecuencias_observadas):
+        pass
 
+        """
         # Inicializo datos
-
         valores_Ordenados = sort(frecuencias_observadas)
         cantidad = len(valores_Ordenados)
         lista_aux = []*cantidad
         
         # Creo un array intermedio con el valor absoluto de el indice divido la cantidad menos el valor de dicho indice
-        for  i in range(len(valores_Ordenados)):
+        for i in range(len(valores_Ordenados)):
             aux = abs(float(valores_Ordenados.index(i)/cantidad)-valores_Ordenados[i])
             lista_aux.append(aux)
 
@@ -161,5 +159,4 @@ class ControladorTomaDatos:
         return auxiliar
 
         stats.kstest(frecuencias_observadas,distrubicion, alternative = "less")
-    
         """

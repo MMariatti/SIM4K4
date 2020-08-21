@@ -33,8 +33,8 @@ class VentanaTomaDatos(QMainWindow):
         self.btn_seleccionar_archivo.clicked.connect(self.accion_seleccionar_archivo)
         self.btn_obtener_datos.clicked.connect(self.accion_obtener_datos)
         self.btn_generar_histograma.clicked.connect(self.accion_generar_histograma)
-        self.btn_prueba_chi_cuadrado.clicked.connect(self.accion_prueba_chi_cuadrado)
-        self.btn_prueba_2.clicked.connect(self.accion_prueba_2)  # TODO: No definido
+        self.btn_test_chi_cuadrado.clicked.connect(self.accion_test_chi_cuadrado)
+        self.btn_test_kolmogorov_smirnov.clicked.connect(self.accion_test_kolmogorov_smirnov)
 
     """ Acciones """
 
@@ -99,7 +99,7 @@ class VentanaTomaDatos(QMainWindow):
         # Muestro histograma
         self.controlador.generar_histograma(medias, observadas)
 
-    def accion_prueba_chi_cuadrado(self):
+    def accion_test_chi_cuadrado(self):
 
         # Obtengo y valido parametros
         cantidad_intervalos = self.txt_cantidad_intervalos.text()
@@ -115,13 +115,33 @@ class VentanaTomaDatos(QMainWindow):
         medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
                                                                                             cantidad_intervalos,
                                                                                             tipo_distribucion)
-        chi_cuadrado = self.controlador.prueba_chi_cuadrado(observadas, esperadas)
+
+        # Realizo y muestro resultados de prueba de chi cuadrado
+        chi_cuadrado = self.controlador.test_chi_cuadrado(observadas, esperadas)
         self.mostrar_mensaje("Valor obtenido", "El valor de Chi cuadrado obtenido es %s"
                              % str(chi_cuadrado).replace(".", ","))
 
-    # TODO: No definido
-    def accion_prueba_2(self):
-        pass
+    def accion_test_kolmogorov_smirnov(self):
+
+        # Obtengo y valido parametros
+        cantidad_intervalos = self.txt_cantidad_intervalos.text()
+        if cantidad_intervalos == "" or int(cantidad_intervalos) <= 0:
+            self.mostrar_mensaje("Error", "La cantidad de intervalos tiene que ser mayor a cero")
+            return
+        tipo_distribucion = self.cmb_tipo_distribucion.itemData(self.cmb_tipo_distribucion.currentIndex())
+        if tipo_distribucion == -1:
+            self.mostrar_mensaje("Error", "Debe seleccionar un tipo de distribución")
+            return
+
+        # Obtengo listas de medias, frecuencias observadas y frecuencias esperadas
+        medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
+                                                                                            cantidad_intervalos,
+                                                                                            tipo_distribucion)
+
+        # Realizo y muestro resultados de prueba de kolmogorov-smirnov
+        kolmogorov_smirnov = self.controlador.test_kolmogorov_smirnov(observadas)
+        self.mostrar_mensaje("Valor obtenido", "El valor de Kolmogorov-Smirnov obtenido es %s"
+                             % str(kolmogorov_smirnov).replace(".", ","))
 
     """ Metodos """
 
