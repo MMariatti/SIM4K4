@@ -1,5 +1,6 @@
 from matplotlib import pyplot
 from scipy import stats
+from math import exp
 import numpy
 import statistics
 import xlrd
@@ -93,10 +94,10 @@ class ControladorTomaDatos:
 
         # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion exponencial negativa
         elif tipo_distribucion == 2:
-            media = statistics.mean(variables_aleatorias)
+            lambd = 1 / statistics.mean(variables_aleatorias)
             for intervalo in intervalos:
-                frecuencia_esperada = round((stats.expon(media).cdf(intervalo.get("maximo")) -
-                                             stats.expon(media).cdf(intervalo.get("minimo"))) *
+                frecuencia_esperada = round((stats.expon(0, 1 / lambd).cdf(intervalo.get("maximo")) -
+                                             stats.expon(0, 1 / lambd).cdf(intervalo.get("minimo"))) *
                                             len(variables_aleatorias), 2)
                 frecuencias_esperadas.append(frecuencia_esperada)
 
