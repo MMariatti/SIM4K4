@@ -9,22 +9,17 @@ class ControladorTomaDatos:
 
     def obtener_variables_aleatorias(self, ruta_archivo, columna, fila_desde, fila_hasta):
 
-        # Convierto tipos de datos
-        columna = int(columna)
-        fila_desde = int(fila_desde)
-        fila_hasta = int(fila_hasta)
-
-        # Adapto parametros para usarlos con libreria
-        columna = columna - 1
-        fila_desde = fila_desde - 1
-        fila_hasta = fila_hasta - 1
+        # Convierto tipos de datos y los adapto para usarlos con la libreria
+        columna = int(columna) - 1
+        fila_desde = int(fila_desde) - 1
+        fila_hasta = int(fila_hasta) -1
 
         # Inicializo lista
         variables_aleatorias = []
 
         # Obtengo planilla
-        file = xlrd.open_workbook(ruta_archivo)
-        hoja = file.sheet_by_index(0)
+        archivo = xlrd.open_workbook(ruta_archivo)
+        hoja = archivo.sheet_by_index(0)
 
         # Guardo valores en lista
         for i in range(fila_desde, fila_hasta + 1):
@@ -70,7 +65,7 @@ class ControladorTomaDatos:
         for variable_aleatoria in variables_aleatorias:
             for intervalo in intervalos:
                 if intervalo.get("minimo") <= variable_aleatoria < intervalo.get("maximo"):
-                    frecuencias_x_intervalo[intervalo["media"]] += 1
+                    frecuencias_x_intervalo[intervalo.get("media")] += 1
 
         # Genero listas de medias y frecuencias observadas a partir de datos anteriores
         medias = [str(intervalo.get("media")).replace(".", ",") for intervalo in intervalos]
@@ -79,14 +74,14 @@ class ControladorTomaDatos:
         # Inicializo lista de frecuencias esperadas
         frecuencias_esperadas = []
 
-        # Genero lista de frecuencias esperada a partir de datos anteriores para distribucion unifome
+        # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion unifome
         if tipo_distribucion == 0:
             frecuencia_esperada = round(len(variables_aleatorias) / cantidad_intervalos, 2)
             if frecuencia_esperada == int(frecuencia_esperada):
                 frecuencia_esperada = int(frecuencia_esperada)
             frecuencias_esperadas = [frecuencia_esperada] * len(intervalos)
 
-        # Genero lista de frecuencias esperada a partir de datos anteriores para distribucion normal
+        # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion normal
         elif tipo_distribucion == 1:
             media = statistics.mean(variables_aleatorias)
             desviacion_estandar = statistics.stdev(variables_aleatorias)
@@ -96,7 +91,7 @@ class ControladorTomaDatos:
                                             len(variables_aleatorias), 2)
                 frecuencias_esperadas.append(frecuencia_esperada)
 
-        # Genero lista de frecuencias esperada a partir de datos anteriores para distribucion exponencial negativa
+        # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion exponencial negativa
         elif tipo_distribucion == 2:
             media = statistics.mean(variables_aleatorias)
             for intervalo in intervalos:
@@ -104,10 +99,6 @@ class ControladorTomaDatos:
                                              stats.expon(media).cdf(intervalo.get("minimo"))) *
                                             len(variables_aleatorias), 2)
                 frecuencias_esperadas.append(frecuencia_esperada)
-
-        # Genero lista de frecuencias esperada a partir de datos anteriores para distribucion exponencial negativa
-        elif tipo_distribucion == 2:
-            frecuencias_esperadas = []
 
         return medias, frecuencias_obsevadas, frecuencias_esperadas
 
