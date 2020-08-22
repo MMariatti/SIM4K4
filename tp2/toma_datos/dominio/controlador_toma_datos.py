@@ -130,9 +130,13 @@ class ControladorTomaDatos:
 
         # Calculo valor chi cuadrado
         for i in range(cantidad_intervalos):
-            valor = ((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i] \
+            valor_intervalo = ((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i] \
                 if frecuencias_esperadas[i] != 0 else 0
-            chi_cuadrado = round(chi_cuadrado + valor, 2)
+            chi_cuadrado += valor_intervalo
+
+        chi_cuadrado = round(chi_cuadrado, 2)
+        if chi_cuadrado == int(chi_cuadrado):
+            chi_cuadrado = int(chi_cuadrado)
 
         return chi_cuadrado
 
@@ -146,13 +150,14 @@ class ControladorTomaDatos:
 
         # Calculo valor kolmogorov-smirnov
         for i in range(cantidad_intervalos):
-            probabilidad_frecuencia_observada = frecuencias_observadas[i] / cantidad_intervalos
-            probabilidad_frecuencia_esperada = frecuencias_esperadas[i] / cantidad_intervalos
-            diferencias_probabilidades.append(round(abs(probabilidad_frecuencia_esperada -
-                                                        probabilidad_frecuencia_observada), 2))
+            probabilidad_frecuencias_observadas_acumulada += frecuencias_observadas[i] / cantidad_intervalos
+            probabilidad_frecuencias_esperadas_acumulada += frecuencias_esperadas[i] / cantidad_intervalos
 
-            probabilidad_frecuencias_observadas_acumulada += probabilidad_frecuencia_observada
-            probabilidad_frecuencias_esperadas_acumulada += probabilidad_frecuencia_esperada
+            valor_intervalo = round(abs(probabilidad_frecuencias_esperadas_acumulada -
+                                        probabilidad_frecuencias_observadas_acumulada), 2)
+            if valor_intervalo == int(valor_intervalo):
+                valor_intervalo = int(valor_intervalo)
+            diferencias_probabilidades.append(valor_intervalo)
 
         kolmogorov_smirnov = max(diferencias_probabilidades)
 
