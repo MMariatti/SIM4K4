@@ -102,15 +102,30 @@ class ControladorTomaDatos:
 
         return medias, frecuencias_obsevadas, frecuencias_esperadas
 
-    def generar_histograma(self, medias, frecuencias_observadas):
+    def generar_grafico_frecuencias(self, medias, frecuencias_observadas, frecuencias_esperadas):
 
         # Creo grafico
-        y_pos = numpy.arange(len(medias))
-        pyplot.bar(y_pos, frecuencias_observadas, align="center")
-        pyplot.xticks(y_pos, medias)
-        pyplot.ylabel("Frecuencias observadas")
-        pyplot.title("Histograma")
+        x = numpy.arange(len(medias))
+        width = 0.35
+        fig, ax = pyplot.subplots()
+        rects1 = ax.bar(x - width / 2, frecuencias_observadas, width, label="Observadas")
+        rects2 = ax.bar(x + width / 2, frecuencias_esperadas, width, label="Esperadas")
 
+        ax.set_ylabel("Cantidad")
+        ax.set_title("Frecuencias esperadas y observadas")
+        ax.set_xticks(x)
+        ax.set_xticklabels(medias)
+        ax.legend()
+
+        for rect in rects1:
+            height = rect.get_height()
+            ax.annotate("{}".format(height), xy=(rect.get_x() + rect.get_width() / 2, height), xytext=(0, 3),
+                        textcoords="offset points", ha="center", va="bottom")
+        for rect in rects2:
+            height = rect.get_height()
+            ax.annotate("{}".format(height), xy=(rect.get_x() + rect.get_width() / 2, height), xytext=(0, 3),
+                        textcoords="offset points", ha="center", va="bottom")
+        fig.tight_layout()
         pyplot.show()
          
     def test_chi_cuadrado(self, frecuencias_observadas, frecuencias_esperadas):

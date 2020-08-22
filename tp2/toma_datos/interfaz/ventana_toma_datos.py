@@ -96,8 +96,8 @@ class VentanaTomaDatos(QMainWindow):
                                                                                             cantidad_intervalos,
                                                                                             tipo_distribucion)
 
-        # Muestro histograma
-        self.controlador.generar_histograma(medias, observadas)
+        # Muestro grafico de frecuencias
+        self.controlador.generar_grafico_frecuencias(medias, observadas, esperadas)
 
     def accion_test_chi_cuadrado(self):
 

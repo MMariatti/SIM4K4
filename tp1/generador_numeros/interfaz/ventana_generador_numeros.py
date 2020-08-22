@@ -158,7 +158,7 @@ class VentanaGeneradorNumeros(QMainWindow):
 							 % str(chi_cuadrado).replace(".", ","))
 
 		# Muestro grafico de frecuencias
-		self.controlador.generar_grafico_frecuencia(medias, observadas, esperadas)
+		self.controlador.generar_grafico_frecuencias(medias, observadas, esperadas)
 
 	""" Metodos """
 

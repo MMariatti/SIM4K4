@@ -134,7 +134,7 @@ class ControladorGeneradorNumeros:
 
         return chi_cuadrado
 
-    def generar_grafico_frecuencia(self, medias, frecuencias_observadas, frecuencias_esperadas):
+    def generar_grafico_frecuencias(self, medias, frecuencias_observadas, frecuencias_esperadas):
 
         # Creo grafico
         x = np.arange(len(medias))
