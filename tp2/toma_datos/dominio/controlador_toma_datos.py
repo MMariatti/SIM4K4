@@ -3,7 +3,6 @@ from scipy import stats
 import numpy
 import statistics
 import xlrd
-import random
 
 
 class ControladorTomaDatos:
@@ -126,37 +125,35 @@ class ControladorTomaDatos:
     def test_chi_cuadrado(self, frecuencias_observadas, frecuencias_esperadas):
 
         # Inicializo datos
-        valores = [] * len(frecuencias_observadas)
+        cantidad_intervalos = len(frecuencias_observadas)
         chi_cuadrado = 0
 
         # Calculo valor chi cuadrado
-        for i in range(len(frecuencias_esperadas)):
+        for i in range(cantidad_intervalos):
             valor = ((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i] \
                 if frecuencias_esperadas[i] != 0 else 0
             chi_cuadrado = round(chi_cuadrado + valor, 2)
 
         return chi_cuadrado
 
-    def test_kolmogorov_smirnov(self, frecuencias_observadas):
-        pass
+    def test_kolmogorov_smirnov(self, frecuencias_observadas, frecuencias_esperadas):
 
-        """
         # Inicializo datos
-        valores_Ordenados = sort(frecuencias_observadas)
-        cantidad = len(valores_Ordenados)
-        lista_aux = []*cantidad
-        
-        # Creo un array intermedio con el valor absoluto de el indice divido la cantidad menos el valor de dicho indice
-        for i in range(len(valores_Ordenados)):
-            aux = abs(float(valores_Ordenados.index(i)/cantidad)-valores_Ordenados[i])
-            lista_aux.append(aux)
+        cantidad_intervalos = len(frecuencias_observadas)
+        probabilidad_frecuencias_observadas_acumulada = 0
+        probabilidad_frecuencias_esperadas_acumulada = 0
+        diferencias_probabilidades = []
 
+        # Calculo valor kolmogorov-smirnov
+        for i in range(cantidad_intervalos):
+            probabilidad_frecuencia_observada = frecuencias_observadas[i] / cantidad_intervalos
+            probabilidad_frecuencia_esperada = frecuencias_esperadas[i] / cantidad_intervalos
+            diferencias_probabilidades.append(round(abs(probabilidad_frecuencia_esperada -
+                                                        probabilidad_frecuencia_observada), 2))
 
-        # Sumo todos los valores de la lista auxiliar en la variable ksTest para obtener el valor contra el que debo comparar en tabla
-        for auxiliar in lista_aux:
-            ksTest += round(auxiliar,4)
+            probabilidad_frecuencias_observadas_acumulada += probabilidad_frecuencia_observada
+            probabilidad_frecuencias_esperadas_acumulada += probabilidad_frecuencia_esperada
 
-        return auxiliar
+        kolmogorov_smirnov = max(diferencias_probabilidades)
 
-        stats.kstest(frecuencias_observadas,distrubicion, alternative = "less")
-        """
+        return kolmogorov_smirnov

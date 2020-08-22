@@ -139,7 +139,7 @@ class VentanaTomaDatos(QMainWindow):
                                                                                             tipo_distribucion)
 
         # Realizo y muestro resultados de prueba de kolmogorov-smirnov
-        kolmogorov_smirnov = self.controlador.test_kolmogorov_smirnov(observadas)
+        kolmogorov_smirnov = self.controlador.test_kolmogorov_smirnov(observadas, esperadas)
         self.mostrar_mensaje("Valor obtenido", "El valor de Kolmogorov-Smirnov obtenido es %s"
                              % str(kolmogorov_smirnov).replace(".", ","))
 
