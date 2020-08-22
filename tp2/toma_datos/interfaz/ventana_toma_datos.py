@@ -32,7 +32,7 @@ class VentanaTomaDatos(QMainWindow):
         # Conecto los botones con los eventos
         self.btn_seleccionar_archivo.clicked.connect(self.accion_seleccionar_archivo)
         self.btn_obtener_datos.clicked.connect(self.accion_obtener_datos)
-        self.btn_generar_histograma.clicked.connect(self.accion_generar_histograma)
+        self.btn_generar_grafico.clicked.connect(self.accion_generar_grafico)
         self.btn_test_chi_cuadrado.clicked.connect(self.accion_test_chi_cuadrado)
         self.btn_test_kolmogorov_smirnov.clicked.connect(self.accion_test_kolmogorov_smirnov)
 
@@ -74,7 +74,7 @@ class VentanaTomaDatos(QMainWindow):
             self.mostrar_mensaje("Error", "Hubo un problema al obtener los datos del archivo")
             print(ex)
 
-    def accion_generar_histograma(self):
+    def accion_generar_grafico(self):
 
         # Valido que se hayan obtenido las variables aleatorias con anterioridad
         if len(self.variables_aleatorias) == 0:
