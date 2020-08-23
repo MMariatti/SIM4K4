@@ -1,6 +1,5 @@
 from matplotlib import pyplot
 from scipy import stats
-from math import exp
 import numpy
 import statistics
 import xlrd
