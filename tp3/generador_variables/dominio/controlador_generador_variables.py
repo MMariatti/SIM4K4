@@ -2,64 +2,47 @@ from matplotlib import pyplot
 from scipy import stats
 import numpy
 import statistics
-import xlrd
 import random
 import math
 
-class ControladorGeneradorVA:
+
+class ControladorGeneradorVariables:
     
-    def generar_VA_Normal(self,mu,sigma,cantidad):
-        #defino las listas de aleatorios y la de z
-        """
-        array_aleatorio1 = []*cantidad
-        array_aleatorio2 = []*cantidad
-        array_z =[]*cantidad
-        """
-        array_VA_Normal = []*cantidad
-        """
-        #Lleno la primer lista de aleatorios
-        for i in range(len(array_aleatorio1)):
-           aleatorio = round(random(0,1),4)
-           array_aleatorio1.append(aleatorio)
+    def generar_variables_aleatorias_normal(self, mu, sigma, cantidad):
 
-        #Creo la segunda lista de aleatorios
-        for i in range(array_aleatorio2):
-           aleatorio = round(random(0,1),4)
-           array_aleatorio2.append(aleatorio)
+        # Inicializo datos
+        variables_aleatorias = []
 
-        #Creo la lista de valores z con la formula z=sqrt(2*ln(1-random1)*cos(2pi*random2))
-        for i in range(len(array_z)):
-            z =sqrt(-2*math.log(1-array_aleatorio1[i]*cos(2*math.pi*array_aleatorio2[i])))
-            array_z.append(z)
-        """
-        #Finalmente lleno la lista de variables aleatorias
+        # Genero lista de variables aleatorias
+        for i in range(0, cantidad):
+            z = math.sqrt(-2 * math.log(1 - random(0, 1))*math.cos(2 * math.pi * random(0, 1)))
+            va_normal = round(mu + z * sigma, 4)
+            variables_aleatorias.append(va_normal)
 
-        for i in range(len(array_VA)):
-            z = sqrt(-2*math.log(1-round(random(0,1)))*cos(2*math.pi*round(random(0,1))))
-            va_normal = round(mu+z*sigma,4)
-            array_VA_Normal.append(va_normal)
+        return variables_aleatorias
 
-        return array_VA_Normal
+    def generar_variables_aleatorias_exponencial(self, lamda, cantidad):
 
-    def generar_VA_exponencial(self,lamda,cantidad):
-        
-        array_VA_exponencial= []*cantidad
-        for i in range(len(array_VA)):
-            va_exp =round((1/lamda)*math.log(1-round(random(0,1),4)),4)
-            array_VA_exponencial.append(va_exp)
+        # Inicializo datos
+        variables_aleatorias = []
 
-        return array_VA_exponencial
+        # Genero lista de variables aleatorias
+        for i in range(0, cantidad):
+            va_exp = round((1 / lamda) * math.log(1 - random(0, 1)), 4)
+            variables_aleatorias.append(va_exp)
 
-    def generar_VA_poisson(self,lamda,cantidad):
+        return variables_aleatorias
 
-        array_VA_poisson = numpy.random.poisson(lamda,cantidad)
+    def generar_variables_aleatorias_poisson(self, lamda, cantidad):
 
-        return array_VA_poisson
+        # Genero lista de variables aleatorias
+        variables_aleatorias = numpy.random.poisson(lamda, cantidad)
 
+        return variables_aleatorias
 
-    def calcular_frecuencias_por_intervalo(self, variables_aleatorias, cantidad_intervalos):
-         # Convierto tipos de datos
-         # Convierto tipos de datos
+    def calcular_frecuencias_por_intervalo(self, variables_aleatorias, cantidad_intervalos, tipo_distribucion):
+
+        # Convierto tipos de datos
         cantidad_intervalos = int(cantidad_intervalos)
 
         # Inicializo datos
@@ -100,10 +83,16 @@ class ControladorGeneradorVA:
 
         # Inicializo lista de frecuencias esperadas
         frecuencias_esperadas = []
-        
 
-        # Genero lista de frecuencias esperada a partir de datos anteriores para distribucion normal
-        elif tipo_distribucion == 0:
+        # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion unifome
+        if tipo_distribucion == 0:
+            frecuencia_esperada = round(len(variables_aleatorias) / cantidad_intervalos, 2)
+            if frecuencia_esperada == int(frecuencia_esperada):
+                frecuencia_esperada = int(frecuencia_esperada)
+            frecuencias_esperadas = [frecuencia_esperada] * len(intervalos)
+
+        # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion normal
+        elif tipo_distribucion == 1:
             media = statistics.mean(variables_aleatorias)
             desviacion_estandar = statistics.stdev(variables_aleatorias)
             for intervalo in intervalos:
@@ -112,29 +101,16 @@ class ControladorGeneradorVA:
                                             len(variables_aleatorias), 2)
                 frecuencias_esperadas.append(frecuencia_esperada)
 
-        # Genero lista de frecuencias esperada a partir de datos anteriores para distribucion exponencial negativa
-        elif tipo_distribucion == 1:
-            media = statistics.mean(variables_aleatorias)
-            for intervalo in intervalos:
-                frecuencia_esperada = round((stats.expon(media).cdf(intervalo.get("maximo")) -
-                                             stats.expon(media).cdf(intervalo.get("minimo"))) *
-                                            len(variables_aleatorias), 2)
-                frecuencias_esperadas.append(frecuencia_esperada)
-
-        # Genero lista de frecuencias esperada a partir de datos anteriores para distribucion poisson
+        # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion exponencial negativa
         elif tipo_distribucion == 2:
-            media = statistics.mean(variables_aleatorias)
-                for intervalo in intervalos:
-                    frecuencia_esperada = round((stats.poisson(media).cdf(intervalo.get("maximo")) -
-                                             stats.poisson(media).cdf(intervalo.get("minimo"))) *
+            lambd = 1 / statistics.mean(variables_aleatorias)
+            for intervalo in intervalos:
+                frecuencia_esperada = round((stats.expon(0, 1 / lambd).cdf(intervalo.get("maximo")) -
+                                             stats.expon(0, 1 / lambd).cdf(intervalo.get("minimo"))) *
                                             len(variables_aleatorias), 2)
                 frecuencias_esperadas.append(frecuencia_esperada)
 
         return medias, frecuencias_obsevadas, frecuencias_esperadas
-
-
-    
-
 
     def generar_grafico_frecuencias(self, medias, frecuencias_observadas, frecuencias_esperadas):
 
@@ -162,8 +138,9 @@ class ControladorGeneradorVA:
         fig.tight_layout()
         pyplot.show()
 
-    def prueba_Chi_Cuadrado(self,frecuencias_observadas,frecuencias_esperadas):
-         # Inicializo datos
+    def test_chi_cuadrado(self, frecuencias_observadas, frecuencias_esperadas):
+
+        # Inicializo datos
         cantidad_intervalos = len(frecuencias_observadas)
         chi_cuadrado = 0
 
