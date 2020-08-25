@@ -112,15 +112,8 @@ class ControladorGeneradorVariables:
         # Inicializo lista de frecuencias esperadas
         frecuencias_esperadas = []
 
-        # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion unifome
-        if tipo_distribucion == 0:
-            frecuencia_esperada = round(len(variables_aleatorias) / cantidad_intervalos, 2)
-            if frecuencia_esperada == int(frecuencia_esperada):
-                frecuencia_esperada = int(frecuencia_esperada)
-            frecuencias_esperadas = [frecuencia_esperada] * len(intervalos)
-
         # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion normal
-        elif tipo_distribucion == 1:
+        if tipo_distribucion == 0:
             media = statistics.mean(variables_aleatorias)
             desviacion_estandar = statistics.stdev(variables_aleatorias)
             for intervalo in intervalos:
@@ -130,11 +123,20 @@ class ControladorGeneradorVariables:
                 frecuencias_esperadas.append(frecuencia_esperada)
 
         # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion exponencial negativa
-        elif tipo_distribucion == 2:
+        elif tipo_distribucion == 1:
             lambd = 1 / statistics.mean(variables_aleatorias)
             for intervalo in intervalos:
                 frecuencia_esperada = round((stats.expon(0, 1 / lambd).cdf(intervalo.get("maximo")) -
                                              stats.expon(0, 1 / lambd).cdf(intervalo.get("minimo"))) *
+                                            len(variables_aleatorias), 2)
+                frecuencias_esperadas.append(frecuencia_esperada)
+
+        # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion de poisson
+        elif tipo_distribucion == 2:
+            lambd = 1 / statistics.mean(variables_aleatorias)
+            for intervalo in intervalos:
+                frecuencia_esperada = round((stats.poisson(0, 1 / lambd).cdf(intervalo.get("maximo")) -
+                                             stats.poisson(0, 1 / lambd).cdf(intervalo.get("minimo"))) *
                                             len(variables_aleatorias), 2)
                 frecuencias_esperadas.append(frecuencia_esperada)
 
