@@ -150,7 +150,7 @@ class VentanaGeneradorVariables(QMainWindow):
 			return
 
 		# Obtengo listas de medias, frecuencias observadas y frecuencias esperadas
-		medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.numeros_aleatorios,
+		medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
 																							cantidad_intervalos,
 																							tipo_distribucion)
 

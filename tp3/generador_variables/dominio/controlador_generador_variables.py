@@ -74,8 +74,9 @@ class ControladorGeneradorVariables:
         cantidad_intervalos = int(cantidad_intervalos)
 
         # Inicializo datos
-        minimo = min(variables_aleatorias)
-        maximo = max(variables_aleatorias)
+        lista_variables_aleatorias = [va.get("variable_aleatoria") for va in variables_aleatorias]
+        minimo = min(lista_variables_aleatorias)
+        maximo = max(lista_variables_aleatorias)
         paso = round(((maximo - minimo) / cantidad_intervalos), 2)
         intervalos = []
         frecuencias_x_intervalo = {}
@@ -100,7 +101,7 @@ class ControladorGeneradorVariables:
             minimo = max_intervalo
 
         # Genero diccionario de frecuencias por intervalo
-        for variable_aleatoria in variables_aleatorias:
+        for variable_aleatoria in lista_variables_aleatorias:
             for intervalo in intervalos:
                 if intervalo.get("minimo") <= variable_aleatoria < intervalo.get("maximo"):
                     frecuencias_x_intervalo[intervalo["media"]] += 1
@@ -114,30 +115,36 @@ class ControladorGeneradorVariables:
 
         # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion normal
         if tipo_distribucion == 0:
-            media = statistics.mean(variables_aleatorias)
-            desviacion_estandar = statistics.stdev(variables_aleatorias)
+            media = statistics.mean(lista_variables_aleatorias)
+            desviacion_estandar = statistics.stdev(lista_variables_aleatorias)
             for intervalo in intervalos:
                 frecuencia_esperada = round((stats.norm(media, desviacion_estandar).cdf(intervalo.get("maximo")) -
                                              stats.norm(media, desviacion_estandar).cdf(intervalo.get("minimo"))) *
-                                            len(variables_aleatorias), 2)
+                                            len(lista_variables_aleatorias), 2)
+                if frecuencia_esperada == int(frecuencia_esperada):
+                    frecuencia_esperada = int(frecuencia_esperada)
                 frecuencias_esperadas.append(frecuencia_esperada)
 
         # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion exponencial negativa
         elif tipo_distribucion == 1:
-            lambd = 1 / statistics.mean(variables_aleatorias)
+            lambd = 1 / statistics.mean(lista_variables_aleatorias)
             for intervalo in intervalos:
                 frecuencia_esperada = round((stats.expon(0, 1 / lambd).cdf(intervalo.get("maximo")) -
                                              stats.expon(0, 1 / lambd).cdf(intervalo.get("minimo"))) *
-                                            len(variables_aleatorias), 2)
+                                            len(lista_variables_aleatorias), 2)
+                if frecuencia_esperada == int(frecuencia_esperada):
+                    frecuencia_esperada = int(frecuencia_esperada)
                 frecuencias_esperadas.append(frecuencia_esperada)
 
         # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion de poisson
         elif tipo_distribucion == 2:
-            lambd = 1 / statistics.mean(variables_aleatorias)
+            lambd = 1 / statistics.mean(lista_variables_aleatorias)
             for intervalo in intervalos:
                 frecuencia_esperada = round((stats.poisson(0, 1 / lambd).cdf(intervalo.get("maximo")) -
                                              stats.poisson(0, 1 / lambd).cdf(intervalo.get("minimo"))) *
-                                            len(variables_aleatorias), 2)
+                                            len(lista_variables_aleatorias), 2)
+                if frecuencia_esperada == int(frecuencia_esperada):
+                    frecuencia_esperada = int(frecuencia_esperada)
                 frecuencias_esperadas.append(frecuencia_esperada)
 
         return medias, frecuencias_obsevadas, frecuencias_esperadas
