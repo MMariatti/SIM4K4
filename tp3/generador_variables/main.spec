@@ -3,7 +3,7 @@
 block_cipher = None
 
 a = Analysis(['main.py'],
-             pathex=['C:\\Users\\Mozt\\Mi Biblioteca\\Programacion\\Proyectos\\SIM4K4\\tp3\\toma_datos'],
+             pathex=[''],
              binaries=[],
              datas=[('./interfaz/*.ui', './interfaz')],
              hiddenimports=['reportlab.graphics.barcode.common',
