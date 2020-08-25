@@ -13,6 +13,9 @@ class VentanaGeneradorVariables(QMainWindow):
 	controlador = None
 	variables_aleatorias = []
 	tipo_distribucion = None
+	mu = None
+	sigma = None
+	lambd = None
 
 	""" Constructor """
 
@@ -93,9 +96,11 @@ class VentanaGeneradorVariables(QMainWindow):
 		if cantidad_numeros == "" or int(cantidad_numeros) <= 0:
 			self.mostrar_mensaje("Error", "La cantidad de números tiene que ser mayor a cero")
 			return
+		self.mu = mu
+		self.sigma = sigma
+		self.lambd = lambd
 
 		# Genero variables aleatorias dependiendo del tipo de distribucion seleccionado
-		self.tipo_distribucion = id_tipo_distribucion
 		if id_tipo_distribucion == 0:
 			self.variables_aleatorias = self.controlador.generar_variables_aleatorias_normal(mu, sigma,
 																							 cantidad_numeros)
@@ -104,6 +109,7 @@ class VentanaGeneradorVariables(QMainWindow):
 																								  cantidad_numeros)
 		elif id_tipo_distribucion == 2:
 			self.variables_aleatorias = self.controlador.generar_variables_aleatorias_poisson(lambd, cantidad_numeros)
+		self.tipo_distribucion = id_tipo_distribucion
 
 		# Cargo tabla
 		self.cargar_tabla_variables_aleatorias()
@@ -121,7 +127,6 @@ class VentanaGeneradorVariables(QMainWindow):
 			return
 
 		# Obtengo y valido parametros
-		tipo_distribucion = self.tipo_distribucion
 		cantidad_intervalos = self.txt_cantidad_intervalos.text()
 		if cantidad_intervalos == "" or int(cantidad_intervalos) <= 0:
 			self.mostrar_mensaje("Error", "La cantidad de intervalos tiene que ser mayor a cero")
@@ -130,7 +135,9 @@ class VentanaGeneradorVariables(QMainWindow):
 		# Obtengo listas de medias, frecuencias observadas y frecuencias esperadas
 		medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
 																							cantidad_intervalos,
-																							tipo_distribucion)
+																							self.tipo_distribucion,
+																							self.mu, self.sigma,
+																							self.lambd)
 
 		# Muestro grafico de frecuencias
 		self.controlador.generar_grafico_frecuencias(medias, observadas, esperadas)
@@ -143,7 +150,6 @@ class VentanaGeneradorVariables(QMainWindow):
 			return
 
 		# Obtengo y valido parametros
-		tipo_distribucion = self.tipo_distribucion
 		cantidad_intervalos = self.txt_cantidad_intervalos.text()
 		if cantidad_intervalos == "" or int(cantidad_intervalos) <= 0:
 			self.mostrar_mensaje("Error", "La cantidad de intervalos tiene que ser mayor a cero")
@@ -152,7 +158,9 @@ class VentanaGeneradorVariables(QMainWindow):
 		# Obtengo listas de medias, frecuencias observadas y frecuencias esperadas
 		medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
 																							cantidad_intervalos,
-																							tipo_distribucion)
+																							self.tipo_distribucion,
+																							self.mu, self.sigma,
+																							self.lambd)
 
 		# Realizo prueba de chi cuadrado y muestro resultados
 		chi_cuadrado = self.controlador.test_chi_cuadrado(observadas, esperadas)

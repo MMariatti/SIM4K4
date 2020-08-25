@@ -1,7 +1,6 @@
 from matplotlib import pyplot
 from scipy import stats
 import numpy
-import statistics
 import random
 import math
 
@@ -12,8 +11,8 @@ class ControladorGeneradorVariables:
 
         # Convierto tipos de datos
         cantidad = int(cantidad)
-        mu = round(float(mu.replace(",", ".")), 2)
-        sigma = round(float(sigma.replace(",", ".")), 2)
+        mu = float(mu.replace(",", "."))
+        sigma = float(sigma.replace(",", "."))
 
         # Inicializo datos
         variables_aleatorias = []
@@ -33,7 +32,7 @@ class ControladorGeneradorVariables:
 
         # Convierto tipos de datos
         cantidad = int(cantidad)
-        lambd = round(float(lambd.replace(",", ".")), 2)
+        lambd = float(lambd.replace(",", "."))
 
         # Inicializo datos
         variables_aleatorias = []
@@ -52,13 +51,13 @@ class ControladorGeneradorVariables:
 
         # Convierto tipos de datos
         cantidad = int(cantidad)
-        lambd = round(float(lambd.replace(",", ".")), 2)
+        lambd = float(lambd.replace(",", "."))
 
         # Inicializo datos
         variables_aleatorias = []
 
         # Genero lista de variables aleatorias
-        variables_aleatorias_poisson = numpy.random.poisson(lambd, cantidad)
+        variables_aleatorias_poisson = stats.poisson(lambd).rvs(size=cantidad)
         for i in range(0, cantidad):
             va_poisson = variables_aleatorias_poisson[i]
             variables_aleatorias.append({
@@ -68,10 +67,23 @@ class ControladorGeneradorVariables:
 
         return variables_aleatorias
 
-    def calcular_frecuencias_por_intervalo(self, variables_aleatorias, cantidad_intervalos, tipo_distribucion):
+    def calcular_frecuencias_por_intervalo(self, variables_aleatorias, cantidad_intervalos, tipo_distribucion, mu=None,
+                                           sigma=None, lambd=None):
 
         # Convierto tipos de datos
         cantidad_intervalos = int(cantidad_intervalos)
+        if mu is not None:
+            mu = float(mu.replace(",", "."))
+            if mu == int(mu):
+                mu = int(mu)
+        if sigma is not None:
+            sigma = float(sigma.replace(",", "."))
+            if sigma == int(sigma):
+                sigma = int(sigma)
+        if lambd is not None:
+            lambd = float(lambd.replace(",", "."))
+            if lambd == int(lambd):
+                lambd = int(lambd)
 
         # Inicializo datos
         lista_variables_aleatorias = [va.get("variable_aleatoria") for va in variables_aleatorias]
@@ -115,11 +127,9 @@ class ControladorGeneradorVariables:
 
         # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion normal
         if tipo_distribucion == 0:
-            media = statistics.mean(lista_variables_aleatorias)
-            desviacion_estandar = statistics.stdev(lista_variables_aleatorias)
             for intervalo in intervalos:
-                frecuencia_esperada = round((stats.norm(media, desviacion_estandar).cdf(intervalo.get("maximo")) -
-                                             stats.norm(media, desviacion_estandar).cdf(intervalo.get("minimo"))) *
+                frecuencia_esperada = round((stats.norm(mu, sigma).cdf(intervalo.get("maximo")) -
+                                             stats.norm(mu, sigma).cdf(intervalo.get("minimo"))) *
                                             len(lista_variables_aleatorias), 2)
                 if frecuencia_esperada == int(frecuencia_esperada):
                     frecuencia_esperada = int(frecuencia_esperada)
@@ -127,7 +137,6 @@ class ControladorGeneradorVariables:
 
         # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion exponencial negativa
         elif tipo_distribucion == 1:
-            lambd = 1 / statistics.mean(lista_variables_aleatorias)
             for intervalo in intervalos:
                 frecuencia_esperada = round((stats.expon(0, 1 / lambd).cdf(intervalo.get("maximo")) -
                                              stats.expon(0, 1 / lambd).cdf(intervalo.get("minimo"))) *
@@ -138,10 +147,9 @@ class ControladorGeneradorVariables:
 
         # Genero lista de frecuencias esperadas a partir de datos anteriores para distribucion de poisson
         elif tipo_distribucion == 2:
-            lambd = 1 / statistics.mean(lista_variables_aleatorias)
             for intervalo in intervalos:
-                frecuencia_esperada = round((stats.poisson(0, 1 / lambd).cdf(intervalo.get("maximo")) -
-                                             stats.poisson(0, 1 / lambd).cdf(intervalo.get("minimo"))) *
+                frecuencia_esperada = round((stats.poisson(lambd).cdf(intervalo.get("maximo")) -
+                                             stats.poisson(lambd).cdf(intervalo.get("minimo"))) *
                                             len(lista_variables_aleatorias), 2)
                 if frecuencia_esperada == int(frecuencia_esperada):
                     frecuencia_esperada = int(frecuencia_esperada)
