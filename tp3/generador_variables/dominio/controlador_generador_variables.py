@@ -10,33 +10,61 @@ class ControladorGeneradorVariables:
     
     def generar_variables_aleatorias_normal(self, mu, sigma, cantidad):
 
+        # Convierto tipos de datos
+        cantidad = int(cantidad)
+        mu = round(float(mu.replace(",", ".")), 2)
+        sigma = round(float(sigma.replace(",", ".")), 2)
+
         # Inicializo datos
         variables_aleatorias = []
 
         # Genero lista de variables aleatorias
         for i in range(0, cantidad):
-            z = math.sqrt(-2 * math.log(1 - random(0, 1))*math.cos(2 * math.pi * random(0, 1)))
+            z = math.sqrt(-2 * math.log(1 - random.randrange(0, 1))*math.cos(2 * math.pi * random.randrange(0, 1)))
             va_normal = round(mu + z * sigma, 4)
-            variables_aleatorias.append(va_normal)
+            variables_aleatorias.append({
+                "nro_orden": i + 1,
+                "variable_aleatoria": va_normal
+            })
 
         return variables_aleatorias
 
-    def generar_variables_aleatorias_exponencial(self, lamda, cantidad):
+    def generar_variables_aleatorias_exponencial(self, lambd, cantidad):
+
+        # Convierto tipos de datos
+        cantidad = int(cantidad)
+        lambd = round(float(lambd.replace(",", ".")), 2)
 
         # Inicializo datos
         variables_aleatorias = []
 
         # Genero lista de variables aleatorias
         for i in range(0, cantidad):
-            va_exp = round((1 / lamda) * math.log(1 - random(0, 1)), 4)
-            variables_aleatorias.append(va_exp)
+            va_exp = round((1 / lambd) * math.log(1 - random.randrange(0, 1)), 4)
+            variables_aleatorias.append({
+                "nro_orden": i + 1,
+                "variable_aleatoria": va_exp
+            })
 
         return variables_aleatorias
 
-    def generar_variables_aleatorias_poisson(self, lamda, cantidad):
+    def generar_variables_aleatorias_poisson(self, lambd, cantidad):
+
+        # Convierto tipos de datos
+        cantidad = int(cantidad)
+        lambd = round(float(lambd.replace(",", ".")), 2)
+
+        # Inicializo datos
+        variables_aleatorias = []
 
         # Genero lista de variables aleatorias
-        variables_aleatorias = numpy.random.poisson(lamda, cantidad)
+        variables_aleatorias_poisson = numpy.random.poisson(lambd, cantidad)
+        for i in range(0, cantidad):
+            va_poisson = variables_aleatorias_poisson[i]
+            variables_aleatorias.append({
+                "nro_orden": i + 1,
+                "variable_aleatoria": va_poisson
+            })
 
         return variables_aleatorias
 
