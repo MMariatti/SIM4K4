@@ -165,7 +165,7 @@ class VentanaGeneradorVariables(QMainWindow):
 
 		# Cargo combo box
 		self.cmb_tipo_distribucion.clear()
-		self.cmb_tipo_distribucion.addItem("Dsitrbución Normal", 0)
+		self.cmb_tipo_distribucion.addItem("Distribución Normal", 0)
 		self.cmb_tipo_distribucion.addItem("Distribución Exponencial", 1)
 		self.cmb_tipo_distribucion.addItem("Distribución Poisson", 2)
 

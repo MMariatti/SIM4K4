@@ -20,7 +20,7 @@ class ControladorGeneradorVariables:
 
         # Genero lista de variables aleatorias
         for i in range(0, cantidad):
-            z = math.sqrt(-2 * math.log(1 - random.randrange(0, 1))*math.cos(2 * math.pi * random.randrange(0, 1)))
+            z = math.sqrt(-2 * math.log(1 - random.random())) * math.cos(2 * math.pi * random.random())
             va_normal = round(mu + z * sigma, 4)
             variables_aleatorias.append({
                 "nro_orden": i + 1,
@@ -40,7 +40,7 @@ class ControladorGeneradorVariables:
 
         # Genero lista de variables aleatorias
         for i in range(0, cantidad):
-            va_exp = round((1 / lambd) * math.log(1 - random.randrange(0, 1)), 4)
+            va_exp = round(-1 / lambd * math.log(1 - random.random()), 4)
             variables_aleatorias.append({
                 "nro_orden": i + 1,
                 "variable_aleatoria": va_exp
