@@ -186,3 +186,10 @@ class ControladorGeneradorVariables:
 
         return chi_cuadrado
 
+    def comparar_TestChi(valorObtenido,gradosLibertad,alfa):
+	    tabla = chi2.interval(alpha=alfa,df=gradosLibertad)
+	    if valorObtenido < tabla[1]:
+	    	valorTabla = round(tabla[1],4)
+	    	print("Como :",valorObtenido,"es menor que :",valorPrueba,"No se puede rechazar la hipotesis nula")
+	    else:
+	    	print("Como :",valorObtenido,"es mayor que :",valorPrueba,"Se rechaza la hipotesis nula")
