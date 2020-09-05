@@ -132,15 +132,8 @@ class VentanaGeneradorVariables(QMainWindow):
 			self.mostrar_mensaje("Error", "La cantidad de intervalos tiene que ser mayor a cero")
 			return
 
-		# Obtengo listas de medias, frecuencias observadas y frecuencias esperadas
-		medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
-																							cantidad_intervalos,
-																							self.tipo_distribucion,
-																							self.mu, self.sigma,
-																							self.lambd)
-
 		# Muestro grafico de frecuencias
-		self.controlador.generar_grafico_frecuencias(medias, observadas, esperadas)
+		self.controlador.generar_grafico_frecuencias(self.variables_aleatorias, cantidad_intervalos)
 
 	def accion_test_chi_cuadrado(self):
 

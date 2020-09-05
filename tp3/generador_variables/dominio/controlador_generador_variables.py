@@ -1,6 +1,5 @@
-from matplotlib import pyplot
+from matplotlib import pyplot as plt
 from scipy import stats
-import numpy
 import random
 import math
 
@@ -157,31 +156,18 @@ class ControladorGeneradorVariables:
 
         return medias, frecuencias_obsevadas, frecuencias_esperadas
 
-    def generar_grafico_frecuencias(self, medias, frecuencias_observadas, frecuencias_esperadas):
+    def generar_grafico_frecuencias(self, variables_aleatorias, cantidad_intervalos):
+
+        # Preparo datos para grafico
+        datos = [va.get("variable_aleatoria") for va in variables_aleatorias]
+        bins = int(cantidad_intervalos)
 
         # Creo grafico
-        x = numpy.arange(len(medias))
-        width = 0.35
-        fig, ax = pyplot.subplots()
-        rects1 = ax.bar(x - width / 2, frecuencias_observadas, width, label="Observadas")
-        rects2 = ax.bar(x + width / 2, frecuencias_esperadas, width, label="Esperadas")
-
-        ax.set_ylabel("Cantidad")
-        ax.set_title("Frecuencias esperadas y observadas")
-        ax.set_xticks(x)
-        ax.set_xticklabels(medias)
-        ax.legend()
-
-        for rect in rects1:
-            height = rect.get_height()
-            ax.annotate("{}".format(height), xy=(rect.get_x() + rect.get_width() / 2, height), xytext=(0, 3),
-                        textcoords="offset points", ha="center", va="bottom")
-        for rect in rects2:
-            height = rect.get_height()
-            ax.annotate("{}".format(height), xy=(rect.get_x() + rect.get_width() / 2, height), xytext=(0, 3),
-                        textcoords="offset points", ha="center", va="bottom")
-        fig.tight_layout()
-        pyplot.show()
+        plt.hist(datos, bins, histtype="bar", rwidth=0.8)
+        plt.title("Variables aleatorias observadas")
+        plt.xlabel("Variables aleatorias")
+        plt.ylabel("Cantidad")
+        plt.show()
 
     def test_chi_cuadrado(self, frecuencias_observadas, frecuencias_esperadas):
 
@@ -201,6 +187,7 @@ class ControladorGeneradorVariables:
 
         return chi_cuadrado
 
+    """
     def comparar_TestChi(valorObtenido,gradosLibertad,alfa):
 	    tabla = chi2.interval(alpha=alfa,df=gradosLibertad)
 	    if valorObtenido < tabla[1]:
@@ -208,3 +195,4 @@ class ControladorGeneradorVariables:
 	    	print("Como :",valorObtenido,"es menor que :",valorPrueba,"No se puede rechazar la hipotesis nula")
 	    else:
 	    	print("Como :",valorObtenido,"es mayor que :",valorPrueba,"Se rechaza la hipotesis nula")
+    """
