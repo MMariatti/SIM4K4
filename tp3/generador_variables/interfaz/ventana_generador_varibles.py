@@ -148,6 +148,7 @@ class VentanaGeneradorVariables(QMainWindow):
 		if cantidad_intervalos == "" or int(cantidad_intervalos) <= 0:
 			self.mostrar_mensaje("Error", "La cantidad de intervalos tiene que ser mayor a cero")
 			return
+		alpha = self.cmb_alpha.itemData(self.cmb_alpha.currentIndex())
 
 		# Obtengo listas de frecuencias observadas y esperadas
 		observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
@@ -156,9 +157,15 @@ class VentanaGeneradorVariables(QMainWindow):
 																					self.sigma, self.lambd)
 
 		# Realizo prueba de chi cuadrado y muestro resultados
-		chi_cuadrado = self.controlador.test_chi_cuadrado(observadas, esperadas)
-		self.mostrar_mensaje("Valor obtenido", "El valor de Chi cuadrado obtenido es %s"
-							 % str(chi_cuadrado).replace(".", ","))
+		chi_cuadrado, chi_cuadrado_tabla = self.controlador.test_chi_cuadrado(observadas, esperadas, alpha)
+		titulo = "Test chi cuadrado"
+		if chi_cuadrado < chi_cuadrado_tabla:
+			mensaje = "Como %s < %s no se puede rechazar la hipótesis nula" % \
+					  (str(chi_cuadrado).replace(".", ","), str(chi_cuadrado_tabla).replace(".", ","))
+		else:
+			mensaje = "Como %s > %s se rechaza la hipótesis nula" % \
+					  (str(chi_cuadrado).replace(".", ","), str(chi_cuadrado_tabla).replace(".", ","))
+		self.mostrar_mensaje(titulo, mensaje)
 
 	""" Metodos """
 

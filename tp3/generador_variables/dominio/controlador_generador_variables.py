@@ -168,30 +168,25 @@ class ControladorGeneradorVariables:
         plt.ylabel("Cantidad")
         plt.show()
 
-    def test_chi_cuadrado(self, frecuencias_observadas, frecuencias_esperadas):
+    def test_chi_cuadrado(self, frecuencias_observadas, frecuencias_esperadas, alpha):
 
         # Inicializo datos
         cantidad_intervalos = len(frecuencias_observadas)
         chi_cuadrado = 0
 
-        # Calculo valor chi cuadrado
+        # Calculo valor chi cuadrado de la muestra
         for i in range(cantidad_intervalos):
             valor_intervalo = ((frecuencias_observadas[i] - frecuencias_esperadas[i]) ** 2) / frecuencias_esperadas[i] \
                 if frecuencias_esperadas[i] != 0 else 0
             chi_cuadrado += valor_intervalo
-
-        chi_cuadrado = round(chi_cuadrado, 2)
+        chi_cuadrado = round(chi_cuadrado, 4)
         if chi_cuadrado == int(chi_cuadrado):
             chi_cuadrado = int(chi_cuadrado)
 
-        return chi_cuadrado
+        # Obtengo valor chi cuadrado de tabla
+        grados_libertad = cantidad_intervalos - 1
+        chi_cuadrado_tabla = round(stats.chi2.interval(alpha=alpha, df=grados_libertad)[1], 4)
+        if chi_cuadrado_tabla == int(chi_cuadrado_tabla):
+            chi_cuadrado_tabla = int(chi_cuadrado_tabla)
 
-    """
-    def comparar_TestChi(valorObtenido,gradosLibertad,alfa):
-	    tabla = chi2.interval(alpha=alfa,df=gradosLibertad)
-	    if valorObtenido < tabla[1]:
-	    	valorTabla = round(tabla[1],4)
-	    	print("Como :",valorObtenido,"es menor que :",valorPrueba,"No se puede rechazar la hipotesis nula")
-	    else:
-	    	print("Como :",valorObtenido,"es mayor que :",valorPrueba,"Se rechaza la hipotesis nula")
-    """
+        return chi_cuadrado, chi_cuadrado_tabla
