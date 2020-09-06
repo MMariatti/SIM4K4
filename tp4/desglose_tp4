@@ -18,3 +18,8 @@ costo_venta = $150 cada 100 gr
 costo_faltante = $100 cada 10 gr
 
 costo_compra = $250 por frasco
+
+En el software se debe poder elegir entre usar el generador de números
+aleatorios del lenguaje o usar para todas las variables aleatorias un generador
+congruencial con : Semilla: 37, Const. C: 43, Const. A: 13 Const. M: 101 y usando
+el Generador: Ri = ( C + A * Ri-1) mod M.
