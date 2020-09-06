@@ -117,8 +117,7 @@ class ControladorGeneradorVariables:
                 if intervalo.get("minimo") <= variable_aleatoria < intervalo.get("maximo"):
                     frecuencias_x_intervalo[intervalo["media"]] += 1
 
-        # Genero listas de medias y frecuencias observadas a partir de datos anteriores
-        medias = [str(intervalo.get("media")).replace(".", ",") for intervalo in intervalos]
+        # Genero listas frecuencias observadas a partir de datos anteriores
         frecuencias_obsevadas = list(frecuencias_x_intervalo.values())
 
         # Inicializo lista de frecuencias esperadas
@@ -154,7 +153,7 @@ class ControladorGeneradorVariables:
                     frecuencia_esperada = int(frecuencia_esperada)
                 frecuencias_esperadas.append(frecuencia_esperada)
 
-        return medias, frecuencias_obsevadas, frecuencias_esperadas
+        return frecuencias_obsevadas, frecuencias_esperadas
 
     def generar_grafico_frecuencias(self, variables_aleatorias, cantidad_intervalos):
 

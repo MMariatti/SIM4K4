@@ -149,12 +149,11 @@ class VentanaGeneradorVariables(QMainWindow):
 			self.mostrar_mensaje("Error", "La cantidad de intervalos tiene que ser mayor a cero")
 			return
 
-		# Obtengo listas de medias, frecuencias observadas y frecuencias esperadas
-		medias, observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
-																							cantidad_intervalos,
-																							self.tipo_distribucion,
-																							self.mu, self.sigma,
-																							self.lambd)
+		# Obtengo listas de frecuencias observadas y esperadas
+		observadas, esperadas = self.controlador.calcular_frecuencias_por_intervalo(self.variables_aleatorias,
+																					cantidad_intervalos,
+																					self.tipo_distribucion, self.mu,
+																					self.sigma, self.lambd)
 
 		# Realizo prueba de chi cuadrado y muestro resultados
 		chi_cuadrado = self.controlador.test_chi_cuadrado(observadas, esperadas)
@@ -165,11 +164,41 @@ class VentanaGeneradorVariables(QMainWindow):
 
 	def preparar_interfaz(self):
 
-		# Cargo combo box
+		# Cargo combo boxs
 		self.cmb_tipo_distribucion.clear()
 		self.cmb_tipo_distribucion.addItem("Distribución Normal", 0)
 		self.cmb_tipo_distribucion.addItem("Distribución Exponencial", 1)
 		self.cmb_tipo_distribucion.addItem("Distribución Poisson", 2)
+		self.cmb_alpha.clear()
+		self.cmb_alpha.addItem("0,001", 0.001)
+		self.cmb_alpha.addItem("0,0025", 0.0025)
+		self.cmb_alpha.addItem("0,005", 0.005)
+		self.cmb_alpha.addItem("0,01", 0.01)
+		self.cmb_alpha.addItem("0,025", 0.025)
+		self.cmb_alpha.addItem("0,05", 0.05)
+		self.cmb_alpha.addItem("0,1", 0.1)
+		self.cmb_alpha.addItem("0,15", 0.15)
+		self.cmb_alpha.addItem("0,2", 0.2)
+		self.cmb_alpha.addItem("0,25", 0.25)
+		self.cmb_alpha.addItem("0,3", 0.3)
+		self.cmb_alpha.addItem("0,35", 0.35)
+		self.cmb_alpha.addItem("0,4", 0.4)
+		self.cmb_alpha.addItem("0,45", 0.45)
+		self.cmb_alpha.addItem("0,5", 0.5)
+		self.cmb_alpha.addItem("0,55", 0.55)
+		self.cmb_alpha.addItem("0,6", 0.6)
+		self.cmb_alpha.addItem("0,65", 0.65)
+		self.cmb_alpha.addItem("0,7", 0.7)
+		self.cmb_alpha.addItem("0,75", 0.75)
+		self.cmb_alpha.addItem("0,8", 0.8)
+		self.cmb_alpha.addItem("0,85", 0.85)
+		self.cmb_alpha.addItem("0,9", 0.9)
+		self.cmb_alpha.addItem("0,95", 0.95)
+		self.cmb_alpha.addItem("0,975", 0.975)
+		self.cmb_alpha.addItem("0,99", 0.99)
+		self.cmb_alpha.addItem("0,995", 0.995)
+		self.cmb_alpha.addItem("0,9975", 0.9975)
+		self.cmb_alpha.addItem("0,999", 0.999)
 
 		# Preparo tabla de variables generadas
 		self.grid_variables_generadas.setColumnCount(2)
@@ -195,6 +224,9 @@ class VentanaGeneradorVariables(QMainWindow):
 
 		# Limpio txts
 		self.txt_cantidad_intervalos.clear()
+
+		# Selecciono opcion por defecto en combo boxs
+		self.cmb_alpha.setCurrentIndex(0)
 
 	def mostrar_mensaje(self, titulo, mensaje):
 
