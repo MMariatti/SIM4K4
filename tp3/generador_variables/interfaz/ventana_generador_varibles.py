@@ -27,9 +27,10 @@ class VentanaGeneradorVariables(QMainWindow):
 		self.controlador = ControladorGeneradorVariables()
 
 		# Agrego validadores a los campos
-		validador_decimales = ValidadorDecimales(5, 2)
+		validador_decimales_negativos = ValidadorDecimales(negative=True)
+		validador_decimales = ValidadorDecimales()
 		validador_enteros = ValidadorEnteros(12)
-		self.txt_mu.setValidator(validador_decimales)
+		self.txt_mu.setValidator(validador_decimales_negativos)
 		self.txt_sigma.setValidator(validador_decimales)
 		self.txt_lambda.setValidator(validador_decimales)
 		self.txt_cantidad_variables.setValidator(validador_enteros)
@@ -84,8 +85,8 @@ class VentanaGeneradorVariables(QMainWindow):
 				self.mostrar_mensaje("Error", "La constante \"mu\" no puede ser vacía")
 				return
 			sigma = self.txt_sigma.text()
-			if sigma == "" or float(sigma.replace(",", ".")) <= 0:
-				self.mostrar_mensaje("Error", "La constante \"sigma\" tiene que ser mayor a cero")
+			if sigma == "" or float(sigma.replace(",", ".")) < 0:
+				self.mostrar_mensaje("Error", "La constante \"sigma\" tiene que ser mayor o igual a cero")
 				return
 		else:
 			lambd = self.txt_lambda.text()
