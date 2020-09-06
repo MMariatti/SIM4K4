@@ -175,7 +175,7 @@ class ControladorGeneradorVariables:
 
         # Obtengo valor chi cuadrado de tabla
         grados_libertad = cantidad_intervalos - 1
-        chi_cuadrado_tabla = round(stats.chi2.interval(alpha=alpha, df=grados_libertad)[0], 4)
+        chi_cuadrado_tabla = round(stats.chi2.isf(alpha, grados_libertad), 4)
         if chi_cuadrado_tabla == int(chi_cuadrado_tabla):
             chi_cuadrado_tabla = int(chi_cuadrado_tabla)
 
