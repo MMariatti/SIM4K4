@@ -16,3 +16,5 @@ capacidad maxima = 10 frascos
 costo_venta = $150 cada 100 gr
 
 costo_faltante = $100 cada 10 gr
+
+costo_compra = $250 por frasco
