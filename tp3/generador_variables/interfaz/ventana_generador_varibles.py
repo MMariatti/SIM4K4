@@ -261,7 +261,6 @@ class VentanaGeneradorVariables(QMainWindow):
 
 	""" Eventos """
 
-	# Evento show
 	def showEvent(self, QShowEvent):
 		self.preparar_interfaz()
 		self.limpiar_interfaz_generar_variables()

@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>760</width>
+    <width>780</width>
     <height>461</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>780</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="palette">
    <palette>
@@ -1073,9 +1079,15 @@
        <layout class="QHBoxLayout" name="lyt_vertical_1_1">
         <item>
          <widget class="QTableWidget" name="grid_variables_generadas">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
-            <width>250</width>
+            <width>270</width>
             <height>420</height>
            </size>
           </property>
@@ -1083,7 +1095,7 @@
            <set>QAbstractItemView::NoEditTriggers</set>
           </property>
           <attribute name="horizontalHeaderDefaultSectionSize">
-           <number>124</number>
+           <number>135</number>
           </attribute>
           <attribute name="horizontalHeaderStretchLastSection">
            <bool>true</bool>
