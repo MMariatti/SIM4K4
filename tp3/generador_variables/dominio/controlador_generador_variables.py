@@ -89,19 +89,15 @@ class ControladorGeneradorVariables:
         cantidad_variables_aleatorias = len(lista_variables_aleatorias)
         minimo = min(lista_variables_aleatorias)
         maximo = max(lista_variables_aleatorias)
-        paso = round(((maximo - minimo) / cantidad_intervalos), 2)
+        paso = ((maximo - minimo) / cantidad_intervalos)
         intervalos = []
         frecuencias_observadas = []
         frecuencias_esperadas = []
 
         # Genero lista de intervalos
         for i in range(0, cantidad_intervalos):
-            min_intervalo = round(minimo, 2)
-            if min_intervalo == int(min_intervalo):
-                min_intervalo = int(min_intervalo)
-            max_intervalo = round(min_intervalo + paso, 2)
-            if max_intervalo == int(max_intervalo):
-                max_intervalo = int(max_intervalo)
+            min_intervalo = minimo
+            max_intervalo = min_intervalo + paso
             intervalos.append({
                 "minimo": min_intervalo,
                 "maximo": max_intervalo,
@@ -116,9 +112,9 @@ class ControladorGeneradorVariables:
             # Calculo frecuencia observada de intervalo recorrido
             index_eliminar = []
             frecuencia_observada = 0
-            for i in range(len(lista_variables_aleatorias) - 1, -1):
+            for i in range(len(lista_variables_aleatorias) - 1, -1, -1):
                 variable_aleatoria = lista_variables_aleatorias[i]
-                if minimo <= variable_aleatoria < maximo:
+                if minimo <= variable_aleatoria <= maximo:
                     index_eliminar.append(i)
                     frecuencia_observada += 1
             for i in index_eliminar:
