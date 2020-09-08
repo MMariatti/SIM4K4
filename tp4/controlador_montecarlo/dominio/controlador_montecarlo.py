@@ -44,36 +44,47 @@ class controlador_montecarlo:
 
 		random_turno = round(random(0,1),4)
 		random_demanda = round(random(0,1),4)
-		demanda = 0
+		demandaManana = 0
+		demandaTarde = 0
 		random_entrega_pedido = round(random(0,1),4)
 		frascos_disponibles = 2
-		turno = ""
+		
 
 		simulacion_stock = []*cantidad_dias
 
 		for i in range(0, cantidad_dias):
 
-			if (random_turno < 0,5):
-				turno = "Mañana"
-			elif(random_turno > 0,5):
-				turno = "Tarde"
+			turno = "Mañana"
 
 			if(turno == "Mañana" and random_demanda < 0,5):
 				demanda = 50
 			elif (turno == "Mañana" and random_demanda < 0,5):
-				demanda = np.random.normal(75,15,1)
+				demandaManana = np.random.normal(75,15,1)
 
-			elif (turno =="Tarde" and random_demanda < 0,5):
-				demanda = np.random.exponential(79, size = 1)
+			if (demandaManana <= frascos_disponibles*170):
+				beneficioManana = demandaManana*precio_venta
+				faltanteManana = 0
+			elif(demandaManana > frascos_disponibles*170):
+				beneficioManana = demandaManana*precio_venta
+				faltanteManana  = (demanda-(frascos_disponibles*170))*costo_faltante
 
-			if(demanda <= frascos_disponibles*170):
-				beneficio = demanda*precio_venta
-				faltante = 0
-			elif(demanda > frascos_disponibles*170):
-				beneficio = frascos_disponibles*precio_venta
-				faltante = (demanda-(frascos_disponibles*170))*costo_faltante
+			turno = "Tarde"
 
-			simulacion_stock.append({"Dia":i+1,"Turno":turno,"demanda":demanda,"beneficio":beneficio,"faltante":faltante})
+			elif (turno =="Tarde"):
+				demandaTarde = np.random.exponential(79, size = 1)
+
+			if(demandaTarde <= frascos_disponibles*170):
+				beneficioTarde = demanda*precio_venta
+				faltanteTarde = 0
+			elif(demandaTarde > frascos_disponibles*170):
+				beneficio = demandaTarde*precio_venta
+				faltante = (demandaTarde-(frascos_disponibles*170))*costo_faltante
+
+			beneficioTotal = beneficioManana + beneficioTarde
+			faltanteTotal = faltanteManana+faltanteTarde
+
+			simulacion_stock.append({"Dia":i+1,"Mañana":demandaManana,"Faltante mañana":faltanteManana,
+				"Tarde":beneficioTarde,"faltante Tarde":faltante, "Beneficio total":beneficioTotal,"Faltante total":faltanteTotal})
 
 		return simulacion_stock
 
