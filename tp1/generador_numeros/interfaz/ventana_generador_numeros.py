@@ -171,7 +171,7 @@ class VentanaGeneradorNumeros(QMainWindow):
 		self.cmb_metodo_generacion.addItem("Método provisto por el lenguaje", 2)
 
 		# Preparo tabla de numeros generados
-		self.grid_numeros_generados.setColumnCount(4)
+		self.grid_numeros_generados.setColumnCount(3)
 		self.grid_numeros_generados.setHorizontalHeaderLabels(["N° de orden", "Semilla", "Número aleatorio"])
 
 	def limpiar_interfaz_generar_numeros(self):
