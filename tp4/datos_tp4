@@ -1,0 +1,42 @@
+FUNCIONAMIENTO DE LA SIMULACION
+
+Stock:
+  Pedido:
+    - 2 frascos cada 2 dias con 170g cada frasco
+  Entrega:
+    - Inmediata (0,5)
+    - 1 dia (0,25)
+    - 2 dias (0,25)
+  Capacidad maxima:
+    - 10 frascos
+
+Consumo:
+  - 1er turno (0,5)
+    - 50g (0,5)
+    - Dist normal mu = 75g y sigma = 15g (0,5)
+  - 2do turno (0,5)
+    - Dist exponencial mu = 70g (1)
+
+Costos:
+  Compra:
+    - $250 cada frasco
+  Venta:
+    - $150 cada 100g
+  Venta no obtenida
+    - $100 cada 100g
+
+PARAMETROS DE LA SIMULACION
+
+- Generador de numeros aleatorios
+  - Provisto por el lenguaje
+  - Congruencial con semilla = 37, c = 43, a = 13 y m = 101 de forma que Ri = (C + A*Ri-1) mod M
+- Frascos a comprar (x1 cantidad cada x2 dias)
+- Peso de cada frasco
+- Limite capaxidad maxima de frascos
+- Valores de las variables aleatorias
+  - Mu y sigma para la dist normal del primer turno
+  - Mu para la dist exponencial del segundo turno
+- Horas de cada turno
+- Dias a simular
+
+
