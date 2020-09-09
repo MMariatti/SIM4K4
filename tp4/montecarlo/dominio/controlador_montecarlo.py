@@ -36,7 +36,7 @@ class ControladorMontecarlo:
 
         return numero_aleatorio
 
-    def simular_stock(self, cantidad_dias, capacidad_maxima=10):
+     def simular_stock(cantidad_dias, capacidad_maxima=10):
         # Pongo que el costo de venta es 15 xq resulta de dividir $150 en 100gr
         precio_venta = 15
 
@@ -50,13 +50,20 @@ class ControladorMontecarlo:
         demanda_manana = 0
         demanda_tarde = 0
         random_entrega_pedido = round(random.random(), 4)
-        frascos_disponibles = 2
-        cafe_disponible = frascos_disponibles*170
+        demanda_total = demanda_manana + demanda_tarde
+        faltante_manana = 0
+        faltante_tarde = 0
+
+        beneficio_manana = 0
+        beneficio_tarde = 0
 
         simulacion_stock = []*cantidad_dias
 
         for i in range(0, cantidad_dias):
 
+            frascos_disponibles = 2
+            cafe_disponible = frascos_disponibles*170
+            random_demanda_m = round(random.random(), 4)
             string_m = "Mañana"
 
             if string_m == "Mañana" and (0 <= random_demanda_m < 0.5):
@@ -68,7 +75,7 @@ class ControladorMontecarlo:
             if demanda_manana <= cafe_disponible:
                 beneficio_manana = demanda_manana*precio_venta
                 faltante_manana = 0
-                faltante_manana = cafe_disponible-demanda_manana
+                cafe_disponible = cafe_disponible-demanda_manana
 
             elif demanda_manana > cafe_disponible:
                 beneficio_manana = demanda_manana*precio_venta
@@ -90,17 +97,20 @@ class ControladorMontecarlo:
                 faltante_tarde = (demanda_tarde - cafe_disponible) * costo_faltante
                 cafe_disponible = 0
 
+            demanda_total = (demanda_manana + demanda_tarde)
             beneficio_total = beneficio_manana + beneficio_tarde
             faltante_total = faltante_manana + faltante_tarde
 
             simulacion_stock.append({"Dia": i+1,
                                      "Random": random_demanda_m,
                                      "Mañana": demanda_manana,
+                                     "Beneficio mañana": beneficio_manana,
                                      "Faltante mañana": faltante_manana,
                                      "Tarde": beneficio_tarde,
                                      "Faltante Tarde": faltante_tarde,
+                                     "Demanda Total": demanda_total,
                                      "Beneficio total": beneficio_total,
                                      "Faltante total": faltante_total,
                                      "Cafe disponible": cafe_disponible})
 
-            return simulacion_stock
+        return simulacion_stock
