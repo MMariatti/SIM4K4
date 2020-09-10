@@ -73,7 +73,7 @@ class VentanaMontecarlo(QMainWindow):
         # Cargo combo boxs
         self.cmb_tipo_generador.clear()
         self.cmb_tipo_generador.addItem("Provisto por el lenguaje", 0)
-        self.cmb_tipo_generador.addItem("Congruencial", 1)
+        self.cmb_tipo_generador.addItem("Congruencial mixto", 1)
         self.cmb_tipo_visualizacion.clear()
         self.cmb_tipo_visualizacion.addItem("Cada 1000 días", 0)
         self.cmb_tipo_visualizacion.addItem("50 días a partir de día seleccionado", 1)
