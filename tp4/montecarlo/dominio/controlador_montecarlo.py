@@ -4,6 +4,31 @@ import numpy as np
 
 class ControladorMontecarlo:
 
+    def simular(self, parametros):
+
+        dias_simulados = [{
+                "nro_dia": 1,
+                "stock": 10,
+                "cafe_almacenado_promedio": 1700,
+                "cafe_faltante_promedio": 0,
+                "ingreso": 250,
+                "ingreso_promedio": 250,
+                "contribucion": 180,
+                "contribucion_promedio": 180
+            }]
+
+        resultados = {
+            "porcentaje_dias_faltantes": 10,
+            "porcentaje_dias_0_a_2_frascos": 20,
+            "porcentaje_dias_2_a_5_frascos": 30,
+            "porcentaje_dias_5_a_8_frascos": 50,
+            "porcentaje_dias_mas_8_frascos": 60,
+            "promedio_horas_perdidas": 70,
+            "tiene_stock": True
+        }
+
+        return dias_simulados, resultados
+
     def elegir_modo_aleatorios(self, tipo_aleatorio, cantidad=None, semilla=None, a=None, c=None, m=None):
         numero_aleatorio = None
 
