@@ -36,7 +36,7 @@ class ControladorMontecarlo:
 
         return numero_aleatorio
 
-     def simular_stock(cantidad_dias, capacidad_maxima=10):
+    def simular_stock(self, cantidad_dias, capacidad_maxima=10):
         # Pongo que el costo de venta es 15 xq resulta de dividir $150 en 100gr
         precio_venta = 15
 
