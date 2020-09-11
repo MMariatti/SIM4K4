@@ -130,11 +130,13 @@ class ControladorMontecarlo:
                 if demora_pedido != 0:
                     demora_pedido = demora_pedido - 1
                 else:
-                    pass
+                    frascos_disponibles += 2
+                    if frascos_disponibles > capacidad_maxima:
+                        frascos_tirados += frascos_disponibles-capacidad_maxima
 
             # Planteo condiciones respecto al descuento de dias en la demora
 
-            if demora_pedido == 0:
+            if  demora_pedido == 0:
                 frascos_disponibles += 2
                 if frascos_disponibles > capacidad_maxima:
                     frascos_tirados += frascos_disponibles-capacidad_maxima
