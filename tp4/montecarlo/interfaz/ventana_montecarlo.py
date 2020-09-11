@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
+from PyQt5.Qt import QHeaderView
 from PyQt5 import uic
 from dominio.controlador_montecarlo import ControladorMontecarlo
 from soporte.validador_decimales import ValidadorDecimales
@@ -42,6 +43,7 @@ class VentanaMontecarlo(QMainWindow):
         self.btn_limpiar.clicked.connect(self.accion_limpiar_interfaz)
         self.btn_simular.clicked.connect(self.accion_simular)
         self.cmb_tipo_visualizacion.currentIndexChanged.connect(self.accion_seleccionar_tipo_visualizacion)
+        self.txt_dia_visualizacion.textChanged.connect(self.accion_seleccionar_dia_visualizacion)
 
     """ Acciones """
 
@@ -134,6 +136,16 @@ class VentanaMontecarlo(QMainWindow):
             self.txt_dia_visualizacion.setText("1")
             self.txt_dia_visualizacion.setEnabled(True)
 
+        # Cargo tabla si hay dias simulados
+        if len(self.dias_simulados):
+            self.cargar_tabla_dias_simulados()
+
+    def accion_seleccionar_dia_visualizacion(self):
+
+        # Cargo tabla si hay dias simulados
+        if len(self.dias_simulados):
+            self.cargar_tabla_dias_simulados()
+
     """ Metodos """
 
     def preparar_interfaz(self):
@@ -148,7 +160,12 @@ class VentanaMontecarlo(QMainWindow):
 
         # Preparo tabla de numeros generados
         self.grid_dias_simulados.setColumnCount(8)
-        self.grid_dias_simulados.setHorizontalHeaderLabels([])
+        self.grid_dias_simulados.setHorizontalHeaderLabels(["Día", "Stock al finalizar día", "Café almacenado promedio",
+                                                            "Café faltante promedio", "Ingreso", "Ingreso promedio",
+                                                            "Contribución", "Contribución promedio"])
+        header = self.grid_dias_simulados.horizontalHeader()
+        for i in range(0, 8):
+            header.setSectionResizeMode(i, QHeaderView.ResizeToContents)
 
     def limpiar_interfaz(self):
 
@@ -224,24 +241,29 @@ class VentanaMontecarlo(QMainWindow):
 
     def cargar_tabla_dias_simulados(self):
 
-        # Obtengo cantidad de filas e indices a renderizar dependiendo del tipo de visualizacion
-        cantidad_filas = 0
+        # Obtengo indices a renderizar y cantidad de filas dependiendo del tipo de visualizacion
         indices_filas = []
         id_tipo_visualizacion = self.cmb_tipo_visualizacion.itemData(self.cmb_tipo_visualizacion.currentIndex())
         if id_tipo_visualizacion == 0:
-            cantidad_filas = 1 + ((len(self.dias_simulados)) // 1000)
             indices_filas.append(0)
-            index = 999
-            while index <= len(self.dias_simulados) - 1:
-                indices_filas.append(index)
-                index += 1000
+            indice = 999
+            while indice <= len(self.dias_simulados) - 1:
+                indices_filas.append(indice)
+                indice += 1000
+            cantidad_filas = 1 + ((len(self.dias_simulados)) // 1000)
+
         else:
-            dia_visualizacion = int(self.txt_dia_visualizacion.text())
-            cantidad_filas = len(self.dias_simulados) - dia_visualizacion
-            if cantidad_filas > 50:
-                cantidad_filas = 50
-            for i in range(dia_visualizacion - 1, cantidad_filas):
-                indices_filas.append(i)
+            dia_visualizacion = self.txt_dia_visualizacion.text()
+            if dia_visualizacion == "" or int(dia_visualizacion) == 0:
+                self.txt_dia_visualizacion.setText("1")
+                dia_visualizacion = 1
+            else:
+                dia_visualizacion = int(dia_visualizacion)
+            for i in range(0, 50):
+                if dia_visualizacion - 1 + i >= len(self.dias_simulados):
+                    break
+                indices_filas.append(dia_visualizacion - 1 + i)
+            cantidad_filas = len(indices_filas)
 
         # Cargo tabla
         self.grid_dias_simulados.setRowCount(cantidad_filas)

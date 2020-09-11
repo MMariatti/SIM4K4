@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
+    <width>1120</width>
     <height>620</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1000</width>
+    <width>1120</width>
     <height>620</height>
    </size>
   </property>
@@ -1280,19 +1280,16 @@
               </property>
               <property name="minimumSize">
                <size>
-                <width>480</width>
+                <width>600</width>
                 <height>0</height>
                </size>
               </property>
               <property name="editTriggers">
                <set>QAbstractItemView::NoEditTriggers</set>
               </property>
-              <attribute name="horizontalHeaderDefaultSectionSize">
-               <number>135</number>
-              </attribute>
-              <attribute name="horizontalHeaderStretchLastSection">
-               <bool>true</bool>
-              </attribute>
+              <property name="textElideMode">
+               <enum>Qt::ElideMiddle</enum>
+              </property>
               <attribute name="verticalHeaderVisible">
                <bool>false</bool>
               </attribute>
