@@ -64,22 +64,32 @@ class ControladorMontecarlo:
         return numero_aleatorio
 
     def simular_stock(self, cantidad_dias, capacidad_maxima=10):
+
         # Pongo que el costo de venta es 15 xq resulta de dividir $150 en 100gr
+
         precio_venta = 15
 
         # Pongo que el costo del faltante es 10 xq resulta de dividir $100 en 100gr
+
         costo_faltante = 10
 
         costo_frasco = 250
 
-        random_demanda_m = round(random.random(), 4)
-        random_demanda_t = round(random.random(), 4)
+        # Variable de las demandas, tanto tarde como mañana
+
         demanda_manana = 0
         demanda_tarde = 0
-        random_entrega_pedido = round(random.random(), 4)
-        demanda_total = demanda_manana + demanda_tarde
+
+        # Si la capacidad maxima es superada, en esta variable se suman los frascos que se descartan
+
+        frascos_tirados = 0
+
+        # Variables que representan el faltante de cada turno
+
         faltante_manana = 0
         faltante_tarde = 0
+
+        # Variables que representan el beneficio de cada turno
 
         beneficio_manana = 0
         beneficio_tarde = 0
@@ -88,10 +98,54 @@ class ControladorMontecarlo:
 
         for i in range(0, cantidad_dias):
 
+            demora_pedido = 0
             frascos_disponibles = 2
             cafe_disponible = frascos_disponibles*170
             random_demanda_m = round(random.random(), 4)
             string_m = "Mañana"
+
+            # Numero random del pedido
+            # Si es entre 0 y 0,5 no hay demora
+            # Entre 0,5 y 0,75 1 dia de demora
+            # Entre 0,75 y 1, 2 demora
+
+            random_entrega_pedido = round(random.random(), 4)
+
+            # Planteo condiciones respecto de la entrega de los pedidos
+
+            if i % 2 != 0 and 0 <= random_entrega_pedido < 0.5:
+                demora_pedido = 0
+                frascos_disponibles += 2
+                if frascos_disponibles > capacidad_maxima:
+                    frascos_tirados += frascos_disponibles-capacidad_maxima
+
+            elif i % 2 != 0 and 0.5 <= random_entrega_pedido < 0.75:
+                demora_pedido = 1
+
+            elif i % 2 != 0 and 0.75 <= random_entrega_pedido < 1:
+                demora_pedido = 2
+
+            # Forzar que el random sea -1 significa que ese dia no se realiza pedido
+
+            elif i % 2 == 0:
+                random_entrega_pedido = -1
+                if demora_pedido != 0:
+                    demora_pedido = demora_pedido - 1
+                else:
+                    frascos_disponibles += 2
+                    if frascos_disponibles > capacidad_maxima:
+                        frascos_tirados += frascos_disponibles-capacidad_maxima
+
+            # Planteo condiciones respecto al descuento de dias en la demora
+
+            if  demora_pedido == 0:
+                frascos_disponibles += 2
+                if frascos_disponibles > capacidad_maxima:
+                    frascos_tirados += frascos_disponibles-capacidad_maxima
+            else:
+                demora_pedido -= 1
+
+            # Planteo condiciones para el turno mañana
 
             if string_m == "Mañana" and (0 <= random_demanda_m < 0.5):
                 demanda_manana = 50
@@ -109,6 +163,8 @@ class ControladorMontecarlo:
                 faltante_manana = (demanda_manana - cafe_disponible) * costo_faltante
                 cafe_disponible = 0
 
+            # Planteo condiciones para el turno tarde
+
             string_t = "Tarde"
 
             if string_t == "Tarde":
@@ -124,16 +180,21 @@ class ControladorMontecarlo:
                 faltante_tarde = (demanda_tarde - cafe_disponible) * costo_faltante
                 cafe_disponible = 0
 
+            # Planteo condiciones del final del dia
+
             demanda_total = (demanda_manana + demanda_tarde)
             beneficio_total = beneficio_manana + beneficio_tarde
             faltante_total = faltante_manana + faltante_tarde
 
             simulacion_stock.append({"Dia": i+1,
+                                     "Random demora": random_entrega_pedido,
+                                     "Demora": demora_pedido,
                                      "Random": random_demanda_m,
                                      "Mañana": demanda_manana,
                                      "Beneficio mañana": beneficio_manana,
                                      "Faltante mañana": faltante_manana,
-                                     "Tarde": beneficio_tarde,
+                                     "Demanda Tarde": demanda_tarde,
+                                     "Beneficio Tarde": beneficio_tarde,
                                      "Faltante Tarde": faltante_tarde,
                                      "Demanda Total": demanda_total,
                                      "Beneficio total": beneficio_total,
