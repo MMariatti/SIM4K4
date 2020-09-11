@@ -63,142 +63,103 @@ class ControladorMontecarlo:
 
         return numero_aleatorio
 
-    def simular_stock(self, cantidad_dias, capacidad_maxima=10):
-
-        # Pongo que el costo de venta es 15 xq resulta de dividir $150 en 100gr
-
-        precio_venta = 15
-
-        # Pongo que el costo del faltante es 10 xq resulta de dividir $100 en 100gr
-
-        costo_faltante = 10
-
-        costo_frasco = 250
-
-        # Variable de las demandas, tanto tarde como mañana
+        def simular_montecarlo(cantidad_dias, capacidad_maxima=10):
 
         demanda_manana = 0
-        demanda_tarde = 0
-
-        # Si la capacidad maxima es superada, en esta variable se suman los frascos que se descartan
-
-        frascos_tirados = 0
-
-        # Variables que representan el faltante de cada turno
-
-        faltante_manana = 0
-        faltante_tarde = 0
-
-        # Variables que representan el beneficio de cada turno
-
         beneficio_manana = 0
         beneficio_tarde = 0
+        faltante_manana = 0
+        faltante_tarde = 0
+        demora = 0
+        frascos_regalados = 0
+        frascos_disponibles = 2
 
-        simulacion_stock = []*cantidad_dias
+        faltante_total = 0
+        simulacion_montecarlo = []* cantidad_dias
 
-        for i in range(0, cantidad_dias):
+        for sim in range(len(simulacion_montecarlo)):
 
-            demora_pedido = 0
-            frascos_disponibles = 2
-            cafe_disponible = frascos_disponibles*170
-            random_demanda_m = round(random.random(), 4)
-            string_m = "Mañana"
+        # Planteo  condiciones de entrega y demora de pedidos
 
-            # Numero random del pedido
-            # Si es entre 0 y 0,5 no hay demora
-            # Entre 0,5 y 0,75 1 dia de demora
-            # Entre 0,75 y 1, 2 demora
+            random_demora = round(random.random(), 4)
 
-            random_entrega_pedido = round(random.random(), 4)
-
-            # Planteo condiciones respecto de la entrega de los pedidos
-
-            if i % 2 != 0 and 0 <= random_entrega_pedido < 0.5:
-                demora_pedido = 0
+            if sim % 2 == 0 and 0 <= random_demora < 0.5:
+                demora = 0
                 frascos_disponibles += 2
-                if frascos_disponibles > capacidad_maxima:
-                    frascos_tirados += frascos_disponibles-capacidad_maxima
+            elif sim % 2 == 0 and 0.5 <= random_demora < 0.75:
+                demora = 1
+            elif sim % 2 == 0 and 0.75 <= random_demora < 1:
+                demora = 2
 
-            elif i % 2 != 0 and 0.5 <= random_entrega_pedido < 0.75:
-                demora_pedido = 1
-
-            elif i % 2 != 0 and 0.75 <= random_entrega_pedido < 1:
-                demora_pedido = 2
-
-            # Forzar que el random sea -1 significa que ese dia no se realiza pedido
-
-            elif i % 2 == 0:
-                random_entrega_pedido = -1
-                if demora_pedido != 0:
-                    demora_pedido = demora_pedido - 1
-                else:
+            elif sim % 2 != 0:
+                random_demora = "X"
+                demora = demora - 1
+                if demora == 0:
                     frascos_disponibles += 2
-                    if frascos_disponibles > capacidad_maxima:
-                        frascos_tirados += frascos_disponibles-capacidad_maxima
 
-            # Planteo condiciones respecto al descuento de dias en la demora
+            if frascos_disponibles > capacidad_maxima:
+                frascos_regalados += (frascos_disponibles-capacidad_maxima)
+                frascos_disponibles = capacidad_maxima
 
-            if  demora_pedido == 0:
-                frascos_disponibles += 2
-                if frascos_disponibles > capacidad_maxima:
-                    frascos_tirados += frascos_disponibles-capacidad_maxima
-            else:
-                demora_pedido -= 1
+            cafe_disponible = frascos_disponibles*170
 
-            # Planteo condiciones para el turno mañana
+            # Planteo condiciones del turno mañana
 
-            if string_m == "Mañana" and (0 <= random_demanda_m < 0.5):
+            random_manana = round(random.random(), 4)
+            if random_manana < 0.5:
+
                 demanda_manana = 50
 
-            elif string_m == "Mañana" and (0.5 <= random_demanda_m < 1):
-                demanda_manana = round(random.normalvariate(75, 15), 0)
+            elif 0.5 <= random_manana < 1:
+
+                demanda_manana = round(random.normalvariate(75, 15), 4)
 
             if demanda_manana <= cafe_disponible:
-                beneficio_manana = demanda_manana*precio_venta
-                faltante_manana = 0
+
+                beneficio_manana = round((demanda_manana * 15), 4)
                 cafe_disponible = cafe_disponible-demanda_manana
 
             elif demanda_manana > cafe_disponible:
-                beneficio_manana = demanda_manana*precio_venta
-                faltante_manana = (demanda_manana - cafe_disponible) * costo_faltante
+
+                beneficio_manana = round((cafe_disponible*15), 4)
+                faltante_manana = round((demanda_manana-cafe_disponible), 4)
                 cafe_disponible = 0
 
-            # Planteo condiciones para el turno tarde
+            # Planteo condiciones del turno tarde
 
-            string_t = "Tarde"
-
-            if string_t == "Tarde":
-                demanda_tarde = round(np.random.exponential(79), 0)
+            demanda_tarde = round(np.random.exponential(79), 0)
 
             if demanda_tarde <= cafe_disponible:
-                beneficio_tarde = demanda_tarde * precio_venta
-                faltante_tarde = 0
-                cafe_disponible = cafe_disponible - demanda_tarde
 
-            elif demanda_tarde > frascos_disponibles*170:
-                beneficio_tarde = demanda_tarde * precio_venta
-                faltante_tarde = (demanda_tarde - cafe_disponible) * costo_faltante
+                beneficio_tarde = round((demanda_tarde*15), 4)
+                cafe_disponible = round((cafe_disponible-demanda_tarde), 4)
+
+            elif demanda_tarde > cafe_disponible:
+                beneficio_tarde = round((cafe_disponible*15), 4)
+                faltante_tarde = round((demanda_tarde-cafe_disponible), 4)
                 cafe_disponible = 0
 
-            # Planteo condiciones del final del dia
+            if cafe_disponible == 0:
+                beneficio_tarde = 0
 
-            demanda_total = (demanda_manana + demanda_tarde)
-            beneficio_total = beneficio_manana + beneficio_tarde
-            faltante_total = faltante_manana + faltante_tarde
+            demanda_total = round((demanda_manana + demanda_tarde), 4)
 
-            simulacion_stock.append({"Dia": i+1,
-                                     "Random demora": random_entrega_pedido,
-                                     "Demora": demora_pedido,
-                                     "Random": random_demanda_m,
-                                     "Mañana": demanda_manana,
-                                     "Beneficio mañana": beneficio_manana,
-                                     "Faltante mañana": faltante_manana,
-                                     "Demanda Tarde": demanda_tarde,
-                                     "Beneficio Tarde": beneficio_tarde,
-                                     "Faltante Tarde": faltante_tarde,
-                                     "Demanda Total": demanda_total,
-                                     "Beneficio total": beneficio_total,
-                                     "Faltante total": faltante_total,
-                                     "Cafe disponible": cafe_disponible})
+            faltante_total = round((faltante_manana+faltante_tarde), 4)
 
-        return simulacion_stock
+            beneficio_total = round((beneficio_manana + beneficio_tarde), 4)
+
+            simulacion_montecarlo.append({"Dia":sim+1,
+                                          "Random demora":random_demora,
+                                          "Demora":demora,
+                                          "Frascos disponibles":frascos_disponibles,
+                                          "Random mañana":random_manana,
+                                          "Mañana":demanda_manana,
+                                          "Beneficio mañana":beneficio_manana,
+                                          "Faltante mañana":faltante_manana
+                                          "Tarde":demanda_tarde,
+                                          "Beneficio tarde":beneficio_tarde
+                                          "Faltante tarde":faltante_tarde,
+                                          "Beneficio":beneficio_total
+                                          "Faltante":faltante_total,
+                                          "Frascos regalados":frascos_regalados
+                                        })
