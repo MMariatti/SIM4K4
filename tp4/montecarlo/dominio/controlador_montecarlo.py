@@ -61,9 +61,9 @@ class ControladorMontecarlo:
 
         # Inicializo variables iniciales
         demora = None
+        frascos_llegados = 0
         frascos_disponibles = 0
         frascos_desechos = 0
-        frascos_llegados = 0
         cafe_disponible = 0
 
         # Bucle principal
@@ -82,7 +82,8 @@ class ControladorMontecarlo:
             cafe_disponible += frascos_llegados * peso_frasco
 
             # Realizo pedido de compra de frascos si corresponde
-            if dia - 1 % dias_cada_cuanto_comprar and demora is None:
+            dia_compra = (dia - 1 % dias_cada_cuanto_comprar and demora is None)
+            if dia_compra:
                 random_demora = generador_uniforme.generar_numero_aleatorio()
                 if 0 <= random_demora < 0.5:
                     demora = 0
@@ -109,6 +110,15 @@ class ControladorMontecarlo:
                 frascos_desechos += frascos_disponibles - capacidad_maxima_frascos
                 cafe_disponible = capacidad_maxima_frascos * peso_frasco
                 frascos_disponibles = capacidad_maxima_frascos
+
+            # Agrego vector de estado a lista
+            dias_simulados.append({
+                "nro_dia": dia,
+                "dia_compra": dia_compra,
+                "demora": demora,
+                "frascos_disponibles": frascos_disponibles,
+                "cafe_disponible": cafe_disponible,
+            })
 
         """
         dias_simulados = []
@@ -223,10 +233,10 @@ class ControladorMontecarlo:
 
             beneficio_total = round((beneficio_manana + beneficio_tarde), 4)
 
-            simulacion_montecarlo.append({"Dia":sim+1,
-                                          "Random demora":random_demora,
-                                          "Demora":demora,
-                                          "Frascos disponibles":frascos_disponibles,
+            # simulacion_montecarlo.append({"Dia":sim+1,
+            #                               "Random demora":random_demora,
+            #                               "Demora":demora,
+            #                               "Frascos disponibles":frascos_disponibles,
                                           "Random mañana":random_manana,
                                           "Mañana":demanda_manana,
                                           "Beneficio mañana":beneficio_manana,
