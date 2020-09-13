@@ -1,4 +1,4 @@
-import random 
+import math
 from dominio.clases.generador_lenguaje import GeneradorLenguaje
 from dominio.clases.generador_congruencial import GeneradorCongruencial
 from dominio.clases.generador_normal import GeneradorNormal
@@ -9,7 +9,7 @@ class ControladorMontecarlo:
 
     def simular(self, parametros):
 
-        # Obtengo parametros referidos a los frascos de cafe y convierto a tipos convenientes
+        # Obtengo parametros referidos al stock y convierto a tipos convenientes
         frascos_a_comprar = parametros.get("frascos_a_comprar")
         if frascos_a_comprar is not None:
             frascos_a_comprar = int(frascos_a_comprar)
@@ -23,7 +23,7 @@ class ControladorMontecarlo:
         if capacidad_maxima_frascos is not None:
             capacidad_maxima_frascos = int(capacidad_maxima_frascos)
 
-        # Obtengo parametros referidos a probabilidades, convierto a tipos convenientes y creo objetos manejadores
+        # Obtengo parametros referidos a la demanda, convierto a tipos convenientes y creo objetos manejadores
         mu_normal = parametros.get("mu_normal")
         if mu_normal is not None:
             mu_normal = float(mu_normal.replace(",", "."))
@@ -56,6 +56,60 @@ class ControladorMontecarlo:
         else:
             generador_uniforme = GeneradorCongruencial()
 
+        # Inicializo lista para guardar vectores de estado
+        dias_simulados = []
+
+        # Inicializo variables iniciales
+        demora = None
+        frascos_disponibles = 0
+        frascos_desechos = 0
+        frascos_llegados = 0
+        cafe_disponible = 0
+
+        # Bucle principal
+        for dia in range(1, dias + 1):
+
+            # Aumento frascos disponibles o descuento dia de demora al iniciar el dia
+            if demora is not None:
+                if demora != 0:
+                    demora -= 1
+                if demora == 0:
+                    demora = None
+                    frascos_llegados = frascos_a_comprar
+                    frascos_disponibles += frascos_llegados
+
+            # Actualizo los gramos cafe disponible al iniciar el dia
+            cafe_disponible += frascos_llegados * peso_frasco
+
+            # Realizo pedido de compra de frascos si corresponde
+            if dia - 1 % dias_cada_cuanto_comprar and demora is None:
+                random_demora = generador_uniforme.generar_numero_aleatorio()
+                if 0 <= random_demora < 0.5:
+                    demora = 0
+                elif 0.5 <= random_demora < 0.75:
+                    demora = 1
+                elif 0.75 <= random_demora < 1:
+                    demora = 2
+
+            # Consumo turno mañana
+
+            # Comsumo turno tarde
+
+            # Calculo Comsumo total
+            consumo_total = 0
+
+            # Actualizo los gramos cafe disponible al finalizar el dia
+            cafe_disponible -= consumo_total
+
+            # Calculo frascos disponibles al finalizar el dia
+            frascos_disponibles = math.ceil(cafe_disponible / frascos_disponibles)
+
+            # Desecho cafe si corresponde dependiendo capacidad máxima
+            if frascos_disponibles > capacidad_maxima_frascos:
+                frascos_desechos += frascos_disponibles - capacidad_maxima_frascos
+                cafe_disponible = capacidad_maxima_frascos * peso_frasco
+                frascos_disponibles = capacidad_maxima_frascos
+
         """
         dias_simulados = []
         for i in range(1, 10001):
@@ -83,38 +137,6 @@ class ControladorMontecarlo:
 
         return [], {}
 
-    def elegir_modo_aleatorios(self, tipo_aleatorio, cantidad=None, semilla=None, a=None, c=None, m=None):
-        numero_aleatorio = None
-
-        if tipo_aleatorio == 0:
-            numero_aleatorio = round(random.random(), 4)
-
-        elif tipo_aleatorio == 1:
-            cantidad = int(cantidad)
-            semilla = round(float(semilla.replace(",", ".")), 4)
-            a = round(float(a.replace(",", ".")), 4)
-            c = round(float(c.replace(",", ".")), 4)
-            m = round(float(m.replace(",", ".")), 4)
-
-            # Inicializo datos
-            numero_aleatorio = []
-
-            # Genero lista de numeros aleatorios
-            for i in range(0, cantidad):
-                if i == 0:
-                    aleatorio = round(semilla % m, 4)
-                else:
-                    aleatorio = round((a * semilla + c) % m, 4)
-                aleatorio_decimal = round(aleatorio / m, 4)
-                numero_aleatorio.append({
-                    "nro_orden": i + 1,
-                    "semilla": semilla,
-                    "aleatorio_decimal": aleatorio_decimal
-                })
-                semilla = aleatorio
-
-        return numero_aleatorio
-
     """
     def simular_montecarlo(self, cantidad_dias, capacidad_maxima=10):
 
@@ -123,9 +145,9 @@ class ControladorMontecarlo:
         beneficio_tarde = 0
         faltante_manana = 0
         faltante_tarde = 0
-        demora = 0
-        frascos_regalados = 0
-        frascos_disponibles = 2
+        # demora = 0
+        # frascos_regalados = 0
+        # frascos_disponibles = 2
 
         faltante_total = 0
         simulacion_montecarlo = []* cantidad_dias
@@ -134,27 +156,27 @@ class ControladorMontecarlo:
 
         # Planteo  condiciones de entrega y demora de pedidos
 
-            random_demora = round(random.random(), 4)
+            # random_demora = round(random.random(), 4)
 
-            if sim % 2 == 0 and 0 <= random_demora < 0.5:
-                demora = 0
-                frascos_disponibles += 2
-            elif sim % 2 == 0 and 0.5 <= random_demora < 0.75:
-                demora = 1
-            elif sim % 2 == 0 and 0.75 <= random_demora < 1:
-                demora = 2
+            # if sim % 2 == 0 and 0 <= random_demora < 0.5:
+            #     demora = 0
+            #     frascos_disponibles += 2
+            # elif sim % 2 == 0 and 0.5 <= random_demora < 0.75:
+            #     demora = 1
+            # elif sim % 2 == 0 and 0.75 <= random_demora < 1:
+            #     demora = 2
+            #
+            # elif sim % 2 != 0:
+            #     random_demora = "X"
+            #     demora = demora - 1
+            #     if demora == 0:
+            #         frascos_disponibles += 2
+            #
+            # if frascos_disponibles > capacidad_maxima:
+            #     frascos_regalados += (frascos_disponibles-capacidad_maxima)
+            #     frascos_disponibles = capacidad_maxima
 
-            elif sim % 2 != 0:
-                random_demora = "X"
-                demora = demora - 1
-                if demora == 0:
-                    frascos_disponibles += 2
-
-            if frascos_disponibles > capacidad_maxima:
-                frascos_regalados += (frascos_disponibles-capacidad_maxima)
-                frascos_disponibles = capacidad_maxima
-
-            cafe_disponible = frascos_disponibles*170
+            # cafe_disponible = frascos_disponibles*170
 
             # Planteo condiciones del turno mañana
 
