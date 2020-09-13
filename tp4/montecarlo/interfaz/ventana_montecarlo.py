@@ -75,7 +75,7 @@ class VentanaMontecarlo(QMainWindow):
             self.mostrar_mensaje("Error", "La capacidad máxima de frascos a almacenar tiene que ser mayor a cero")
             return
         mu_normal = self.txt_mu_normal.text()
-        if mu_normal == "":
+        if mu_normal == "" or mu_normal == "-":
             self.mostrar_mensaje("Error", "La constante \"mu\" de la distribución normal no puede ser vacía")
             return
         sigma_normal = self.txt_sigma_normal.text()
@@ -84,8 +84,9 @@ class VentanaMontecarlo(QMainWindow):
                                           "igual a cero")
             return
         mu_exponencial = self.txt_mu_exponencial.text()
-        if mu_exponencial == "":
-            self.mostrar_mensaje("Error", "La constante \"mu\" de la distribución exponencial no puede ser vacía")
+        if mu_exponencial == "" or float(mu_exponencial.replace(",", ".")) <= 0:
+            self.mostrar_mensaje("Error", "La constante \"mu\" de la distribución exponencial tiene que ser mayor a "
+                                          "cero")
             return
         horas_maniana = self.txt_horas_maniana.text()
         if horas_maniana == "" or int(horas_maniana.replace(",", ".")) <= 0:
