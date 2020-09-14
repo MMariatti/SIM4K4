@@ -56,21 +56,42 @@ class ControladorMontecarlo:
         else:
             generador_uniforme = GeneradorCongruencial()
 
-        # Inicializo lista para guardar vectores de estado
+        # Inicializo variables iniciales que se usaran durante el algoritmo
+        demora = 0
+        frascos_disponibles = 0
+        cafe_disponible = 0
+
+        # Inicializo vector de estado del dia cero y lista para guardar vectores de estado anteriores
+        dia_simulado = {}
         dias_simulados = []
 
-        # Inicializo variables iniciales
-        demora = None
-        frascos_llegados = 0
-        frascos_disponibles = 0
-        frascos_desechos = 0
-        cafe_disponible = 0
+        # Inicializo vector de estado para dia cero
+        dia_simulado["nro_dia"] = 0
+        dia_simulado["dia_compra"] = False
+        dia_simulado["demora"] = None
+        dia_simulado["frascos_disponibles"] = 0
+        dia_simulado["cafe_disponible"] = 0
+        dia_simulado["cafe_disponible_promedio"] = 0
+        dia_simulado["demanda"] = 0
+        dia_simulado["demanda_no_abastecida"] = 0
+        dia_simulado["demanda_no_abastecida_promedio"] = 0
+        dia_simulado["ingreso"] = 0
+        dia_simulado["ingreso_promedio"] = 0
+        dia_simulado["beneficio"] = 0
+        dia_simulado["beneficio_promedio"] = 0
 
         # Bucle principal
         for dia in range(1, dias + 1):
 
+            # Inicializo vector de estado del dia anterior y limpio el del dia actual antes de comenzar con los calculos
+            dia_anterior_simulado = dia_simulado
+            dia_simulado = {}
+
+            # CALCULOS PARA EL DIA ACTUAL
+
             # Actualizo frascos disponibles o descuento dia de demora al iniciar el dia
             costo = 0
+            frascos_llegados = 0
             if demora is not None:
                 if demora != 0:
                     demora -= 1
@@ -105,10 +126,9 @@ class ControladorMontecarlo:
 
             # Calculo la demanda abastecida y no abastecida y actualizo los gramos de cafe disponibles al finalizar
             # el dia
-            demanda_abastecida = 0
-            demanda_no_abastecida = 0
             if demanda <= cafe_disponible:
                 demanda_abastecida = demanda
+                demanda_no_abastecida = 0
                 cafe_disponible -= demanda
             else:
                 demanda_abastecida = cafe_disponible
@@ -126,26 +146,28 @@ class ControladorMontecarlo:
 
             # Desecho cafe si corresponde dependiendo capacidad máxima
             if frascos_disponibles > capacidad_maxima_frascos:
-                frascos_desechos += frascos_disponibles - capacidad_maxima_frascos
+                # frascos_desechos += frascos_disponibles - capacidad_maxima_frascos
                 cafe_disponible = capacidad_maxima_frascos * peso_frasco
                 frascos_disponibles = capacidad_maxima_frascos
 
+            # Gurdo datos en vector de estado del dia actual
+
+            dia_simulado["nro_dia"] = dia
+            dia_simulado["dia_compra"] = dia_compra
+            dia_simulado["demora"] = demora
+            dia_simulado["frascos_disponibles"] = frascos_disponibles
+            dia_simulado["cafe_disponible"] = cafe_disponible
+            # dia_simulado["cafe_disponible_promedio"] = cafe_disponible_promedio
+            dia_simulado["demanda"] = demanda
+            dia_simulado["demanda_no_abastecida"] = demanda_no_abastecida
+            # dia_simulado["demanda_no_abastecida_promedio"] = demanda_no_abastecida_promedio
+            dia_simulado["ingreso"] = ingreso
+            # dia_simulado["ingreso_promedio"] = ingreso_promedio
+            dia_simulado["beneficio"] = beneficio
+            # dia_simulado["beneficio_promedio"] = beneficio_promedio
+
             # Agrego vector de estado a lista
-            dias_simulados.append({
-                "nro_dia": dia,
-                "dia_compra": dia_compra,
-                "demora": demora,
-                "frascos_disponibles": frascos_disponibles,
-                "cafe_disponible": cafe_disponible,
-                # "cafe_disponible_promedio": cafe_disponible_promedio,
-                "demanda": demanda,
-                "demanda_no_abastecida": demanda_no_abastecida,
-                # "demanda_no_abastecida_promedio": demanda_no_abastecida_promedio,
-                "ingreso": ingreso,
-                # "ingreso_promedio": ingreso_promedio,
-                "beneficio": beneficio,
-                # "beneficio_promedio": beneficio_promedio
-            })
+            dias_simulados.append(dia_simulado)
 
         """
         dias_simulados = []
