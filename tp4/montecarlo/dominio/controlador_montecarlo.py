@@ -69,7 +69,7 @@ class ControladorMontecarlo:
         # Bucle principal
         for dia in range(1, dias + 1):
 
-            # Aumento frascos disponibles o descuento dia de demora al iniciar el dia
+            # Actualizo frascos disponibles o descuento dia de demora al iniciar el dia
             if demora is not None:
                 if demora != 0:
                     demora -= 1
@@ -92,17 +92,19 @@ class ControladorMontecarlo:
                 elif 0.75 <= random_demora < 1:
                     demora = 2
 
-            # Consumo turno mañana
-
-            # Comsumo turno tarde
-
-            # Calculo Comsumo total
-            consumo_total = 0
+            # Demanda diaria
+            random_maniana = generador_uniforme.generar_numero_aleatorio()
+            if 0 <= random_maniana < 0.5:
+                demanda_maniana = 50
+            else:
+                demanda_maniana = generador_normal.generar_numero_aleatorio()
+            demanda_tarde = generador_exponencial.generar_numero_aleatorio()
+            demanda = demanda_maniana + demanda_tarde
 
             # Actualizo los gramos cafe disponible al finalizar el dia
-            cafe_disponible -= consumo_total
+            cafe_disponible -= demanda
 
-            # Calculo frascos disponibles al finalizar el dia
+            # Actualizo los frascos disponibles al finalizar el dia
             frascos_disponibles = math.ceil(cafe_disponible / frascos_disponibles)
 
             # Desecho cafe si corresponde dependiendo capacidad máxima
@@ -118,6 +120,8 @@ class ControladorMontecarlo:
                 "demora": demora,
                 "frascos_disponibles": frascos_disponibles,
                 "cafe_disponible": cafe_disponible,
+                # "cafe_disponible_promedio": cafe_disponible_promedio,
+                "demanda": demanda,
             })
 
         """
@@ -190,15 +194,15 @@ class ControladorMontecarlo:
 
             # Planteo condiciones del turno mañana
 
-            random_manana = round(random.random(), 4)
-            if random_manana < 0.5:
-
-                demanda_manana = 50
-
-            elif 0.5 <= random_manana < 1:
-
-                demanda_manana = round(random.normalvariate(75, 15), 4)
-
+            # random_manana = round(random.random(), 4)
+            # if random_manana < 0.5:
+            #
+            #     demanda_manana = 50
+            # 
+            # elif 0.5 <= random_manana < 1:
+            #
+            #     demanda_manana = round(random.normalvariate(75, 15), 4)
+            
             if demanda_manana <= cafe_disponible:
 
                 beneficio_manana = round((demanda_manana * 15), 4)
@@ -212,13 +216,13 @@ class ControladorMontecarlo:
 
             # Planteo condiciones del turno tarde
 
-            demanda_tarde = round(np.random.exponential(79), 0)
-
-            if demanda_tarde <= cafe_disponible:
-
-                beneficio_tarde = round((demanda_tarde*15), 4)
-                cafe_disponible = round((cafe_disponible-demanda_tarde), 4)
-
+            # demanda_tarde = round(np.random.exponential(79), 0)
+            #
+            # if demanda_tarde <= cafe_disponible:
+            #
+            #     beneficio_tarde = round((demanda_tarde*15), 4)
+            #     cafe_disponible = round((cafe_disponible-demanda_tarde), 4)
+            #
             elif demanda_tarde > cafe_disponible:
                 beneficio_tarde = round((cafe_disponible*15), 4)
                 faltante_tarde = round((demanda_tarde-cafe_disponible), 4)
@@ -227,7 +231,7 @@ class ControladorMontecarlo:
             if cafe_disponible == 0:
                 beneficio_tarde = 0
 
-            demanda_total = round((demanda_manana + demanda_tarde), 4)
+            # demanda_total = round((demanda_manana + demanda_tarde), 4)
 
             faltante_total = round((faltante_manana+faltante_tarde), 4)
 
