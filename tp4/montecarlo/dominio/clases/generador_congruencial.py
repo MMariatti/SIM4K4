@@ -6,13 +6,17 @@ class GeneradorCongruencial:
     m = None
 
     def __init__(self, semilla=None, c=None, a=None, m=None):
-        if semilla is None:
+        self.semilla = semilla
+        if self.semilla is None:
             self.semilla = 37
-        if c is None:
+        self.c = c
+        if self.c is None:
             self.c = 43
-        if a is None:
+        self.a = a
+        if self.a is None:
             self.a = 13
-        if m is None:
+        self.m = m
+        if self.m is None:
             self.m = 101
 
     def generar_numero_aleatorio(self):

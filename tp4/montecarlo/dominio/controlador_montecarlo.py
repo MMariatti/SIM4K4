@@ -8,6 +8,7 @@ from dominio.clases.generador_exponencial import GeneradorExponencial
 class ControladorMontecarlo:
 
     def simular(self, parametros):
+        print(parametros)
 
         # Obtengo parametros referidos al stock y convierto a tipos convenientes
         frascos_a_comprar = parametros.get("frascos_a_comprar")
