@@ -280,7 +280,7 @@ class VentanaMontecarlo(QMainWindow):
             # Obtengo datos en formato conveniente
             nro_dia = str(ds.get("nro_dia"))
             dia_compra = "Si" if ds.get("dia_compra") else "No"
-            demora = ds.get("demora") if ds.get("demora") is not None else ""
+            demora = str(ds.get("demora")) if ds.get("demora") is not None else ""
             frascos_disponibles = str(ds.get("frascos_disponibles"))
             cafe_disponible = str(ds.get("cafe_disponible")).replace(".", ",")
             cafe_disponible_promedio = str(ds.get("cafe_disponible_promedio")).replace(".", ",")

@@ -57,7 +57,7 @@ class ControladorMontecarlo:
             generador_uniforme = GeneradorCongruencial()
 
         # Inicializo variables iniciales que se usaran durante el algoritmo
-        demora = 0
+        demora = None
         frascos_disponibles = 0
         cafe_disponible = 0
 
@@ -105,7 +105,7 @@ class ControladorMontecarlo:
             cafe_disponible += frascos_llegados * peso_frasco
 
             # Realizo pedido de compra de frascos si corresponde
-            dia_compra = (dia - 1 % dias_cada_cuanto_comprar and demora is None)
+            dia_compra = ((dia - 1) % dias_cada_cuanto_comprar == 0 and demora is None)
             if dia_compra:
                 random_demora = generador_uniforme.generar_numero_aleatorio()
                 if 0 <= random_demora < 0.5:
@@ -137,12 +137,18 @@ class ControladorMontecarlo:
 
             # Ingreso diario
             ingreso = demanda_abastecida * 1.5
+            ingreso = round(ingreso, 4)
+            if ingreso == int(ingreso):
+                ingreso = int(ingreso)
 
             # Beneficio diario
             beneficio = ingreso - costo
+            beneficio = round(beneficio, 4)
+            if beneficio == int(ingreso):
+                beneficio = int(beneficio)
 
             # Actualizo los frascos disponibles al finalizar el dia
-            frascos_disponibles = math.ceil(cafe_disponible / frascos_disponibles)
+            frascos_disponibles = math.ceil(cafe_disponible / frascos_disponibles) if frascos_disponibles != 0 else 0
 
             # Desecho cafe si corresponde dependiendo capacidad máxima
             if frascos_disponibles > capacidad_maxima_frascos:
@@ -155,19 +161,31 @@ class ControladorMontecarlo:
             # Cafe disponible promedio
             cafe_disponible_promedio_anterior = dia_anterior_simulado.get("cafe_disponible_promedio")
             cafe_disponible_promedio = 1 / dias * ((dias - 1) * cafe_disponible_promedio_anterior + cafe_disponible)
+            cafe_disponible_promedio = round(cafe_disponible_promedio, 4)
+            if cafe_disponible_promedio == int(cafe_disponible_promedio):
+                cafe_disponible_promedio = int(cafe_disponible_promedio)
 
             # Demanda no abastecida promedio
             demanda_no_abastecida_promedio_anterior = dia_anterior_simulado.get("demanda_no_abastecida_promedio")
             demanda_no_abastecida_promedio = 1 / dias * ((dias - 1) * demanda_no_abastecida_promedio_anterior +
                                                          demanda_no_abastecida)
+            demanda_no_abastecida_promedio = round(demanda_no_abastecida_promedio, 4)
+            if demanda_no_abastecida_promedio == int(demanda_no_abastecida_promedio):
+                demanda_no_abastecida_promedio = int(demanda_no_abastecida_promedio)
 
             # Ingreso promedio
             ingreso_promedio_anterior = dia_anterior_simulado.get("ingreso_promedio")
             ingreso_promedio = 1 / dias * ((dias - 1) * ingreso_promedio_anterior + ingreso)
+            ingreso_promedio = round(ingreso_promedio, 4)
+            if ingreso_promedio == int(ingreso_promedio):
+                ingreso_promedio = int(ingreso_promedio)
 
             # Beneficio promedio
             beneficio_promedio_anterior = dia_anterior_simulado.get("beneficio_promedio")
             beneficio_promedio = 1 / dias * ((dias - 1) * beneficio_promedio_anterior + beneficio)
+            beneficio_promedio = round(beneficio_promedio, 4)
+            if beneficio_promedio == int(beneficio_promedio):
+                beneficio_promedio = int(beneficio_promedio)
 
             # Gurdo datos en vector de estado del dia actual
             dia_simulado["nro_dia"] = dia
