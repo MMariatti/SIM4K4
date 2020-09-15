@@ -8,7 +8,6 @@ from dominio.clases.generador_exponencial import GeneradorExponencial
 class ControladorMontecarlo:
 
     def simular(self, parametros):
-        print(parametros)
 
         # Obtengo parametros referidos al stock y convierto a tipos convenientes
         frascos_a_comprar = parametros.get("frascos_a_comprar")
@@ -154,7 +153,7 @@ class ControladorMontecarlo:
             # CALCULOS QUE DEPENDEN DEL DIA ANTERIOR Y DEL DIA ACTUAL
 
             # Cafe disponible promedio
-            cafe_disponible_promedio_anterior = dia_anterior_simulado.get("cafe_almacenado_promedio")
+            cafe_disponible_promedio_anterior = dia_anterior_simulado.get("cafe_disponible_promedio")
             cafe_disponible_promedio = 1 / dias * ((dias - 1) * cafe_disponible_promedio_anterior + cafe_disponible)
 
             # Demanda no abastecida promedio

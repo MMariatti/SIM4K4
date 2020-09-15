@@ -164,10 +164,11 @@ class VentanaMontecarlo(QMainWindow):
         self.grid_dias_simulados.setHorizontalHeaderLabels(["Día", "Se debe comprar", "Demora en pedido",
                                                             "Frascos disponibles", "Café disponible",
                                                             "Café disponible promedio", "Demanda",
-                                                            "Demanda no abastecida", "Ingreso", "Ingreso promedio",
-                                                            "Beneficio", "Beneficio promedio"])
+                                                            "Demanda no abastecida", "Demanda no abastecida promedio",
+                                                            "Ingreso", "Ingreso promedio", "Beneficio",
+                                                            "Beneficio promedio"])
         header = self.grid_dias_simulados.horizontalHeader()
-        for i in range(0, 8):
+        for i in range(0, 13):
             header.setSectionResizeMode(i, QHeaderView.ResizeToContents)
 
     def limpiar_interfaz(self):
@@ -289,7 +290,7 @@ class VentanaMontecarlo(QMainWindow):
             ingreso = str(ds.get("ingreso")).replace(".", ",")
             ingreso_promedio = str(ds.get("ingreso_promedio")).replace(".", ",")
             beneficio = str(ds.get("beneficio")).replace(".", ",")
-            beneficio_promedio = str(ds.get("cbeneficio_promedio")).replace(".", ",")
+            beneficio_promedio = str(ds.get("beneficio_promedio")).replace(".", ",")
 
             # Agrego fila a tabla
             self.grid_dias_simulados.setItem(index, 0, QTableWidgetItem(nro_dia))

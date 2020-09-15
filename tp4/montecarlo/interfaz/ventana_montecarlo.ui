@@ -537,6 +537,9 @@
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
+              </property>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>0</width>
@@ -579,6 +582,9 @@
              <spacer name="spacer_horizontal_1">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -623,6 +629,9 @@
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
+              </property>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>0</width>
@@ -665,6 +674,9 @@
              <spacer name="spacer_horizontal_3">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -739,6 +751,9 @@
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
+              </property>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>0</width>
@@ -781,6 +796,9 @@
              <spacer name="spacer_horizontal_5">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -858,6 +876,9 @@
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
+              </property>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>0</width>
@@ -934,6 +955,9 @@
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
+              </property>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>0</width>
@@ -973,6 +997,9 @@
              <spacer name="spacer_horizontal_8">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
               </property>
               <property name="sizeHint" stdset="0">
                <size>
@@ -1050,6 +1077,9 @@
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
+              </property>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>0</width>
@@ -1090,6 +1120,9 @@
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Minimum</enum>
+              </property>
               <property name="sizeHint" stdset="0">
                <size>
                 <width>0</width>
@@ -1129,9 +1162,12 @@
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Fixed</enum>
+              </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>0</width>
+                <width>160</width>
                 <height>0</height>
                </size>
               </property>
