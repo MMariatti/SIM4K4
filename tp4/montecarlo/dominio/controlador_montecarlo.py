@@ -87,7 +87,7 @@ class ControladorMontecarlo:
             dia_anterior_simulado = dia_simulado
             dia_simulado = {}
 
-            # CALCULOS PARA EL DIA ACTUAL
+            # CALCULOS QUE DEPENDEN DEL DIA ACTUAL
 
             # Actualizo frascos disponibles o descuento dia de demora al iniciar el dia
             costo = 0
@@ -150,38 +150,43 @@ class ControladorMontecarlo:
                 cafe_disponible = capacidad_maxima_frascos * peso_frasco
                 frascos_disponibles = capacidad_maxima_frascos
 
-            # Gurdo datos en vector de estado del dia actual
+            # CALCULOS QUE DEPENDEN DEL DIA ANTERIOR Y DEL DIA ACTUAL
 
+            # Cafe disponible promedio
+            cafe_disponible_promedio_anterior = dia_anterior_simulado.get("cafe_almacenado_promedio")
+            cafe_disponible_promedio = 1 / dias * ((dias - 1) * cafe_disponible_promedio_anterior + cafe_disponible)
+
+            # Demanda no abastecida promedio
+            demanda_no_abastecida_promedio_anterior = dia_anterior_simulado.get("demanda_no_abastecida_promedio")
+            demanda_no_abastecida_promedio = 1 / dias * ((dias - 1) * demanda_no_abastecida_promedio_anterior +
+                                                         demanda_no_abastecida)
+
+            # Ingreso promedio
+            ingreso_promedio_anterior = dia_anterior_simulado.get("ingreso_promedio")
+            ingreso_promedio = 1 / dias * ((dias - 1) * ingreso_promedio_anterior + ingreso)
+
+            # Beneficio promedio
+            beneficio_promedio_anterior = dia_anterior_simulado.get("beneficio_promedio")
+            beneficio_promedio = 1 / dias * ((dias - 1) * beneficio_promedio_anterior + beneficio)
+
+            # Gurdo datos en vector de estado del dia actual
             dia_simulado["nro_dia"] = dia
             dia_simulado["dia_compra"] = dia_compra
             dia_simulado["demora"] = demora
             dia_simulado["frascos_disponibles"] = frascos_disponibles
             dia_simulado["cafe_disponible"] = cafe_disponible
-            # dia_simulado["cafe_disponible_promedio"] = cafe_disponible_promedio
+            dia_simulado["cafe_disponible_promedio"] = cafe_disponible_promedio
             dia_simulado["demanda"] = demanda
             dia_simulado["demanda_no_abastecida"] = demanda_no_abastecida
-            # dia_simulado["demanda_no_abastecida_promedio"] = demanda_no_abastecida_promedio
+            dia_simulado["demanda_no_abastecida_promedio"] = demanda_no_abastecida_promedio
             dia_simulado["ingreso"] = ingreso
-            # dia_simulado["ingreso_promedio"] = ingreso_promedio
+            dia_simulado["ingreso_promedio"] = ingreso_promedio
             dia_simulado["beneficio"] = beneficio
-            # dia_simulado["beneficio_promedio"] = beneficio_promedio
+            dia_simulado["beneficio_promedio"] = beneficio_promedio
 
             # Agrego vector de estado a lista
             dias_simulados.append(dia_simulado)
 
-        """
-        dias_simulados = []
-        for i in range(1, 10001):
-            dias_simulados.append({
-                "nro_dia": i,
-                "stock": i,
-                "cafe_almacenado_promedio": i,
-                "cafe_faltante_promedio": i,
-                "ingreso": i,
-                "ingreso_promedio": i,
-                "contribucion": i,
-                "contribucion_promedio": i
-            })
         resultados = {
             "porcentaje_dias_faltantes": 10,
             "porcentaje_dias_0_a_2_frascos": 20,
@@ -191,7 +196,5 @@ class ControladorMontecarlo:
             "promedio_horas_perdidas": 70,
             "tiene_stock": True
         }
-        return dias_simulados, resultados
-        """
 
-        return [], {}
+        return dias_simulados, resultados

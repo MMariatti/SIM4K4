@@ -160,10 +160,12 @@ class VentanaMontecarlo(QMainWindow):
         self.cmb_tipo_visualizacion.addItem("50 días a partir de día seleccionado", 1)
 
         # Preparo tabla de numeros generados
-        self.grid_dias_simulados.setColumnCount(8)
-        self.grid_dias_simulados.setHorizontalHeaderLabels(["Día", "Stock al finalizar día", "Café almacenado promedio",
-                                                            "Café faltante promedio", "Ingreso", "Ingreso promedio",
-                                                            "Contribución", "Contribución promedio"])
+        self.grid_dias_simulados.setColumnCount(13)
+        self.grid_dias_simulados.setHorizontalHeaderLabels(["Día", "Se debe comprar", "Demora en pedido",
+                                                            "Frascos disponibles", "Café disponible",
+                                                            "Café disponible promedio", "Demanda",
+                                                            "Demanda no abastecida", "Ingreso", "Ingreso promedio",
+                                                            "Beneficio", "Beneficio promedio"])
         header = self.grid_dias_simulados.horizontalHeader()
         for i in range(0, 8):
             header.setSectionResizeMode(i, QHeaderView.ResizeToContents)
@@ -276,23 +278,33 @@ class VentanaMontecarlo(QMainWindow):
 
             # Obtengo datos en formato conveniente
             nro_dia = str(ds.get("nro_dia"))
-            stock = str(ds.get("stock"))
-            cafe_almacenado_promedio = str(ds.get("cafe_almacenado_promedio")).replace(".", ",")
-            cafe_faltante_promedio = str(ds.get("cafe_faltante_promedio")).replace(".", ",")
+            dia_compra = "Si" if ds.get("dia_compra") else "No"
+            demora = ds.get("demora") if ds.get("demora") is not None else ""
+            frascos_disponibles = str(ds.get("frascos_disponibles"))
+            cafe_disponible = str(ds.get("cafe_disponible")).replace(".", ",")
+            cafe_disponible_promedio = str(ds.get("cafe_disponible_promedio")).replace(".", ",")
+            demanda = str(ds.get("demanda")).replace(".", ",")
+            demanda_no_abastecida = str(ds.get("demanda_no_abastecida")).replace(".", ",")
+            demanda_no_abastecida_promedio = str(ds.get("demanda_no_abastecida_promedio")).replace(".", ",")
             ingreso = str(ds.get("ingreso")).replace(".", ",")
             ingreso_promedio = str(ds.get("ingreso_promedio")).replace(".", ",")
-            contribucion = str(ds.get("contribucion")).replace(".", ",")
-            contribucion_promedio = str(ds.get("contribucion_promedio")).replace(".", ",")
+            beneficio = str(ds.get("beneficio")).replace(".", ",")
+            beneficio_promedio = str(ds.get("cbeneficio_promedio")).replace(".", ",")
 
             # Agrego fila a tabla
             self.grid_dias_simulados.setItem(index, 0, QTableWidgetItem(nro_dia))
-            self.grid_dias_simulados.setItem(index, 1, QTableWidgetItem(stock))
-            self.grid_dias_simulados.setItem(index, 2, QTableWidgetItem(cafe_almacenado_promedio))
-            self.grid_dias_simulados.setItem(index, 3, QTableWidgetItem(cafe_faltante_promedio))
-            self.grid_dias_simulados.setItem(index, 4, QTableWidgetItem(ingreso))
-            self.grid_dias_simulados.setItem(index, 5, QTableWidgetItem(ingreso_promedio))
-            self.grid_dias_simulados.setItem(index, 6, QTableWidgetItem(contribucion))
-            self.grid_dias_simulados.setItem(index, 7, QTableWidgetItem(contribucion_promedio))
+            self.grid_dias_simulados.setItem(index, 1, QTableWidgetItem(dia_compra))
+            self.grid_dias_simulados.setItem(index, 2, QTableWidgetItem(demora))
+            self.grid_dias_simulados.setItem(index, 3, QTableWidgetItem(frascos_disponibles))
+            self.grid_dias_simulados.setItem(index, 4, QTableWidgetItem(cafe_disponible))
+            self.grid_dias_simulados.setItem(index, 5, QTableWidgetItem(cafe_disponible_promedio))
+            self.grid_dias_simulados.setItem(index, 6, QTableWidgetItem(demanda))
+            self.grid_dias_simulados.setItem(index, 7, QTableWidgetItem(demanda_no_abastecida))
+            self.grid_dias_simulados.setItem(index, 8, QTableWidgetItem(demanda_no_abastecida_promedio))
+            self.grid_dias_simulados.setItem(index, 9, QTableWidgetItem(ingreso))
+            self.grid_dias_simulados.setItem(index, 10, QTableWidgetItem(ingreso_promedio))
+            self.grid_dias_simulados.setItem(index, 11, QTableWidgetItem(beneficio))
+            self.grid_dias_simulados.setItem(index, 12, QTableWidgetItem(beneficio_promedio))
             index += 1
 
     # Evento show
